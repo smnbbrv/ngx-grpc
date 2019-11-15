@@ -1,4 +1,4 @@
-# @ngrpc
+# ngx-grpc
 
 Angular gRPC framework.
 
