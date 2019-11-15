@@ -1,85 +1,75 @@
-# ngrpc
+# @ngrpc
 
-gRPC Angular code generator based on [grpc-web](https://github.com/grpc/grpc-web).
+Angular gRPC framework.
 
 **Work in progress: breaking changes possible.**
 
 ## Features
 
 - two-way binding thanks to properties instead of Java-like setters / getters
-- client services are bound to dependency injection
+- client services are wired to Angular's dependency injection
 - rxjs first-class support
 - typescript first-class support
-- JSDoc comments incl. `@deprecated` option for properties and [rpc / methods](https://stackoverflow.com/a/43380742/1990451). [Example](test/proto/deprecated.proto)
-- easy to install and update thanks to npm package
+- interceptors
+- [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support
+- easy to install, update and support thanks to npm packages
+
+## Requirements
+
+- install `protoc` if you have none yet: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
+- backend needs to be configured according to [grpc-web documentation](https://github.com/grpc/grpc-web).
 
 ## Installation
 
-Installation consists of two parts
-
-### Globally
-
-Step 1. Install the plugin
+In your Angular project:
 
 ```sh
-npm i -g protoc-gen-ng
+npm i -S @ngx-grpc/core google-protobuf grpc-web
+npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 ```
 
-Step 2. Install `protoc` if you have none yet: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
+Where:
 
-### In your Angular project
+- `@ngx-grpc/core` adds angular specific implementation
+- `@ngx-grpc/protoc-gen-ng` generates the code based on your proto files
+- `google-protobuf` is required to encode / decode the messages
+- `grpc-web` implements the transport between the browser and grpc proxy
 
-Install runtime dependencies:
+## Generate the code
 
-```sh
-npm i -S google-protobuf grpc-web
-npm i -D @types/google-protobuf
-```
-
-- `google-protobuf` is required to encode / decode messages
-- `grpc-web` implements the transport
-
-### Configure your backend
-
-Due to the browsers' limitations you would need to configure a special proxy in order to access your gRPC services.
-
-Please configure your proxy according to [grpc-web docs](https://github.com/grpc/grpc-web#proxy-interoperability).
-
-## Usage
-
-### Generate code
-
-Add to your `package.json` the following script:
+Add `proto:generate` script to your `package.json` `scripts` section:
 
 ```json
+{
   "scripts": {
-    ...
-    "proto:generate": "protoc --plugin=protoc-gen-grpc_ng --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
-    ...
+    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
   }
+}
 ```
 
-Modify it as follows:
+Where:
 
-- `OUTPUT_PATH` - the path your code will be generated
+- `OUTPUT_PATH` - the directory your code will be generated at (please ensure the directory exists, otherwise you'll have a `protoc` error)
 - `PROTO_DIR_PATH` - the root path of your proto files
 - `PROTO_FILES` - list of proto files to use
 
 Example:
 
 ```json
+{
   "scripts": {
-    ...
-    "proto:generate": "protoc --plugin=protoc-gen-grpc_ng --ng_out=./src/proto -I ../proto ../proto/*"
-    ...
+    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto ../proto/*"
   }
+}
 ```
 
-### Configure the clients
+Finally, run `npm run proto:generate` every time you want to (re)generate the code
 
-Every service has an injected configuration. You can create those services manually or use them as native Angular services.
+## Usage
 
-To use them as Angular services, provide the configuration in your AppModule.
+### Service clients configuration
+
+Every service has an injected configuration which could be found in the beginning of generated file or at each service client's constructor.
 
 E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVICE_CLIENT_SETTINGS`:
 
@@ -100,15 +90,93 @@ export class AppModule {
 }
 ```
 
+From now on this particular service is set.
+
+It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
+
+### Interceptors
+
+You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors. Here is an example of interceptor that implements [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support for unary requests:
+
+```ts
+import { GrpcCallType, GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
+import { GrpcWebClientBase, Status } from 'grpc-web';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
+export class GrpcWebDevtoolsInterceptor implements GrpcInterceptor {
+
+  static patchedClients: GrpcWebClientBase[] = [];
+
+  intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status> {
+    return next.handle(request).pipe(
+      tap(response => {
+        if (request.type === GrpcCallType.unary) {
+          window.postMessage({
+            type: '__GRPCWEB_DEVTOOLS__',
+            method: request.path,
+            methodType: 'unary',
+            request: request.requestData,
+            response,
+          }, '*');
+        }
+      }),
+      catchError(error => {
+        if (request.type === GrpcCallType.unary) {
+          window.postMessage({
+            type: '__GRPCWEB_DEVTOOLS__',
+            method: request.path,
+            methodType: 'unary',
+            request: request.requestData,
+            error,
+          }, '*');
+        }
+
+        return throwError(error);
+      }),
+    );
+  }
+
+}
+```
+
+Then provide this interceptor (again like Angular's built-in interceptors):
+
+```ts
+{
+  providers: [
+    { provide: GRPC_INTERCEPTORS, useClass: GrpcWebDevtoolsInterceptor, multi: true },
+  ]
+}
+```
+
+And you will be able to see the calls in the extension.
+
+## Global installation of protoc-gen-ng
+
+`@ngx-grpc/protoc-gen-ng` could also be installed globally with `-g`. It simplifies the generate call:
+
+```sh
+protoc --plugin=protoc-gen-grpc_ng --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>
+```
+
+however it's version will not anyhow be connected to the particular project (and it is if it is installed locally as proposed above).
+
 ## Not implemented (yet)
+
+Proto 3:
 
 - [Imports](https://developers.google.com/protocol-buffers/docs/proto3#importing-definitions)
 - [Oneof](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
 - [Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
 
+Proto 2:
+
+Most of its functionality works. However the proto 2 is currently not going to be supported.
+
 ## Related
 
-[proto 3](https://developers.google.com/protocol-buffers/docs/proto3#simple)
+[proto 3](https://developers.google.com/protocol-buffers/docs/proto3)
 [grpc-web](https://github.com/grpc/grpc-web)
 [google-protobuf](https://github.com/protocolbuffers/protobuf)
 

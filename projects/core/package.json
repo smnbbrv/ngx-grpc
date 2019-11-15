@@ -1,8 +1,23 @@
 {
   "name": "@ngx-grpc/core",
   "version": "0.0.1",
+  "description": "Angular gRPC framework: core package",
+  "author": "smnbbrv",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngx-grpc/core"
+  },
+  "keywords": [
+    "grpc",
+    "angular",
+    "ngx",
+    "grpc-web"
+  ],
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14"
+    "@angular/core": ">=8.0.0",
+    "google-protobuf": "^3.10.0",
+    "grpc-web": "^1.0.0",
+    "rxjs": "^6.0.0"
   }
 }
