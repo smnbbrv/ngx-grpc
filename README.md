@@ -100,15 +100,14 @@ You can add global interceptors to all gRPC calls exactly like Angular's built-i
 
 ```ts
 import { GrpcCallType, GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
-import { GrpcWebClientBase, Status } from 'grpc-web';
+import { Status } from 'grpc-web';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 export class GrpcWebDevtoolsInterceptor implements GrpcInterceptor {
 
-  static patchedClients: GrpcWebClientBase[] = [];
-
   intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status> {
+    // TODO avoid in production, because postMessage to '*' might be dangerous
     return next.handle(request).pipe(
       tap(response => {
         if (request.type === GrpcCallType.unary) {
