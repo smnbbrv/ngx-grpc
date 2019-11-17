@@ -30,10 +30,10 @@ npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 
 Where:
 
-- `@ngx-grpc/core` adds angular specific implementation
-- `@ngx-grpc/protoc-gen-ng` generates the code based on your proto files
-- `google-protobuf` is required to encode / decode the messages
-- `grpc-web` implements the transport between the browser and grpc proxy
+- [@ngx-grpc/core](https://github.com/ngx-grpc/core) adds angular specific implementation
+- [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
+- [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
+- [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
 
 ## Generate the code
 
@@ -175,9 +175,7 @@ Most of its functionality works. However the proto 2 is currently not going to b
 
 ## Related
 
-[proto 3](https://developers.google.com/protocol-buffers/docs/proto3)
-[grpc-web](https://github.com/grpc/grpc-web)
-[google-protobuf](https://github.com/protocolbuffers/protobuf)
+- [proto 3 guide](https://developers.google.com/protocol-buffers/docs/proto3)
 
 ## License
 
