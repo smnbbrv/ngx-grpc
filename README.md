@@ -165,7 +165,6 @@ however it's version will not anyhow be connected to the particular project (and
 
 Proto 3:
 
-- [Imports](https://developers.google.com/protocol-buffers/docs/proto3#importing-definitions)
 - [Oneof](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
 - [Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
 
