@@ -19,6 +19,7 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      # TODO requires chrome to be installed on the runner
       # - name: Test
       #   run: npm run test
       - name: Lint
