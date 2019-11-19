@@ -2,10 +2,13 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "build": "npm run build:core",
-    "build:core": "ng build --project core && cp LICENSE.md dist/core",
-    "test": "ng test",
-    "lint": "ng lint"
+    "build": "npm run build:lib",
+    "build:lib": "ng build core  && cp LICENSE.md dist/core",
+    "test": "npm run test:lib",
+    "test:lib": "ng test core --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage",
+    "test:lib:watch": "ng test core",
+    "lint": "ng lint",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@angular/animations": "~8.2.13",
@@ -28,6 +31,11 @@
     "@angular/cli": "~8.3.17",
     "@angular/compiler-cli": "~8.2.13",
     "@angular/language-service": "~8.2.13",
+    "@semantic-release/changelog": "^3.0.5",
+    "@semantic-release/commit-analyzer": "^6.3.3",
+    "@semantic-release/git": "^7.0.18",
+    "@semantic-release/npm": "^5.3.4",
+    "@semantic-release/release-notes-generator": "^7.3.3",
     "@types/google-protobuf": "^3.7.2",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
@@ -42,6 +50,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "ng-packagr": "^5.4.0",
     "protractor": "~5.4.0",
+    "semantic-release": "^15.13.31",
     "ts-node": "~7.0.0",
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
