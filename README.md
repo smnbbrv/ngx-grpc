@@ -163,14 +163,8 @@ however it's version will not anyhow be connected to the particular project (and
 
 ## Not implemented (yet)
 
-Proto 3:
-
-- [Oneof](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
-- [Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
-
-Proto 2:
-
-Most of its functionality works. However the proto 2 is currently not going to be supported.
+- [Proto 3 Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
+- Proto 2. Although most of its functionality works
 
 ## Related
 
