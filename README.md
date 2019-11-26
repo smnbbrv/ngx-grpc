@@ -79,6 +79,7 @@ E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVIC
   providers: [
     // ...
     // the name of the token can be found in corresponding service constructor
+    // uses default grpcwebtext format
     { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
     // or use value from environment.ts
     // { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: environment.host } },
@@ -88,6 +89,12 @@ E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVIC
 })
 export class AppModule {
 }
+```
+
+To set grpcweb / binary proto format use
+
+```ts
+{ provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080', format: 'binary' } },
 ```
 
 From now on this particular service is set.
