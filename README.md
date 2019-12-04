@@ -11,7 +11,7 @@ Angular gRPC framework.
 - rxjs first-class support
 - typescript first-class support
 - interceptors
-- [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support
+- logging, including simple console logger and [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support
 - easy to install, update and support thanks to npm packages
 
 ## Requirements
@@ -96,7 +96,55 @@ It's also handy to move configuration of all the services to a different module'
 
 ### Interceptors
 
-You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors. Here is an example of interceptor that implements [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support for unary requests:
+You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors. 
+
+#### Console logger
+
+Here is an example of interceptor that implements a simple console logger:
+
+```ts
+import { GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
+import { Status } from 'grpc-web';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
+export class GrpcWebConsoleLoggerInterceptor implements GrpcInterceptor {
+
+  intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status> {
+    const start = Date.now();
+
+    return next.handle(request).pipe(
+      tap(response => {
+        const style = 'color: #5c7ced; font-weight: bold;';
+
+        setTimeout(() => {
+          console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
+          console.log('%c>>', style, { ...request.requestData });
+          console.log('%c<<', style, { ...response });
+          console.groupEnd();
+        });
+      }),
+      catchError(error => {
+        const style = 'color: red; font-weight: bold;';
+
+        setTimeout(() => {
+          console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
+          console.log('%c>>', style, { ...request.requestData });
+          console.error('%c<<', style, error);
+          console.groupEnd();
+        });
+
+        return throwError(error);
+      }),
+    );
+  }
+
+}
+```
+
+#### gRPC-Web Devtools
+
+Here is an example of interceptor that implements [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support for unary requests:
 
 ```ts
 import { GrpcCallType, GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
