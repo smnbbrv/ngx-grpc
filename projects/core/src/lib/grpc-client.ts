@@ -65,6 +65,7 @@ export class GrpcClient {
       xhrStream.on('status', status => obs.next(status));
       xhrStream.on('data', response => obs.next(response));
       xhrStream.on('end', () => obs.complete());
+      xhrStream.on('error', error => obs.error(error));
 
       return () => xhrStream.cancel();
     });
