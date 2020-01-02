@@ -69,7 +69,7 @@ Finally, run `npm run proto:generate` every time you want to (re)generate the co
 
 ### Service clients configuration
 
-Every service has an injected configuration which could be found in the beginning of generated file or at each service client's constructor.
+Every service has an injected configuration which could be found e.g. in the corresponding `*.pbconf.ts` file.
 
 E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVICE_CLIENT_SETTINGS`:
 
