@@ -2,6 +2,7 @@ import { Metadata, Status } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GrpcClient } from './grpc-client';
 import { GrpcHandler } from './grpc-handler';
+import { GrpcMessage } from './grpc-message';
 import { GrpcMessageClass } from './grpc-message-class';
 
 export enum GrpcCallType {
@@ -9,7 +10,7 @@ export enum GrpcCallType {
   serverStream,
 }
 
-export interface GrpcRequest<REQ, RES> {
+export interface GrpcRequest<REQ extends GrpcMessage, RES extends GrpcMessage> {
   client: GrpcClient;
   type: GrpcCallType;
   requestData: REQ;
@@ -20,5 +21,5 @@ export interface GrpcRequest<REQ, RES> {
 }
 
 export interface GrpcInterceptor {
-  intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status>;
+  intercept<REQ extends GrpcMessage, RES extends GrpcMessage>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status>;
 }

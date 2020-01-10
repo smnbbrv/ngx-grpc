@@ -1,5 +1,6 @@
 import { AbstractClientBase, Error, GrpcWebClientBase, Metadata, Status } from 'grpc-web';
 import { Observable } from 'rxjs';
+import { GrpcMessage } from './grpc-message';
 import { GrpcMessageClass } from './grpc-message-class';
 
 export interface GrpcClientSettings {
@@ -18,7 +19,7 @@ export class GrpcClient {
     this.client = new GrpcWebClientBase(this.settings);
   }
 
-  unary<REQ, RES>(
+  unary<REQ extends GrpcMessage, RES extends GrpcMessage>(
     path: string,
     req: REQ,
     metadata: Metadata,
@@ -47,7 +48,7 @@ export class GrpcClient {
     });
   }
 
-  serverStream<REQ, RES>(
+  serverStream<REQ extends GrpcMessage, RES extends GrpcMessage>(
     path: string,
     req: REQ,
     metadata: Metadata,
