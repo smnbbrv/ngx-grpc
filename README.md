@@ -58,7 +58,7 @@ Example:
 ```json
 {
   "scripts": {
-    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto ../proto/*"
+    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto ../proto/**/*.proto"
   }
 }
 ```
@@ -103,7 +103,7 @@ It's also handy to move configuration of all the services to a different module'
 
 ### Interceptors
 
-You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors. 
+You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors.
 
 #### Console logger
 
