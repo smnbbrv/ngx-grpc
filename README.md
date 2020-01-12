@@ -219,11 +219,7 @@ however it's version will not anyhow be connected to the particular project (and
 ## Not implemented (yet)
 
 - [Proto 3 Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
-- Proto 2. Although most of its functionality works
-
-## Related
-
-- [proto 3 guide](https://developers.google.com/protocol-buffers/docs/proto3)
+- [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
 
 ## License
 
