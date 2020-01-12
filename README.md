@@ -101,6 +101,14 @@ From now on this particular service is set.
 
 It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
 
+### Messages
+
+Every message has `toObject()` and `toJSON()` methods which could be used to cast message to the normal JavaScript object.
+
+To cast a JavaScript object to a message just pass it to the constructor: `new Message(myObject)`.
+
+As a side effect: just pass an instance of message to `new Message()` constructor and it will be deeply cloned.
+
 ### Interceptors
 
 You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors.
