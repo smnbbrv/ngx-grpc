@@ -2,7 +2,9 @@
 
 Angular gRPC framework.
 
-**Work in progress: breaking changes possible.**
+| [@ngx-grpc/core](https://github.com/ngx-grpc/core)                   | ![@ngx-grpc/core workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/core/Publish) ![@ngx-grpc/core npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                  |
+|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) | ![@ngx-grpc/protoc-gen-ng workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) |
 
 ## Features
 
@@ -226,8 +228,7 @@ however it's version will not anyhow be connected to the particular project (and
 
 ## Not implemented (yet)
 
-- [Proto 3 Any](https://developers.google.com/protocol-buffers/docs/proto3#any)
-- [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
+[Proto 3 Any](https://developers.google.com/protocol-buffers/docs/proto3#any) and [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
 
 ## License
 
