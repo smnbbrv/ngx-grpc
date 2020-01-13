@@ -2,9 +2,9 @@
 
 Angular gRPC framework.
 
-| [@ngx-grpc/core](https://github.com/ngx-grpc/core)                   | ![@ngx-grpc/core workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/core/Publish) ![@ngx-grpc/core npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                  |
-|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) | ![@ngx-grpc/protoc-gen-ng workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) |
+| [@ngx-grpc/core](https://github.com/ngx-grpc/core)                   | ![@ngx-grpc/core workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/core/Publish) ![@ngx-grpc/core npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                  | [Changelog](https://github.com/ngx-grpc/core/blob/master/CHANGELOG.md)          |
+|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) | ![@ngx-grpc/protoc-gen-ng workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
 
 ## Features
 
