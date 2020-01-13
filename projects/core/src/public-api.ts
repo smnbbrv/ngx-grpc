@@ -4,4 +4,5 @@ export * from './lib/grpc-interceptor';
 export * from './lib/grpc-message';
 export * from './lib/grpc-message-class';
 export * from './lib/injection-tokens';
+export * from './lib/utils';
 
