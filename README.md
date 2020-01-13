@@ -60,7 +60,7 @@ Example:
 ```json
 {
   "scripts": {
-    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto ../proto/**/*.proto"
+    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto $(find ../proto -iname \"*.proto\")"
   }
 }
 ```
