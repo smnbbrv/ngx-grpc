@@ -2,9 +2,13 @@
 
 Angular gRPC framework.
 
-| [@ngx-grpc/core](https://github.com/ngx-grpc/core)                   | ![@ngx-grpc/core workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/core/Publish) ![@ngx-grpc/core npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                  | [Changelog](https://github.com/ngx-grpc/core/blob/master/CHANGELOG.md)          |
-|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) | ![@ngx-grpc/protoc-gen-ng workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
+| Package                                                                                | Workflow status                                                                                                                                                                            | Changelog                                                                       |
+|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/projects/core)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/projects/common)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/projects/worker)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/projects/worker-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
 
 ## Features
 
@@ -14,6 +18,7 @@ Angular gRPC framework.
 - typescript first-class support
 - interceptors
 - logging, including simple console logger and [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support
+- web worker (experimental)
 - easy to install, update and support thanks to npm packages
 
 ## Requirements
@@ -26,13 +31,16 @@ Angular gRPC framework.
 In your Angular project:
 
 ```sh
-npm i -S @ngx-grpc/core google-protobuf grpc-web
+npm i -S @ngx-grpc/common @ngx-grpc/core google-protobuf grpc-web
 npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 ```
 
 Where:
 
-- [@ngx-grpc/core](https://github.com/ngx-grpc/core) adds angular specific implementation
+- [@ngx-grpc/common](https://github.com/ngx-grpc/common) contains common reusable types for other ngx-grpc packages
+- [@ngx-grpc/core](https://github.com/ngx-grpc/core) contains angular specific implementation
+- [@ngx-grpc/worker](https://github.com/ngx-grpc/core) contains worker gRPC implementation
+- [@ngx-grpc/worker-client](https://github.com/ngx-grpc/core) contains Angular connector for the worker
 - [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
@@ -68,6 +76,18 @@ Example:
 Finally, run `npm run proto:generate` every time you want to (re)generate the code
 
 ## Usage
+
+### Provide the client factory
+
+```ts
+@NgModule({
+  providers: [
+    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcStandardClientFactory },
+  ],
+})
+export class AppModule {
+}
+```
 
 ### Service clients configuration
 
@@ -216,15 +236,70 @@ Then provide this interceptor (again like Angular's built-in interceptors):
 
 And you will be able to see the calls in the extension.
 
-## Global installation of protoc-gen-ng
+## Web worker
 
-`@ngx-grpc/protoc-gen-ng` could also be installed globally with `-g`. It simplifies the generate call:
+Web worker allows to run gRPC clients, messages serialization and deserialization in a separate thread. It might give some performance benefits on large data sets; however the main reason of the worker is to avoid blocking the main thread. That means that rendering engine has more resources to work on rendering while the messages processing is done in parallel.
+
+First, install additional packages:
 
 ```sh
-protoc --plugin=protoc-gen-grpc_ng --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>
+npm i -S @ngx-grpc/worker @ngx-grpc/worker-client
 ```
 
-however it's version will not anyhow be connected to the particular project (and it is if it is installed locally as proposed above).
+Then configure the web worker. First you need to adapt the code generation command from above to pass the parameter `worker=true:`:
+
+```json
+{
+  "scripts": {
+    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=worker=true:<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
+  }
+}
+```
+
+It will additionally generate `*.pbwsc.ts` files containing the worker service client definitions.
+
+Now, generate the worker (angular cli), e.g. with the name `grpc`:
+
+```sh
+ng g worker grpc
+```
+
+You should see `grpc.worker.ts` close to your `app.module.ts`. Open this file and replace the contents with the following:
+
+```ts
+/// <reference lib="webworker" />
+
+import { GrpcWorker } from '@ngx-grpc/worker';
+import { GrpcWorkerEchoServiceClientDef } from '../proto/echo.pbwsc';
+
+const worker = new GrpcWorker();
+
+worker.register(
+  // register here all the service clients definitions
+  GrpcWorkerEchoServiceClientDef,
+);
+
+worker.start();
+```
+
+Finally, provide worker client factory instead of the standard one and provide your worker
+
+```ts
+@NgModule({
+  providers: [
+    // replace standard client factory
+    // { provide: GRPC_CLIENT_FACTORY, useClass: GrpcStandardClientFactory },
+    // with GrpcWorkerClientFactory
+    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWorkerClientFactory },
+    // and wire your worker
+    { provide: GRPC_WORKER, useFactory: () => new Worker('./grpc.worker', { type: 'module' }) },
+  ],
+})
+export class AppModule {
+}
+```
+
+That's it. All your requests are served by worker.
 
 ## Not implemented (yet)
 
