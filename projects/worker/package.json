@@ -1,0 +1,14 @@
+{
+  "name": "@ngx-grpc/worker",
+  "description": "Angular gRPC framework: worker package",
+  "author": "smnbbrv",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngx-grpc/ngx-grpc"
+  },
+  "peerDependencies": {
+    "@ngx-grpc/common": ">=0.2.0",
+    "grpc-web": "^1.0.0"
+  }
+}
