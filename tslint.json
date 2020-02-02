@@ -17,7 +17,10 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      {
+        "limit": 200,
+        "ignore-pattern": "^import |^export | implements | extends "
+      }
     ],
     "member-access": false,
     "member-ordering": [
