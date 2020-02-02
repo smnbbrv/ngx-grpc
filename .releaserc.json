@@ -27,9 +27,11 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
-      "@semantic-release/npm",
+      "@semantic-release/exec",
       {
-        "pkgRoot": "dist/core"
+        "verifyConditionsCmd": "node custom-publish/verify.js",
+        "prepareCmd": "node custom-publish/prepare.js dist/common/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/core/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker-client/package.json \"${nextRelease.version}\"",
+        "publishCmd": "npm publish dist/common --access public && npm publish dist/core --access public && npm publish dist/worker --access public && npm publish dist/worker-client --access public"
       }
     ],
     [

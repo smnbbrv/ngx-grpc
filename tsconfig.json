@@ -19,11 +19,29 @@
       "dom"
     ],
     "paths": {
-      "core": [
+      "@ngx-grpc/core": [
         "dist/core"
       ],
-      "core/*": [
+      "@ngx-grpc/core/*": [
         "dist/core/*"
+      ],
+      "@ngx-grpc/worker": [
+        "dist/worker"
+      ],
+      "@ngx-grpc/worker/*": [
+        "dist/worker/*"
+      ],
+      "@ngx-grpc/common": [
+        "dist/common"
+      ],
+      "@ngx-grpc/common/*": [
+        "dist/common/*"
+      ],
+      "@ngx-grpc/worker-client": [
+        "dist/worker-client"
+      ],
+      "@ngx-grpc/worker-client/*": [
+        "dist/worker-client/*"
       ]
     }
   },
