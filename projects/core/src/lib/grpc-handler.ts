@@ -1,8 +1,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
+import { GrpcCallType, GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
 import { Status } from 'grpc-web';
 import { Observable } from 'rxjs';
-import { GrpcCallType, GrpcInterceptor, GrpcRequest } from './grpc-interceptor';
-import { GrpcMessage } from './grpc-message';
+import { GrpcInterceptor } from './grpc-interceptor';
 import { GRPC_INTERCEPTORS } from './injection-tokens';
 
 @Injectable({
@@ -10,10 +10,8 @@ import { GRPC_INTERCEPTORS } from './injection-tokens';
 })
 export class GrpcHandler {
 
-  private interceptors: GrpcInterceptor[];
-
   constructor(
-    @Optional() @Inject(GRPC_INTERCEPTORS) interceptors: GrpcInterceptor[],
+    @Optional() @Inject(GRPC_INTERCEPTORS) private interceptors: GrpcInterceptor[],
   ) {
     this.interceptors = interceptors || [];
   }
@@ -27,7 +25,7 @@ export class GrpcHandler {
   }
 
   handle<REQ extends GrpcMessage, RES extends GrpcMessage>(request: GrpcRequest<REQ, RES>): Observable<RES | Status> {
-    const interceptors = this.interceptors.slice();
+    const interceptors = (this.interceptors || []).slice();
     const interceptor = interceptors.shift();
 
     if (interceptor) {

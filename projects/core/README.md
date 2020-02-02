@@ -1,8 +1,8 @@
 # @ngx-grpc/core
 
-gRPC Angular code generator.
+Core package
 
-For documentation please refer [Github page](https://github.com/ngx-grpc/core)
+For documentation please refer to [Github page](https://github.com/ngx-grpc/ngx-grpc)
 
 ## License
 

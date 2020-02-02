@@ -1,15 +1,20 @@
+import { Injectable } from '@angular/core';
+import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
 import { AbstractClientBase, Error, GrpcWebClientBase, Metadata, Status } from 'grpc-web';
 import { Observable } from 'rxjs';
-import { GrpcMessage } from './grpc-message';
-import { GrpcMessageClass } from './grpc-message-class';
 
-export interface GrpcClientSettings {
-  host: string;
-  format?: string;
-  suppressCorsPreflight?: boolean;
+@Injectable({
+  providedIn: 'root'
+})
+export class GrpcStandardClientFactory implements GrpcClientFactory {
+
+  createClient(serviceId: string, settings: GrpcClientSettings) {
+    return new GrpcStandardClient({ ...settings });
+  }
+
 }
 
-export class GrpcClient {
+export class GrpcStandardClient implements GrpcClient {
 
   private client: GrpcWebClientBase;
 
