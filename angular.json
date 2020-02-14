@@ -15,7 +15,12 @@
             "tsConfig": "packages/core/tsconfig.lib.json",
             "project": "packages/core/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "packages/core/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -50,7 +55,12 @@
             "tsConfig": "packages/worker/tsconfig.lib.json",
             "project": "packages/worker/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "packages/worker/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -85,7 +95,12 @@
             "tsConfig": "packages/common/tsconfig.lib.json",
             "project": "packages/common/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "packages/common/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -120,7 +135,12 @@
             "tsConfig": "packages/worker-client/tsconfig.lib.json",
             "project": "packages/worker-client/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "packages/worker-client/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -158,7 +178,7 @@
             "main": "examples/basic-example/src/main.ts",
             "polyfills": "examples/basic-example/src/polyfills.ts",
             "tsConfig": "examples/basic-example/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "examples/basic-example/src/favicon.ico",
               "examples/basic-example/src/assets"
@@ -181,7 +201,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
