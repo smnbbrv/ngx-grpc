@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "preserveConstEnums": true,
+    "esModuleInterop": true,
+    "lib": [
+      "es2018"
+    ]
+  },
+  "types": [
+    "node"
+  ]
+}

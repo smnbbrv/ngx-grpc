@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/main.ts"
+  },
+  "dependencies": {
+    "google-protobuf": "~3.10.0",
+    "@types/google-protobuf": "~3.7.2",
+    "tslib": "~1.10.0",
+    "grpc": "~1.24.2",
+    "ts-node": "~7.0.1",
+    "typescript": "~3.7.0",
+    "@types/node": "~8.10.59"
+  }
+}

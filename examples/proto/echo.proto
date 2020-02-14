@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package echo;
+
+service EchoService {
+  rpc EchoOnce(EchoRequest) returns (EchoResponse);
+  rpc EchoStream(EchoRequest) returns (stream EchoResponse);
+}
+
+message EchoRequest {
+  string message = 1;
+  bool shouldThrow = 2;
+}
+
+message EchoResponse { string message = 1; }

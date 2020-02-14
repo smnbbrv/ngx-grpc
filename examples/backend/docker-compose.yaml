@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  backend:
+    build: .
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.13.0
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l trace --log-path /tmp/envoy_info.log
+    ports:
+      - "8080:8080"

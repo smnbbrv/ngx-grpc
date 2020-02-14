@@ -1,35 +1,35 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "examples",
   "projects": {
     "core": {
       "projectType": "library",
-      "root": "projects/core",
-      "sourceRoot": "projects/core/src",
+      "root": "packages/core",
+      "sourceRoot": "packages/core/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/core/tsconfig.lib.json",
-            "project": "projects/core/ng-package.json"
+            "tsConfig": "packages/core/tsconfig.lib.json",
+            "project": "packages/core/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/core/src/test.ts",
-            "tsConfig": "projects/core/tsconfig.spec.json",
-            "karmaConfig": "projects/core/karma.conf.js"
+            "main": "packages/core/src/test.ts",
+            "tsConfig": "packages/core/tsconfig.spec.json",
+            "karmaConfig": "packages/core/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/core/tsconfig.lib.json",
-              "projects/core/tsconfig.spec.json"
+              "packages/core/tsconfig.lib.json",
+              "packages/core/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -40,31 +40,31 @@
     },
     "worker": {
       "projectType": "library",
-      "root": "projects/worker",
-      "sourceRoot": "projects/worker",
+      "root": "packages/worker",
+      "sourceRoot": "packages/worker",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/worker/tsconfig.lib.json",
-            "project": "projects/worker/ng-package.json"
+            "tsConfig": "packages/worker/tsconfig.lib.json",
+            "project": "packages/worker/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/worker/src/test.ts",
-            "tsConfig": "projects/worker/tsconfig.spec.json",
-            "karmaConfig": "projects/worker/karma.conf.js"
+            "main": "packages/worker/src/test.ts",
+            "tsConfig": "packages/worker/tsconfig.spec.json",
+            "karmaConfig": "packages/worker/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/worker/tsconfig.lib.json",
-              "projects/worker/tsconfig.spec.json"
+              "packages/worker/tsconfig.lib.json",
+              "packages/worker/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -75,31 +75,31 @@
     },
     "common": {
       "projectType": "library",
-      "root": "projects/common",
-      "sourceRoot": "projects/common/src",
+      "root": "packages/common",
+      "sourceRoot": "packages/common/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/common/tsconfig.lib.json",
-            "project": "projects/common/ng-package.json"
+            "tsConfig": "packages/common/tsconfig.lib.json",
+            "project": "packages/common/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/common/src/test.ts",
-            "tsConfig": "projects/common/tsconfig.spec.json",
-            "karmaConfig": "projects/common/karma.conf.js"
+            "main": "packages/common/src/test.ts",
+            "tsConfig": "packages/common/tsconfig.spec.json",
+            "karmaConfig": "packages/common/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/common/tsconfig.lib.json",
-              "projects/common/tsconfig.spec.json"
+              "packages/common/tsconfig.lib.json",
+              "packages/common/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -110,31 +110,31 @@
     },
     "worker-client": {
       "projectType": "library",
-      "root": "projects/worker-client",
-      "sourceRoot": "projects/worker-client/src",
+      "root": "packages/worker-client",
+      "sourceRoot": "packages/worker-client/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/worker-client/tsconfig.lib.json",
-            "project": "projects/worker-client/ng-package.json"
+            "tsConfig": "packages/worker-client/tsconfig.lib.json",
+            "project": "packages/worker-client/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/worker-client/src/test.ts",
-            "tsConfig": "projects/worker-client/tsconfig.spec.json",
-            "karmaConfig": "projects/worker-client/karma.conf.js"
+            "main": "packages/worker-client/src/test.ts",
+            "tsConfig": "packages/worker-client/tsconfig.spec.json",
+            "karmaConfig": "packages/worker-client/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/worker-client/tsconfig.lib.json",
-              "projects/worker-client/tsconfig.spec.json"
+              "packages/worker-client/tsconfig.lib.json",
+              "packages/worker-client/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -142,7 +142,124 @@
           }
         }
       }
+    },
+    "basic-example": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "examples/basic-example",
+      "sourceRoot": "examples/basic-example/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/basic-example",
+            "index": "examples/basic-example/src/index.html",
+            "main": "examples/basic-example/src/main.ts",
+            "polyfills": "examples/basic-example/src/polyfills.ts",
+            "tsConfig": "examples/basic-example/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "examples/basic-example/src/favicon.ico",
+              "examples/basic-example/src/assets"
+            ],
+            "styles": [
+              "examples/basic-example/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/basic-example/src/environments/environment.ts",
+                  "with": "examples/basic-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "basic-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "basic-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "basic-example:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "examples/basic-example/src/test.ts",
+            "polyfills": "examples/basic-example/src/polyfills.ts",
+            "tsConfig": "examples/basic-example/tsconfig.spec.json",
+            "karmaConfig": "examples/basic-example/karma.conf.js",
+            "assets": [
+              "examples/basic-example/src/favicon.ico",
+              "examples/basic-example/src/assets"
+            ],
+            "styles": [
+              "examples/basic-example/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "examples/basic-example/tsconfig.app.json",
+              "examples/basic-example/tsconfig.spec.json",
+              "examples/basic-example/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "examples/basic-example/e2e/protractor.conf.js",
+            "devServerTarget": "basic-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "basic-example:serve:production"
+            }
+          }
+        }
+      }
     }
-  },
-  "defaultProject": "core"
+  }
 }
