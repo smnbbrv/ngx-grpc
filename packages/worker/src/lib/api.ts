@@ -1,5 +1,5 @@
 import { GrpcClientSettings } from '@ngx-grpc/common';
-import { Metadata, Status } from 'grpc-web';
+import { Error, Metadata, Status } from 'grpc-web';
 
 /* tslint:disable no-namespace */
 export namespace GrpcWorkerApi {
