@@ -17,9 +17,24 @@ Angular gRPC framework.
 - rxjs first-class support
 - typescript first-class support
 - interceptors
-- logging, including simple console logger and [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support
+- simple console logger
 - web worker (experimental)
 - easy to install, update and support thanks to npm packages
+
+## Example
+
+> The example requires docker & docker-compose to be installed
+
+Clone this repository and run `npm ci` in the root directory. This will install all required dependencies.
+
+Then, in separate terminal sessions run
+
+- `npm run examples:basic` - this starts the example Angular app
+- `npm run examples:backend` - this starts the backend and envoy proxy using docker-compose
+
+Wait until they both start and open your browser at [http://localhost:4200/](http://localhost:4200/).
+
+The source code for the examples could be found at [examples](examples) directory.
 
 ## Requirements
 
@@ -121,6 +136,20 @@ From now on this particular service is set.
 
 It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
 
+### Service clients methods
+
+Each RPC has two corresponding methods, the first emits messages, the second - events. E.g. for `rpc Echo(...)` there would be the following:
+
+- `echo(...)` - returns `Observable` of messages and throws errors in case of non-zero status codes. This is the most common use-case
+- `echo$eventStream(...)` - returns `Observable` of `GrpcEvent`s. Events could be of two kinds: `GrpcDataEvent` containing the message inside and `GrpcStatusEvent` containing gRPC status response. Apart from the returned data type there is important difference in the behaviour. There are no errors thrown in this stream (by design). All errors are considered to be normal `GrpcStatusEvent`s. Furthermore, this method is the only one where it is anyhow possible to read the gRPC status code `0` (`OK`) metadata. This method is not that comfortable to use in every place, but it can do things that are not achievable with the method above.
+
+There are two custom RxJS operators that could be used on the stream to make it easier:
+
+- `throwStatusErrors` - searches for the non-zero status codes and throws them as errors
+- `takeMessages` - searches for the messages
+
+For usage example look at any of your generated `.pbsc.ts` file. In fact, those two operators turn `echo$eventStream()` into `echo()` from example above.
+
 ### Messages
 
 Every message has `toObject()` and `toJSON()` methods which could be used to cast message to the normal JavaScript object.
@@ -131,108 +160,69 @@ As a side effect: just pass an instance of message to `new Message()` constructo
 
 ### Interceptors
 
-You can add global interceptors to all gRPC calls exactly like Angular's built-in `HttpClient` interceptors.
+You can add global interceptors to all gRPC calls like Angular's built-in `HttpClient` interceptors.
 
-#### Console logger
+The important difference is that unlike `HttpClient` interceptors `GrpcInterceptor`s need to work with event streams; there are no errors thrown. Instead you should listen to the `GrpcStatusEvent` and decide whether it is an error or not. Please keep this in mind.
+
+As an example see `GrpcConsoleLoggerInterceptor` below.
+
+### Console logger
 
 Here is an example of interceptor that implements a simple console logger:
 
 ```ts
-import { GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
-import { Status } from 'grpc-web';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
+import { GrpcHandler, GrpcInterceptor } from '@ngx-grpc/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-export class GrpcWebConsoleLoggerInterceptor implements GrpcInterceptor {
+export const GRPC_CONSOLE_LOGGER_ENABLED = new InjectionToken('GRPC_CONSOLE_LOGGER_ENABLED');
 
-  intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status> {
-    const start = Date.now();
+@Injectable()
+export class GrpcConsoleLoggerInterceptor implements GrpcInterceptor {
 
-    return next.handle(request).pipe(
-      tap(response => {
-        const style = 'color: #5c7ced; font-weight: bold;';
+  private dataStyle = 'color: #5c7ced;';
+  private errorStyle = 'color: red;';
 
-        setTimeout(() => {
-          console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
-          console.log('%c>>', style, { ...request.requestData });
-          console.log('%c<<', style, { ...response });
-          console.groupEnd();
-        });
-      }),
-      catchError(error => {
-        const style = 'color: red; font-weight: bold;';
+  constructor(@Inject(GRPC_CONSOLE_LOGGER_ENABLED) private enabled: boolean) { }
 
-        setTimeout(() => {
-          console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
-          console.log('%c>>', style, { ...request.requestData });
-          console.error('%c<<', style, error);
-          console.groupEnd();
-        });
+  intercept<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>, next: GrpcHandler): Observable<GrpcEvent<S>> {
+    if (this.enabled) {
+      const start = Date.now();
 
-        return throwError(error);
-      }),
-    );
+      return next.handle(request).pipe(
+        tap(event => {
+          if (event instanceof GrpcDataEvent) {
+            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, this.dataStyle);
+            console.log('%c>>', this.dataStyle, request.requestData.toObject());
+            console.log('%c**', this.dataStyle, request.requestMetadata);
+            console.log('%c<<', this.dataStyle, event.data.toObject());
+            console.groupEnd();
+          } else if (event.code !== 0) {
+            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, this.errorStyle);
+            console.log('%c>>', this.errorStyle, request.requestData.toObject());
+            console.error('%c<<', this.errorStyle, event);
+            console.groupEnd();
+          }
+        }),
+      );
+    }
+
+    return next.handle(request);
   }
 
 }
 ```
 
-#### gRPC-Web Devtools
+To enable it provide it as interceptor and provide the parameter `GRPC_CONSOLE_LOGGER_ENABLED` in your app.module.ts.
 
-Here is an example of interceptor that implements [grpc-web-devtools Chrome extension](https://github.com/SafetyCulture/grpc-web-devtools) support for unary requests:
-
-```ts
-import { GrpcCallType, GrpcHandler, GrpcInterceptor, GrpcRequest } from '@ngx-grpc/core';
-import { Status } from 'grpc-web';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-
-export class GrpcWebDevtoolsInterceptor implements GrpcInterceptor {
-
-  intercept<REQ, RES>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status> {
-    // TODO avoid in production, because postMessage to '*' might be dangerous
-    return next.handle(request).pipe(
-      tap(response => {
-        if (request.type === GrpcCallType.unary) {
-          window.postMessage({
-            type: '__GRPCWEB_DEVTOOLS__',
-            method: request.path,
-            methodType: 'unary',
-            request: request.requestData,
-            response,
-          }, '*');
-        }
-      }),
-      catchError(error => {
-        if (request.type === GrpcCallType.unary) {
-          window.postMessage({
-            type: '__GRPCWEB_DEVTOOLS__',
-            method: request.path,
-            methodType: 'unary',
-            request: request.requestData,
-            error,
-          }, '*');
-        }
-
-        return throwError(error);
-      }),
-    );
-  }
-
-}
-```
-
-Then provide this interceptor (again like Angular's built-in interceptors):
+Example:
 
 ```ts
-{
-  providers: [
-    { provide: GRPC_INTERCEPTORS, useClass: GrpcWebDevtoolsInterceptor, multi: true },
-  ]
-}
+{ provide: GRPC_CONSOLE_LOGGER_ENABLED, useFactory: () => localStorage.getItem('GRPC_CONSOLE_LOGGER_ENABLED') === 'true' || !environment.prod },
+{ provide: GRPC_INTERCEPTORS, useClass: GrpcConsoleLoggerInterceptor, multi: true },
 ```
-
-And you will be able to see the calls in the extension.
 
 ## Web worker
 
