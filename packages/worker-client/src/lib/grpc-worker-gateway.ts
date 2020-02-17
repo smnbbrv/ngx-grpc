@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { GrpcClientSettings } from '@ngx-grpc/common';
+import { GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcStatusEvent } from '@ngx-grpc/common';
 import { GrpcWorkerApi } from '@ngx-grpc/worker';
-import { Metadata, Status } from 'grpc-web';
+import { Metadata } from 'grpc-web';
 import { Observable, Observer } from 'rxjs';
 import { GRPC_WORKER } from './tokens';
 
@@ -25,11 +25,16 @@ export class GrpcWorkerGateway {
       if (connection && data.type === GrpcWorkerApi.GrpcWorkerMessageType.rpcResponse) {
         switch (data.responseType) {
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.error:
-            connection.error(data.error);
+            connection.next(new GrpcStatusEvent(data.error.code, data.error.message, (data.error as any).metadata));
+            connection.complete();
             this.connections.delete(data.id);
             break;
-          case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status: connection.next(data.status); break;
-          case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data: connection.next(data.response); break;
+          case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status:
+            connection.next(new GrpcStatusEvent(data.status.code, data.status.details, data.status.metadata));
+            break;
+          case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data:
+            connection.next(new GrpcDataEvent(data.response));
+            break;
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.end:
             connection.complete();
             this.connections.delete(data.id);
@@ -43,7 +48,7 @@ export class GrpcWorkerGateway {
     this.worker.postMessage({ type: GrpcWorkerApi.GrpcWorkerMessageType.serviceClientConfig, serviceId, settings } as GrpcWorkerApi.GrpcWorkerMessageServiceClientConfig);
   }
 
-  callUnaryFromWorker<Q, S>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<S> {
+  callUnaryFromWorker<Q extends GrpcMessage, S extends GrpcMessage>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<GrpcEvent<S>> {
     return new Observable(observer => {
       const id = this.createRequestId();
 
@@ -62,7 +67,7 @@ export class GrpcWorkerGateway {
     });
   }
 
-  callServerStreamFromWorker<Q, S>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<S | Status> {
+  callServerStreamFromWorker<Q extends GrpcMessage, S extends GrpcMessage>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<GrpcEvent<S>> {
     return new Observable(observer => {
       const id = this.createRequestId();
 

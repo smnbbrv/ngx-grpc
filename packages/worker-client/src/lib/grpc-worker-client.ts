@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
-import { Metadata, Status } from 'grpc-web';
+import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
+import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { GrpcWorkerGateway } from './grpc-worker-gateway';
 
 @Injectable({
@@ -40,11 +40,15 @@ export class GrpcWorkerClient implements GrpcClient {
     metadata: Metadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
-  ): Observable<S> {
+  ): Observable<GrpcEvent<S>> {
     return this.gateway
       .callUnaryFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
       .pipe(
-        map(res => new resclss(res as any))
+        tap(res => {
+          if (res instanceof GrpcDataEvent) {
+            res.data = new resclss(res.data as any);
+          }
+        })
       );
   }
 
@@ -54,13 +58,14 @@ export class GrpcWorkerClient implements GrpcClient {
     metadata: Metadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>
-  ): Observable<S | Status> {
+  ): Observable<GrpcEvent<S>> {
     return this.gateway
       .callServerStreamFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
       .pipe(
-        map(res => {
-          // todo check if status
-          return new resclss(res as any);
+        tap(res => {
+          if (res instanceof GrpcDataEvent) {
+            res.data = new resclss(res.data as any);
+          }
         })
       );
   }
