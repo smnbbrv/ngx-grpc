@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
-import { AbstractClientBase, Error, GrpcWebClientBase, Metadata, Status } from 'grpc-web';
+import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
+import { AbstractClientBase, GrpcWebClientBase, Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,56 +24,62 @@ export class GrpcStandardClient implements GrpcClient {
     this.client = new GrpcWebClientBase(this.settings);
   }
 
-  unary<REQ extends GrpcMessage, RES extends GrpcMessage>(
+  unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
-    req: REQ,
+    req: Q,
     metadata: Metadata,
-    reqclss: GrpcMessageClass<REQ>,
-    resclss: GrpcMessageClass<RES>,
-  ): Observable<RES> {
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>,
+  ): Observable<GrpcEvent<S>> {
     return new Observable(obs => {
-      this.client.rpcCall(
+      const stream = this.client.rpcCall(
         this.settings.host + path,
         req,
         metadata || {},
         new AbstractClientBase.MethodInfo(
           resclss,
-          (request: REQ) => reqclss.toBinary(request),
+          (request: Q) => reqclss.toBinary(request),
           resclss.fromBinary
         ),
-        (err: Error, response: RES) => {
-          if (err) {
-            obs.error(err);
-          } else {
-            obs.next(response);
-          }
+        () => null
+      );
 
-          obs.complete();
-        });
+      stream.on('status', status => status.code === 0 ? obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)) : null);
+      stream.on('error', error => {
+        obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
+        obs.complete();
+      });
+      stream.on('data', data => obs.next(new GrpcDataEvent(data)));
+      stream.on('end', () => obs.complete());
+
+      return () => stream.cancel();
     });
   }
 
-  serverStream<REQ extends GrpcMessage, RES extends GrpcMessage>(
+  serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
-    req: REQ,
+    req: Q,
     metadata: Metadata,
-    reqclss: GrpcMessageClass<REQ>,
-    resclss: GrpcMessageClass<RES>
-  ): Observable<RES | Status> {
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>
+  ): Observable<GrpcEvent<S>> {
     return new Observable(obs => {
-      const xhrStream = this.client.serverStreaming(
+      const stream = this.client.serverStreaming(
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo(resclss, (request: REQ) => reqclss.toBinary(request), resclss.fromBinary)
+        new AbstractClientBase.MethodInfo(resclss, (request: Q) => reqclss.toBinary(request), resclss.fromBinary)
       );
 
-      xhrStream.on('status', status => obs.next(status));
-      xhrStream.on('data', response => obs.next(response));
-      xhrStream.on('end', () => obs.complete());
-      xhrStream.on('error', error => obs.error(error));
+      stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)));
+      stream.on('error', error => {
+        obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
+        obs.complete();
+      });
+      stream.on('data', data => obs.next(new GrpcDataEvent(data)));
+      stream.on('end', () => obs.complete());
 
-      return () => xhrStream.cancel();
+      return () => stream.cancel();
     });
   }
 

@@ -1,8 +1,7 @@
-import { GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
-import { Status } from 'grpc-web';
+import { GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
 import { Observable } from 'rxjs';
 import { GrpcHandler } from './grpc-handler';
 
 export interface GrpcInterceptor {
-  intercept<REQ extends GrpcMessage, RES extends GrpcMessage>(request: GrpcRequest<REQ, RES>, next: GrpcHandler): Observable<RES | Status>;
+  intercept<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>, next: GrpcHandler): Observable<GrpcEvent<S>>;
 }
