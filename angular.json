@@ -14,13 +14,13 @@
           "options": {
             "tsConfig": "packages/core/tsconfig.lib.json",
             "project": "packages/core/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "packages/core/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -54,13 +54,13 @@
           "options": {
             "tsConfig": "packages/worker/tsconfig.lib.json",
             "project": "packages/worker/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "packages/worker/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -94,13 +94,13 @@
           "options": {
             "tsConfig": "packages/common/tsconfig.lib.json",
             "project": "packages/common/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "packages/common/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -134,13 +134,13 @@
           "options": {
             "tsConfig": "packages/worker-client/tsconfig.lib.json",
             "project": "packages/worker-client/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "packages/worker-client/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -184,6 +184,7 @@
               "examples/basic-example/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "examples/basic-example/src/styles.css"
             ],
             "scripts": []
@@ -248,6 +249,7 @@
               "examples/basic-example/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "examples/basic-example/src/styles.css"
             ],
             "scripts": []

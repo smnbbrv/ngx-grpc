@@ -2,11 +2,8 @@ FROM node:12-alpine
 
 WORKDIR /srv
 
-ADD ./ /srv
+ADD . /srv
 
-RUN apk add --no-cache tini \
-  && rm -rf /var/cache/apk/* \
-  && mv _package.json package.json \
-  && npm i
+RUN apk add --no-cache tini && npm ci
 
-CMD ["tini", "--", "npm", "start"]
+CMD ["tini", "--", "./node_modules/.bin/ts-node", "src/main.ts"]

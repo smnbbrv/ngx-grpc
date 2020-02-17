@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "proto:generate": "mkdir -p src/proto && rm -rf src/proto/* && npm run proto:generate:js && npm run proto:generate:ts",
+    "proto:generate:js": "protoc --js_out=import_style=commonjs,binary:./src/proto --grpc_out=./src/proto --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` -I ../proto $(find ../proto -iname \"*.proto\")",
+    "proto:generate:ts": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=./src/proto -I ../proto $(find ../proto -iname \"*.proto\")"
+  },
+  "dependencies": {
+    "google-protobuf": "~3.10.0",
+    "@types/google-protobuf": "~3.7.2",
+    "tslib": "~1.10.0",
+    "grpc": "~1.24.2",
+    "ts-node": "~7.0.1",
+    "typescript": "~3.7.0",
+    "@types/node": "~8.10.59"
+  },
+  "devDependencies": {
+    "grpc_tools_node_protoc_ts": "^2.5.10"
+  }
+}

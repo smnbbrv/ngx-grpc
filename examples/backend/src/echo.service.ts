@@ -9,10 +9,17 @@ export class EchoServiceServiceImpl implements IEchoServiceServer {
 
     console.log(`Received message: ${message}`);
 
-    await Promise.all([1, 2, 3, 4, 5].map(n => {
-      return new Promise(res => {
+    for (let i = 0; i < 5; i++) {
+      await new Promise((resolve, reject) => {
         setTimeout(() => {
-          const messageBack = `Modified ${message}: ${n}`;
+          if (call.cancelled) {
+            console.log('Request is cancelled');
+            reject();
+
+            return;
+          }
+
+          const messageBack = `Response ${i + 1} for "${message}"`;
 
           console.log(`Responding with: ${messageBack}`);
 
@@ -22,10 +29,17 @@ export class EchoServiceServiceImpl implements IEchoServiceServer {
 
           call.write(response);
 
-          call.emit('error', { code: status.UNAUTHENTICATED, message: 'Please auth!!!' });
-        }, n * 1000);
+          if (call.request.getShouldthrow()) {
+            call.emit('error', { code: status.INTERNAL, message: 'Internal error' });
+
+            reject();
+            return;
+          }
+
+          resolve();
+        }, 1000);
       });
-    }));
+    }
 
     const meta = new Metadata();
 
@@ -48,13 +62,13 @@ export class EchoServiceServiceImpl implements IEchoServiceServer {
 
       trailer.set('x-custom-header-1', 'wow,');
 
-      callback({ code: status.ALREADY_EXISTS, details: 'hz', metadata } as ServiceError, null, trailer);
+      callback({ code: status.INTERNAL, details: 'Internal error', metadata } as ServiceError, null, trailer);
 
       return;
     }
 
     const response = new EchoResponse();
-    const messageBack = `Modified ${message}`;
+    const messageBack = `Response for "${message}"`;
 
     response.setMessage(messageBack);
 

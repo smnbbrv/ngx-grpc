@@ -8,10 +8,16 @@ import {
   GrpcCallType,
   GrpcClient,
   GrpcClientFactory,
-  GrpcClientSettings
+  GrpcClientSettings,
+  GrpcEvent
 } from '@ngx-grpc/common';
-import { GRPC_CLIENT_FACTORY, GrpcHandler } from '@ngx-grpc/core';
-import { Metadata, Status } from 'grpc-web';
+import {
+  GRPC_CLIENT_FACTORY,
+  GrpcHandler,
+  takeMessages,
+  throwStatusErrors
+} from '@ngx-grpc/core';
+import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import * as thisProto from './echo.pb';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
@@ -30,16 +36,32 @@ export class EchoServiceClient {
   }
 
   /**
-   * Unary RPC
+   * Unary RPC. Emits messages and throws errors on non-zero status codes
    * @param thisProto.EchoRequest request
    * @param Metadata metadata
-   * @return thisProto.EchoResponse
+   * @return Observable<thisProto.EchoResponse>
    */
   echoOnce(
     requestData: thisProto.EchoRequest,
     requestMetadata: Metadata = {}
   ): Observable<thisProto.EchoResponse> {
-    return this.handler.handleUnary({
+    return this.echoOnce$eventStream(requestData, requestMetadata).pipe(
+      throwStatusErrors(),
+      takeMessages()
+    );
+  }
+
+  /**
+   * Unary RPC. Emits data and status events; does not throw errors by design
+   * @param thisProto.EchoRequest request
+   * @param Metadata metadata
+   * @return Observable<GrpcEvent<thisProto.EchoResponse>>
+   */
+  echoOnce$eventStream(
+    requestData: thisProto.EchoRequest,
+    requestMetadata: Metadata = {}
+  ): Observable<GrpcEvent<thisProto.EchoResponse>> {
+    return this.handler.handle({
       type: GrpcCallType.unary,
       client: this.client,
       path: '/echo.EchoService/EchoOnce',
@@ -51,16 +73,32 @@ export class EchoServiceClient {
   }
 
   /**
-   * Server streaming RPC
+   * Server streaming RPC. Emits messages and throws errors on non-zero status codes
    * @param thisProto.EchoRequest request
    * @param Metadata metadata
-   * @return thisProto.EchoResponse
+   * @return Observable<thisProto.EchoResponse>
    */
   echoStream(
     requestData: thisProto.EchoRequest,
     requestMetadata: Metadata = {}
-  ): Observable<thisProto.EchoResponse | Status> {
-    return this.handler.handleServerStream({
+  ): Observable<thisProto.EchoResponse> {
+    return this.echoStream$eventStream(requestData, requestMetadata).pipe(
+      throwStatusErrors(),
+      takeMessages()
+    );
+  }
+
+  /**
+   * Server streaming RPC. Emits data and status events; does not throw errors by design
+   * @param thisProto.EchoRequest request
+   * @param Metadata metadata
+   * @return Observable<GrpcEvent<thisProto.EchoResponse>>
+   */
+  echoStream$eventStream(
+    requestData: thisProto.EchoRequest,
+    requestMetadata: Metadata = {}
+  ): Observable<GrpcEvent<thisProto.EchoResponse>> {
+    return this.handler.handle({
       type: GrpcCallType.serverStream,
       client: this.client,
       path: '/echo.EchoService/EchoStream',
