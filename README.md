@@ -36,14 +36,14 @@ Wait until they both start and open your browser at [http://localhost:4200/](htt
 
 The source code for the examples could be found at [examples](examples) directory.
 
-## Requirements
-
-- install `protoc` if you have none yet: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
-- backend needs to be configured according to [grpc-web documentation](https://github.com/grpc/grpc-web).
-
 ## Installation
 
-In your Angular project:
+First ensure that you
+
+- have installed `protoc`: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
+- configured your backend / grpc-web proxy according to [grpc-web documentation](https://github.com/grpc/grpc-web).
+
+Then in your Angular project's root directory run
 
 ```sh
 npm i -S @ngx-grpc/common @ngx-grpc/core google-protobuf grpc-web
