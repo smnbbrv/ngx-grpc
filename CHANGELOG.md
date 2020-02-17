@@ -1,3 +1,25 @@
+# [0.3.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.2.0...v0.3.0) (2020-02-17)
+
+
+### Bug Fixes
+
+* **worker:** use proper Error object from grpc-web for error responses ([a58be0e](https://github.com/ngx-grpc/ngx-grpc/commit/a58be0e636f0eb22be409f6440e84ac55aabbd57))
+
+
+### Features
+
+* **common:** add grpc events ([803ac13](https://github.com/ngx-grpc/ngx-grpc/commit/803ac1322936321dd81a56bc3683f9916ac9dbbc))
+* **common:** change GrpcClient method definitions to always emit GrpcEvent ([c8237a1](https://github.com/ngx-grpc/ngx-grpc/commit/c8237a17caba15ea666c175430ba1785823fa511))
+* **core:** add rxjs operators for better development experience with event streams ([ed9c100](https://github.com/ngx-grpc/ngx-grpc/commit/ed9c100910b76a634e80f23ddb66874e10cac164))
+* **core:** change GrpcHandler, GrpcStandardClient and GrpcInterceptor to use new response type GrpcEvent ([e454301](https://github.com/ngx-grpc/ngx-grpc/commit/e45430146da07972a1ec9558413050defca3ba43))
+* **worker-client:** rework GrpcWorkerClient and gateway to emit GrpcEvent ([aa7ef7e](https://github.com/ngx-grpc/ngx-grpc/commit/aa7ef7e677c382bff14584213da8edfbe362147d))
+
+
+### BREAKING CHANGES
+
+* **core:** all existing interceptors should be adapted to use event streams
+* **common:** all GrpcClient implementations should be adapted to implement new response type
+
 # [0.2.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.1.5...v0.2.0) (2020-02-02)
 
 
