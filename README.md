@@ -39,8 +39,6 @@ Where:
 
 - [@ngx-grpc/common](https://github.com/ngx-grpc/common) contains common reusable types for other ngx-grpc packages
 - [@ngx-grpc/core](https://github.com/ngx-grpc/core) contains angular specific implementation
-- [@ngx-grpc/worker](https://github.com/ngx-grpc/core) contains worker gRPC implementation
-- [@ngx-grpc/worker-client](https://github.com/ngx-grpc/core) contains Angular connector for the worker
 - [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
