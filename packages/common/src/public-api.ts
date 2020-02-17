@@ -7,6 +7,7 @@
 */
 
 export * from './lib/grpc-client';
+export * from './lib/grpc-event';
 export * from './lib/grpc-message';
 export * from './lib/grpc-message-class';
 export * from './lib/recursive-partial';
