@@ -281,6 +281,127 @@
           }
         }
       }
+    },
+    "worker-example": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "examples/worker-example",
+      "sourceRoot": "examples/worker-example/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/worker-example",
+            "index": "examples/worker-example/src/index.html",
+            "main": "examples/worker-example/src/main.ts",
+            "polyfills": "examples/worker-example/src/polyfills.ts",
+            "tsConfig": "examples/worker-example/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "examples/worker-example/src/favicon.ico",
+              "examples/worker-example/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "examples/worker-example/src/styles.css"
+            ],
+            "scripts": [],
+            "webWorkerTsConfig": "examples/worker-example/tsconfig.worker.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "examples/worker-example/src/environments/environment.ts",
+                  "with": "examples/worker-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "worker-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "worker-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "worker-example:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "examples/worker-example/src/test.ts",
+            "polyfills": "examples/worker-example/src/polyfills.ts",
+            "tsConfig": "examples/worker-example/tsconfig.spec.json",
+            "karmaConfig": "examples/worker-example/karma.conf.js",
+            "assets": [
+              "examples/worker-example/src/favicon.ico",
+              "examples/worker-example/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "examples/worker-example/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "examples/worker-example/tsconfig.app.json",
+              "examples/worker-example/tsconfig.spec.json",
+              "examples/worker-example/e2e/tsconfig.json",
+              "examples/worker-example/tsconfig.worker.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "examples/worker-example/e2e/protractor.conf.js",
+            "devServerTarget": "worker-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "worker-example:serve:production"
+            }
+          }
+        }
+      }
     }
   }
 }

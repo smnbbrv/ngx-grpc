@@ -16,10 +16,12 @@
     "lint": "ng lint",
     "release": "semantic-release",
     "examples:basic": "ng serve basic-example",
+    "examples:worker": "ng serve worker-example",
     "examples:backend": "docker-compose -f examples/backend/docker-compose.yaml down && docker-compose -f examples/backend/docker-compose.yaml up --remove-orphans --build",
     "examples:backend:no-proxy": "cd examples/backend && npm start",
-    "examples:proto:generate": "npm run examples:proto:generate-backend && npm run examples:proto:generate-basic",
+    "examples:proto:generate": "npm run examples:proto:generate-backend && npm run examples:proto:generate-basic && npm run examples:proto:generate-worker",
     "examples:proto:generate-basic": "mkdir -p examples/basic-example/src/proto && rm -rf examples/basic-example/src/proto/* && protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=examples/basic-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
+    "examples:proto:generate-worker": "mkdir -p examples/worker-example/src/proto && rm -rf examples/worker-example/src/proto/* && protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=worker=true:examples/worker-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
     "examples:proto:generate-backend": "cd examples/backend && npm run proto:generate"
   },
   "dependencies": {

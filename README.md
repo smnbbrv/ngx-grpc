@@ -4,10 +4,10 @@ Angular gRPC framework.
 
 | Package                                                                                | Workflow status                                                                                                                                                                            | Changelog                                                                       |
 |----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/projects/core)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/projects/common)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/projects/worker)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/projects/worker-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/packages/core)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/packages/common)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/packages/worker)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/packages/worker-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
 | [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
 
 ## Features
@@ -29,10 +29,11 @@ Clone this repository and run `npm ci` in the root directory. This will install 
 
 Then, in separate terminal sessions run
 
-- `npm run examples:basic` - this starts the example Angular app
-- `npm run examples:backend` - this starts the backend and envoy proxy using docker-compose
+- `npm run examples:basic` starts the basic example Angular app with standard client
+- `npm run examples:worker` starts the example Angular app which uses worker client
+- `npm run examples:backend` starts the backend and envoy proxy using docker-compose
 
-Wait until they both start and open your browser at [http://localhost:4200/](http://localhost:4200/).
+Run one of the applications and the backend and open your browser at [http://localhost:4200/](http://localhost:4200/).
 
 The source code for the examples could be found at [examples](examples) directory.
 
@@ -247,6 +248,12 @@ Then configure the web worker. First you need to adapt the code generation comma
 It will additionally generate `*.pbwsc.ts` files containing the worker service client definitions.
 
 Now, generate the worker (angular cli), e.g. with the name `grpc`:
+
+```sh
+ng g webWorker grpc
+```
+
+or for Angular < 9
 
 ```sh
 ng g worker grpc
