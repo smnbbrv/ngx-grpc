@@ -44,6 +44,7 @@ export class GrpcStandardClient implements GrpcClient {
         () => null
       );
 
+      // take only status 0 because unary error already includes non-zero statuses
       stream.on('status', status => status.code === 0 ? obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)) : null);
       stream.on('error', error => {
         obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
