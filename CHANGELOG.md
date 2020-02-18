@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/ngx-grpc/ngx-grpc/compare/v0.3.0...v0.3.1) (2020-02-18)
+
+
+### Bug Fixes
+
+* **worker:** add missing zero-status for unary events ([1208f8c](https://github.com/ngx-grpc/ngx-grpc/commit/1208f8c76c07e54851d1c308dbd9ff6c54f9d0f4))
+
 # [0.3.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.2.0...v0.3.0) (2020-02-17)
 
 
