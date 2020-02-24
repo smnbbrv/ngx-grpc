@@ -27,7 +27,9 @@ Angular gRPC framework.
 
 Clone this repository and run `npm ci` in the root directory. This will install all required dependencies.
 
-Then, in separate terminal sessions run
+Then, build the libs with `npm run build`. 
+
+Finally, in separate terminal sessions run
 
 - `npm run examples:basic` starts the basic example Angular app with standard client
 - `npm run examples:worker` starts the example Angular app which uses worker client
@@ -41,7 +43,7 @@ The source code for the examples could be found at [examples](examples) director
 
 First ensure that you
 
-- have installed `protoc`: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
+- installed `protoc`: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
 - configured your backend / grpc-web proxy according to [grpc-web documentation](https://github.com/grpc/grpc-web).
 
 Then in your Angular project's root directory run
