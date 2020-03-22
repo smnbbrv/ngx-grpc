@@ -24,7 +24,7 @@ export class GrpcStandardClient implements GrpcClient {
     this.client = new GrpcWebClientBase(this.settings);
   }
 
-  unary<Q extends GrpcMessage, S extends GrpcMessage>(
+  unary<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,
@@ -57,7 +57,7 @@ export class GrpcStandardClient implements GrpcClient {
     });
   }
 
-  serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
+  serverStream<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,

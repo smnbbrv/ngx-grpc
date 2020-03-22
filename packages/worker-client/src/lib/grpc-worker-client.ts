@@ -34,7 +34,7 @@ export class GrpcWorkerClient implements GrpcClient {
     this.gateway.configureServiceClient(this.serviceId, this.settings);
   }
 
-  unary<Q extends GrpcMessage, S extends GrpcMessage>(
+  unary<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,
@@ -52,7 +52,7 @@ export class GrpcWorkerClient implements GrpcClient {
       );
   }
 
-  serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
+  serverStream<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,
@@ -60,7 +60,7 @@ export class GrpcWorkerClient implements GrpcClient {
     resclss: GrpcMessageClass<S>
   ): Observable<GrpcEvent<S>> {
     return this.gateway
-      .callServerStreamFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
+      .callServerStreamFromWorker<Q, S, QMessage, SMessage>(this.serviceId, path, req.toObject(), metadata)
       .pipe(
         tap(res => {
           if (res instanceof GrpcDataEvent) {

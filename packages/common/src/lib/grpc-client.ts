@@ -10,7 +10,7 @@ export interface GrpcClientFactory {
 
 export interface GrpcClient {
 
-  unary<Q extends GrpcMessage, S extends GrpcMessage>(
+  unary<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,
@@ -18,7 +18,7 @@ export interface GrpcClient {
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
 
-  serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
+  serverStream<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(
     path: string,
     req: Q,
     metadata: Metadata,
@@ -39,7 +39,7 @@ export enum GrpcCallType {
   serverStream,
 }
 
-export interface GrpcRequest<Q extends GrpcMessage, S extends GrpcMessage> {
+export interface GrpcRequest<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown> {
   path: string;
   client: GrpcClient;
   type: GrpcCallType;

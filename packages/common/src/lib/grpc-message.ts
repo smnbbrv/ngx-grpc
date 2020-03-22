@@ -1,4 +1,4 @@
-export interface GrpcMessage {
-  toObject(): any;
-  toJSON(): any;
+export interface GrpcMessage<T = unknown> {
+  toObject(): T;
+  toJSON(): T;
 }

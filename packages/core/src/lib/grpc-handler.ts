@@ -15,7 +15,7 @@ export class GrpcHandler {
     this.interceptors = interceptors || [];
   }
 
-  handle<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>): Observable<GrpcEvent<S>> {
+  handle<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(request: GrpcRequest<Q, S>): Observable<GrpcEvent<S>> {
     const interceptors = (this.interceptors || []).slice();
     const interceptor = interceptors.shift();
 

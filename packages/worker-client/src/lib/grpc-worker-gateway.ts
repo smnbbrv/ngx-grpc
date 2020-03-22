@@ -48,7 +48,7 @@ export class GrpcWorkerGateway {
     this.worker.postMessage({ type: GrpcWorkerApi.GrpcWorkerMessageType.serviceClientConfig, serviceId, settings } as GrpcWorkerApi.GrpcWorkerMessageServiceClientConfig);
   }
 
-  callUnaryFromWorker<Q extends GrpcMessage, S extends GrpcMessage>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<GrpcEvent<S>> {
+  callUnaryFromWorker<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(serviceId: string, path: string, request: QMessage, metadata: Metadata): Observable<GrpcEvent<S>> {
     return new Observable(observer => {
       const id = this.createRequestId();
 
@@ -61,13 +61,13 @@ export class GrpcWorkerGateway {
         path,
         request,
         metadata
-      } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
+      } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<QMessage>);
 
       return () => this.closeConnection(id);
     });
   }
 
-  callServerStreamFromWorker<Q extends GrpcMessage, S extends GrpcMessage>(serviceId: string, path: string, request: Q, metadata: Metadata): Observable<GrpcEvent<S>> {
+  callServerStreamFromWorker<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(serviceId: string, path: string, request: QMessage, metadata: Metadata): Observable<GrpcEvent<S>> {
     return new Observable(observer => {
       const id = this.createRequestId();
 
@@ -80,7 +80,7 @@ export class GrpcWorkerGateway {
         path,
         request,
         metadata
-      } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
+      } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<QMessage>);
 
       return () => this.closeConnection(id);
     });

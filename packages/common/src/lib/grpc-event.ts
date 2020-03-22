@@ -1,7 +1,7 @@
 import { Status } from 'grpc-web';
 import { GrpcMessage } from './grpc-message';
 
-export class GrpcDataEvent<T extends GrpcMessage> {
+export class GrpcDataEvent<T extends GrpcMessage<TMessage>, TMessage = unknown> {
   constructor(
     public data: T
   ) { }
@@ -15,4 +15,4 @@ export class GrpcStatusEvent implements Status {
   ) { }
 }
 
-export type GrpcEvent<T extends GrpcMessage> = GrpcDataEvent<T> | GrpcStatusEvent;
+export type GrpcEvent<T extends GrpcMessage<TMessage>, TMessage = unknown> = GrpcDataEvent<T, TMessage> | GrpcStatusEvent;

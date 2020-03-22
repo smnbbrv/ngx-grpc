@@ -3,5 +3,5 @@ import { Observable } from 'rxjs';
 import { GrpcHandler } from './grpc-handler';
 
 export interface GrpcInterceptor {
-  intercept<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>, next: GrpcHandler): Observable<GrpcEvent<S>>;
+  intercept<Q extends GrpcMessage<QMessage>, S extends GrpcMessage<SMessage>, QMessage = unknown, SMessage = unknown>(request: GrpcRequest<Q, S>, next: GrpcHandler): Observable<GrpcEvent<S>>;
 }

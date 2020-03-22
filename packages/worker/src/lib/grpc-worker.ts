@@ -75,7 +75,7 @@ export class GrpcWorker {
       // take only status 0 because unary error already includes non-zero statuses
       stream.on('status', (status: Status) => status.code === 0 ? respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status, status }) : null);
 
-      stream.on('data', (response: GrpcMessage) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() }));
+      stream.on('data', (response: GrpcMessage<unknown>) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() }));
 
       stream.on('end', () => {
         this.requestCancelHandlers.delete(message.id);
@@ -93,7 +93,7 @@ export class GrpcWorker {
 
       stream.on('status', (status: Status) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status, status }));
 
-      stream.on('data', (response: GrpcMessage) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() }));
+      stream.on('data', (response: GrpcMessage<unknown>) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() }));
 
       stream.on('end', () => {
         this.requestCancelHandlers.delete(message.id);
