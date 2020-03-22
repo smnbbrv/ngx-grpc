@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { GrpcEvent } from './grpc-event';
 import { GrpcMessage } from './grpc-message';
 import { GrpcMessageClass } from './grpc-message-class';
+import { InjectionToken } from '@angular/core';
 
 export interface GrpcClientFactory {
   createClient(serviceId: string, settings: GrpcClientSettings): GrpcClient;
@@ -48,3 +49,5 @@ export interface GrpcRequest<Q extends GrpcMessage<QMessage>, S extends GrpcMess
   requestClass: GrpcMessageClass<Q>;
   responseClass: GrpcMessageClass<S>;
 }
+
+export const GRPC_SERVICE_DEFAULT_SETTINGS = new InjectionToken<GrpcClientSettings>('GRPC_SERVICE_DEFAULT_SETTINGS');
