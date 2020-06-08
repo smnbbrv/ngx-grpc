@@ -1,3 +1,16 @@
+# [0.4.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.3.1...v0.4.0) (2020-06-08)
+
+
+### Features
+
+* **grpc-web-client:** separate grpc-web-client into a separate library; add global configuration support ([bfc5fc1](https://github.com/ngx-grpc/ngx-grpc/commit/bfc5fc1fe9e08ea701589b8d9c0032fd5775da73))
+* **worker:** add global configuration support ([dbe2921](https://github.com/ngx-grpc/ngx-grpc/commit/dbe2921e21a28b15a99b8cb0537d1f17895ffb54))
+
+
+### BREAKING CHANGES
+
+* **grpc-web-client:** GrpcStandardClientFactory and GrpcStandardClient are renamed to GrpcWebClientFactory and GrpcWebClient correspondingly and moved to @ngx-grpc/grpc-web-client
+
 ## [0.3.1](https://github.com/ngx-grpc/ngx-grpc/compare/v0.3.0...v0.3.1) (2020-02-18)
 
 
