@@ -7,10 +7,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GrpcStandardClientFactory, GRPC_CLIENT_FACTORY } from '@ngx-grpc/core';
+import { GRPC_CLIENT_FACTORY } from '@ngx-grpc/core';
+import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
 import { AppComponent } from './app.component';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -26,7 +26,7 @@ import { AppComponent } from './app.component';
     MatIconModule,
   ],
   providers: [
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcStandardClientFactory },
+    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
     { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } }
   ],
   bootstrap: [AppComponent]
