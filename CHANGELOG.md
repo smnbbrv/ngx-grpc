@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.0...v0.4.1) (2020-06-08)
+
+
+### Bug Fixes
+
+* fix grpc-web-client not being published ([e445a20](https://github.com/ngx-grpc/ngx-grpc/commit/e445a2027f2d4286f803bfad97c424dae3935622))
+
 # [0.4.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.3.1...v0.4.0) (2020-06-08)
 
 
