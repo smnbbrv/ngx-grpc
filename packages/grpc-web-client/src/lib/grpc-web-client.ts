@@ -1,20 +1,31 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
 import { AbstractClientBase, GrpcWebClientBase, Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
+import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GrpcStandardClientFactory implements GrpcClientFactory {
+export class GrpcWebClientFactory implements GrpcClientFactory {
 
-  createClient(serviceId: string, settings: GrpcClientSettings) {
-    return new GrpcStandardClient({ ...settings });
+  constructor(
+    @Optional() @Inject(GRPC_WEB_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcClientSettings,
+  ) { }
+
+  createClient(serviceId: string, customSettings: GrpcClientSettings) {
+    const settings = customSettings || this.defaultSettings;
+
+    if (!settings) {
+      throw new Error(`grpc-web client factory: no settings provided for ${serviceId}`);
+    }
+
+    return new GrpcWebClient({ ...settings });
   }
 
 }
 
-export class GrpcStandardClient implements GrpcClient {
+export class GrpcWebClient implements GrpcClient {
 
   private client: GrpcWebClientBase;
 

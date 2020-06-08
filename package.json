@@ -3,9 +3,10 @@
   "scripts": {
     "ng": "ng",
     "build": "npm run build:lib",
-    "build:lib": "npm run build:lib:common && npm run build:lib:core && npm run build:lib:worker && npm run build:lib:worker-client",
+    "build:lib": "npm run build:lib:common && npm run build:lib:core && npm run build:lib:grpc-web-client && npm run build:lib:worker && npm run build:lib:worker-client",
     "build:lib:core": "ng build core --prod && cpy LICENSE.md dist/core/",
     "build:lib:common": "ng build common --prod && cpy LICENSE.md dist/common/",
+    "build:lib:grpc-web-client": "ng build grpc-web-client --prod && cpy LICENSE.md dist/grpc-web-client/",
     "build:lib:worker": "ng build worker --prod && cpy LICENSE.md dist/worker/",
     "build:lib:worker-client": "ng build worker-client --prod && cpy LICENSE.md dist/worker-client/",
     "test": "npm run test:common && npm run test:core && npm run test:worker && npm run test:worker-client",

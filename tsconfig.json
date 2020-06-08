@@ -42,6 +42,10 @@
       ],
       "@ngx-grpc/worker-client/*": [
         "dist/worker-client/*"
+      ],
+      "@ngx-grpc/grpc-web-client": [
+        "dist/grpc-web-client/grpc-web-client",
+        "dist/grpc-web-client"
       ]
     }
   },

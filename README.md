@@ -2,13 +2,14 @@
 
 Angular gRPC framework.
 
-| Package                                                                                | Workflow status                                                                                                                                                                            | Changelog                                                                       |
-|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/packages/core)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/packages/common)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/packages/worker)               | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/packages/worker-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
+| Package                                                                                    | Workflow status                                                                                                                                                                            | Changelog                                                                       |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/packages/core)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/packages/common)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/packages/grpc-web-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/grpc-web-client)                         | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/packages/worker)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/packages/worker-client)     | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
+| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
 
 ## Features
 
@@ -49,7 +50,7 @@ First ensure that you
 Then in your Angular project's root directory run
 
 ```sh
-npm i -S @ngx-grpc/common @ngx-grpc/core google-protobuf grpc-web
+npm i -S @ngx-grpc/common @ngx-grpc/core @ngx-grpc/grpc-web-client google-protobuf grpc-web
 npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 ```
 
@@ -57,6 +58,7 @@ Where:
 
 - [@ngx-grpc/common](https://github.com/ngx-grpc/common) contains common reusable types for other ngx-grpc packages
 - [@ngx-grpc/core](https://github.com/ngx-grpc/core) contains angular specific implementation
+- [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/grpc-web-client) provides a client based on [grpc-web](https://github.com/grpc/grpc-web)
 - [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
@@ -98,14 +100,32 @@ Finally, run `npm run proto:generate` every time you want to (re)generate the co
 ```ts
 @NgModule({
   providers: [
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcStandardClientFactory },
+    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
   ],
 })
 export class AppModule {
 }
 ```
 
-### Service clients configuration
+### Global clients configuration
+
+If you set `GRPC_WEB_CLIENT_DEFAULT_SETTINGS` all the services will use the configuration you provide. 
+
+@NgModule({
+  // ...
+  providers: [
+    // ...
+    { provide: GRPC_WEB_CLIENT_DEFAULT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    // ...
+  ],
+  // ...
+})
+export class AppModule {
+}
+
+You can override the settings for each service (see below).
+
+### Per-service clients configuration
 
 Every service has an injected configuration which could be found e.g. in the corresponding `*.pbconf.ts` file.
 
@@ -279,13 +299,13 @@ worker.register(
 worker.start();
 ```
 
-Finally, provide worker client factory instead of the standard one and provide your worker
+Finally, provide worker client factory instead of the grpc-web-client and provide your worker
 
 ```ts
 @NgModule({
   providers: [
-    // replace standard client factory
-    // { provide: GRPC_CLIENT_FACTORY, useClass: GrpcStandardClientFactory },
+    // replace grpc-web client factory
+    // { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
     // with GrpcWorkerClientFactory
     { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWorkerClientFactory },
     // and wire your worker
