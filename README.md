@@ -113,7 +113,7 @@ If you set `GRPC_WEB_CLIENT_DEFAULT_SETTINGS` all the services will use the conf
 ```ts
 @NgModule({
   providers: [
-    { provide: GRPC_WEB_CLIENT_DEFAULT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    { provide: GRPC_WEB_CLIENT_DEFAULT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcClientSettings },
   ],
 })
 export class AppModule {}
@@ -132,9 +132,9 @@ E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVIC
   providers: [
     // the name of the token can be found in corresponding service constructor
     // uses default grpcwebtext format
-    { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcClientSettings },
     // or use value from environment.ts
-    // { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: environment.host } },
+    // { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: environment.host } as GrpcClientSettings },
   ],
 })
 export class AppModule {}
@@ -143,7 +143,7 @@ export class AppModule {}
 To set grpcweb / binary proto format use
 
 ```ts
-{ provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080', format: 'binary' } },
+{ provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080', format: 'binary' } as GrpcClientSettings },
 ```
 
 From now on this particular service is set.
