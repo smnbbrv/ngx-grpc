@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.1...v0.4.2) (2020-06-09)
+
+
+### Features
+
+* **core:** add GrpcConsoleLoggerInterceptor ([55c78ab](https://github.com/ngx-grpc/ngx-grpc/commit/55c78ab485f25d205707b120f7102af0472e56cc))
+
 ## [0.4.1](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.0...v0.4.1) (2020-06-08)
 
 
