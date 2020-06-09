@@ -1,8 +1,9 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
-import { GrpcHandler, GrpcInterceptor } from '@ngx-grpc/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { GrpcHandler } from './grpc-handler';
+import { GrpcInterceptor } from './grpc-interceptor';
 
 export const GRPC_CONSOLE_LOGGER_ENABLED = new InjectionToken('GRPC_CONSOLE_LOGGER_ENABLED');
 
