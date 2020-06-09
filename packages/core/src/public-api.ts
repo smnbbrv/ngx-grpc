@@ -1,3 +1,4 @@
+export * from './lib/grpc-console-logger-interceptor';
 export * from './lib/grpc-handler';
 export * from './lib/grpc-interceptor';
 export * from './lib/grpc-rx-operators';
