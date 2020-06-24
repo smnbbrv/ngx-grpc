@@ -7,10 +7,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GRPC_CLIENT_FACTORY } from '@ngx-grpc/core';
+import { GrpcConsoleLoggerInterceptor, GRPC_CLIENT_FACTORY, GRPC_CONSOLE_LOGGER_ENABLED, GRPC_INTERCEPTORS } from '@ngx-grpc/core';
 import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
+import { environment } from '../environments/environment';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
 import { AppComponent } from './app.component';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -27,7 +29,9 @@ import { AppComponent } from './app.component';
   ],
   providers: [
     { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
-    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } }
+    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    { provide: GRPC_CONSOLE_LOGGER_ENABLED, useFactory: () => localStorage.getItem('GRPC_CONSOLE_LOGGER_ENABLED') === 'true' || !environment.production },
+    { provide: GRPC_INTERCEPTORS, useClass: GrpcConsoleLoggerInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
