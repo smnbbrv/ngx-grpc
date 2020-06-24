@@ -1,3 +1,11 @@
+## [0.4.3](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.2...v0.4.3) (2020-06-24)
+
+
+### Bug Fixes
+
+* **grpc-web-client:** handle breaking changes of grpc-web@1.2.0 ([1d931ce](https://github.com/ngx-grpc/ngx-grpc/commit/1d931ce1a605015fb9d443cc3d8ccd781312d8a3))
+* **worker:** handle breaking changes of grpc-web@1.2.0 ([db9d21d](https://github.com/ngx-grpc/ngx-grpc/commit/db9d21d364dfb237f67ced8264c5d5dec0572078))
+
 ## [0.4.2](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.1...v0.4.2) (2020-06-09)
 
 
