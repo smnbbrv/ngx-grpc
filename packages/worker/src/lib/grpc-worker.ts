@@ -65,17 +65,17 @@ export class GrpcWorker {
     const info = new AbstractClientBase.MethodInfo(resclss, (rq: any) => reqclss.toBinary(rq), resclss.fromBinary);
 
     if (type === GrpcCallType.unary) {
-      const stream = service.client.rpcCall(url, request, metadata, info, () => null);
-
-      stream.on('error', (error: Error) => {
-        this.requestCancelHandlers.delete(message.id);
-        respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.error, error });
+      const stream = service.client.rpcCall(url, request, metadata, info, (error, response: GrpcMessage) => {
+        if (error) {
+          this.requestCancelHandlers.delete(message.id);
+          respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.error, error });
+        } else {
+          respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() });
+        }
       });
 
       // take only status 0 because unary error already includes non-zero statuses
       stream.on('status', (status: Status) => status.code === 0 ? respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status, status }) : null);
-
-      stream.on('data', (response: GrpcMessage) => respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data, response: response.toObject() }));
 
       stream.on('end', () => {
         this.requestCancelHandlers.delete(message.id);

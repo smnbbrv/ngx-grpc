@@ -9,6 +9,6 @@
   },
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",
-    "grpc-web": "^1.0.0"
+    "grpc-web": "^1.2.0"
   }
 }
