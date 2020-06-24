@@ -52,16 +52,18 @@ export class GrpcWebClient implements GrpcClient {
           (request: Q) => reqclss.toBinary(request),
           resclss.fromBinary
         ),
-        () => null
+        (error, data) => {
+          if (error) {
+            obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
+            obs.complete();
+          } else {
+            obs.next(new GrpcDataEvent(data));
+          }
+        }
       );
 
       // take only status 0 because unary error already includes non-zero statuses
       stream.on('status', status => status.code === 0 ? obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)) : null);
-      stream.on('error', error => {
-        obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
-        obs.complete();
-      });
-      stream.on('data', data => obs.next(new GrpcDataEvent(data)));
       stream.on('end', () => obs.complete());
 
       return () => stream.cancel();

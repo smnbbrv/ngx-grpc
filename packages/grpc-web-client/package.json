@@ -3,7 +3,7 @@
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",
     "@angular/core": "^9.0.1",
-    "grpc-web": "^1.0.0",
+    "grpc-web": "^1.2.0",
     "tslib": "^1.10.0"
   }
 }
