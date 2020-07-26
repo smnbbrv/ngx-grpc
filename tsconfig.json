@@ -1,56 +1,56 @@
+/*
+  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
+  It is not intended to be used to perform a compilation.
+
+  To learn more about this file see: https://angular.io/config/solution-tsconfig.
+*/
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "paths": {
-      "@ngx-grpc/core": [
-        "dist/core"
-      ],
-      "@ngx-grpc/core/*": [
-        "dist/core/*"
-      ],
-      "@ngx-grpc/worker": [
-        "dist/worker"
-      ],
-      "@ngx-grpc/worker/*": [
-        "dist/worker/*"
-      ],
-      "@ngx-grpc/common": [
-        "dist/common"
-      ],
-      "@ngx-grpc/common/*": [
-        "dist/common/*"
-      ],
-      "@ngx-grpc/worker-client": [
-        "dist/worker-client"
-      ],
-      "@ngx-grpc/worker-client/*": [
-        "dist/worker-client/*"
-      ],
-      "@ngx-grpc/grpc-web-client": [
-        "dist/grpc-web-client/grpc-web-client",
-        "dist/grpc-web-client"
-      ]
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/core/tsconfig.lib.json"
+    },
+    {
+      "path": "./packages/core/tsconfig.spec.json"
+    },
+    {
+      "path": "./packages/worker/tsconfig.lib.json"
+    },
+    {
+      "path": "./packages/worker/tsconfig.spec.json"
+    },
+    {
+      "path": "./packages/common/tsconfig.lib.json"
+    },
+    {
+      "path": "./packages/common/tsconfig.spec.json"
+    },
+    {
+      "path": "./packages/worker-client/tsconfig.lib.json"
+    },
+    {
+      "path": "./packages/worker-client/tsconfig.spec.json"
+    },
+    {
+      "path": "./examples/basic-example/tsconfig.app.json"
+    },
+    {
+      "path": "./examples/basic-example/tsconfig.spec.json"
+    },
+    {
+      "path": "./examples/worker-example/tsconfig.app.json"
+    },
+    {
+      "path": "./examples/worker-example/tsconfig.worker.json"
+    },
+    {
+      "path": "./examples/worker-example/tsconfig.spec.json"
+    },
+    {
+      "path": "./packages/grpc-web-client/tsconfig.lib.json"
+    },
+    {
+      "path": "./packages/grpc-web-client/tsconfig.spec.json"
     }
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  }
+  ]
 }

@@ -1,0 +1,56 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@ngx-grpc/core": [
+        "dist/core"
+      ],
+      "@ngx-grpc/core/*": [
+        "dist/core/*"
+      ],
+      "@ngx-grpc/worker": [
+        "dist/worker"
+      ],
+      "@ngx-grpc/worker/*": [
+        "dist/worker/*"
+      ],
+      "@ngx-grpc/common": [
+        "dist/common"
+      ],
+      "@ngx-grpc/common/*": [
+        "dist/common/*"
+      ],
+      "@ngx-grpc/worker-client": [
+        "dist/worker-client"
+      ],
+      "@ngx-grpc/worker-client/*": [
+        "dist/worker-client/*"
+      ],
+      "@ngx-grpc/grpc-web-client": [
+        "dist/grpc-web-client/grpc-web-client",
+        "dist/grpc-web-client"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}
