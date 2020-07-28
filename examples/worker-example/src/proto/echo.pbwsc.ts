@@ -13,12 +13,12 @@ export const GrpcWorkerEchoServiceClientDef: GrpcWorkerServiceClientDef = {
     '/echo.EchoService/EchoOnce': {
       type: GrpcCallType.unary,
       reqclss: thisProto.EchoRequest,
-      resclss: thisProto.EchoResponse
+      resclss: thisProto.EchoResponse,
     },
     '/echo.EchoService/EchoStream': {
       type: GrpcCallType.serverStream,
       reqclss: thisProto.EchoRequest,
-      resclss: thisProto.EchoResponse
-    }
-  }
+      resclss: thisProto.EchoResponse,
+    },
+  },
 };

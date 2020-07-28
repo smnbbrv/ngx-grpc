@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+enum Enum1 {
+  lowercase = 0;
+  UPPERCASE = 1;
+  PASCAL_CASE = 2;
+  camelCase = 3;
+}
+
+enum enum2 {
+  none2 = 0;
+}
+
+enum ENUM3 {
+  none3 = 0;
+}
+enum ENUM_N4 {
+  none4 = 0;
+}
+
+message Message1 {
+  string lowercase = 1;
+  string UPPERCASE = 2;
+  string PASCAL_CASE = 3;
+  string camelCase = 4;
+  string var = 5;
+}

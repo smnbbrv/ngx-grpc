@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "import-subdirectory/import-public.proto";
+
+package proto.importpublic;
+
+message ImporterMessage { MessageNoPackage sub1 = 1; }

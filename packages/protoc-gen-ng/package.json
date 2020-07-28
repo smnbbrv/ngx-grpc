@@ -1,0 +1,19 @@
+{
+  "name": "@ngx-grpc/protoc-gen-ng",
+  "description": "gRPC code generator for Angular",
+  "author": "smnbbrv",
+  "license": "MIT",
+  "main": "./main.js",
+  "bin": {
+    "protoc-gen-ng": "./main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngx-grpc/ngx-grpc"
+  },
+  "dependencies": {
+    "prettier": "1.19.1",
+    "protoc-plugin": "0.0.6",
+    "winston": "^3.2.1"
+  }
+}

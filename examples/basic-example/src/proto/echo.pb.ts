@@ -79,7 +79,7 @@ export class EchoRequest implements GrpcMessage {
   toObject() {
     return {
       message: this.message,
-      shouldThrow: this.shouldThrow
+      shouldThrow: this.shouldThrow,
     };
   }
   toJSON() {
@@ -145,7 +145,7 @@ export class EchoResponse implements GrpcMessage {
   }
   toObject() {
     return {
-      message: this.message
+      message: this.message,
     };
   }
   toJSON() {

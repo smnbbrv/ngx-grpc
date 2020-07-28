@@ -1,0 +1,6 @@
+// this file only serves to trigger the compilation of google's struct message
+// to check consistency with the supplied one inside google-protobuf node_module
+
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";

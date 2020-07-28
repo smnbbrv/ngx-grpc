@@ -3,32 +3,34 @@
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   GrpcCallType,
   GrpcClient,
   GrpcClientFactory,
   GrpcClientSettings,
-  GrpcEvent
+  GrpcEvent,
 } from '@ngx-grpc/common';
 import {
   GRPC_CLIENT_FACTORY,
   GrpcHandler,
   takeMessages,
-  throwStatusErrors
+  throwStatusErrors,
 } from '@ngx-grpc/core';
 import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import * as thisProto from './echo.pb';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EchoServiceClient {
   private client: GrpcClient;
 
   constructor(
-    @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS) settings: GrpcClientSettings,
+    @Optional()
+    @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS)
+    settings: GrpcClientSettings,
     @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory,
     private handler: GrpcHandler
   ) {
@@ -68,7 +70,7 @@ export class EchoServiceClient {
       requestData,
       requestMetadata,
       requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse
+      responseClass: thisProto.EchoResponse,
     });
   }
 
@@ -105,7 +107,7 @@ export class EchoServiceClient {
       requestData,
       requestMetadata,
       requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse
+      responseClass: thisProto.EchoResponse,
     });
   }
 }

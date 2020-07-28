@@ -1,0 +1,9 @@
+/test/out
+/test/out-grpc-web
+/test/**/*.js
+/src/**/*.js
+/debug
+/dist
+/node_modules
+/coverage
+/dev-null
