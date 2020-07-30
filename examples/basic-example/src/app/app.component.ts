@@ -51,13 +51,13 @@ export class AppComponent {
     this.displayExampleEvent({ type: ExampleEventType.request, request });
 
     if (this.receiveAllEvents === false) {
-      this.sub = this.echoClient.echoOnce(request).subscribe(
+      this.sub = this.echoClient.echoOnce(request).data.subscribe(
         response => this.displayExampleEvent({ type: ExampleEventType.success, response }),
         error => this.displayExampleEvent({ type: ExampleEventType.error, error }),
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
       );
     } else {
-      this.sub = this.echoClient.echoOnce$eventStream(request).subscribe(
+      this.sub = this.echoClient.echoOnce(request).events.subscribe(
         event => this.displayGrpcEvent(event),
         () => null, // no errors expected in this mode
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
@@ -73,13 +73,13 @@ export class AppComponent {
     this.displayExampleEvent({ type: ExampleEventType.request, request });
 
     if (this.receiveAllEvents === false) {
-      this.sub = this.echoClient.echoStream(request).subscribe(
+      this.sub = this.echoClient.echoStream(request).data.subscribe(
         response => this.displayExampleEvent({ type: ExampleEventType.success, response }),
         error => this.displayExampleEvent({ type: ExampleEventType.error, error }),
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
       );
     } else {
-      this.sub = this.echoClient.echoStream$eventStream(request).subscribe(
+      this.sub = this.echoClient.echoStream(request).events.subscribe(
         event => this.displayGrpcEvent(event),
         () => null, // no errors expected in this mode
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),

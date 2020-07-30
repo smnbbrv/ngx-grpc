@@ -1,6 +1,6 @@
+import * as structGoogle from 'google-protobuf/google/protobuf/struct_pb';
 import 'jest';
 import * as struct from '../out/google/protobuf/struct.pb';
-import * as structGoogle from 'google-protobuf/google/protobuf/struct_pb';
 
 describe('struct.proto', () => {
   it('should serialize non-trivial scalar values consistentl wiht web-grpc', () => {
@@ -63,7 +63,7 @@ describe('struct.proto', () => {
     const msg = new struct.Struct({
       fields: {
         someNull: new struct.Value({
-          nullValue: struct.NullValue.nullValue,
+          nullValue: struct.NullValue.NULL_VALUE,
         }),
         someDouble: new struct.Value({
           numberValue: 0,
