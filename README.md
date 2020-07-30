@@ -24,19 +24,20 @@ Angular gRPC framework.
 
 ## Example
 
-> The example requires docker & docker-compose to be installed
+> The example requires protoc, docker & docker-compose to be installed
 
-Clone this repository and run `npm ci` in the root directory. This will install all required dependencies.
+Clone this repository and run
 
-Then, build the libs with `npm run build`. 
+```
+npm ci
+npm run build
+npm run examples
+```
 
-Finally, in separate terminal sessions run
+Now you can see following examples:
 
-- `npm run examples:basic` starts the basic example Angular app with standard client
-- `npm run examples:worker` starts the example Angular app which uses worker client
-- `npm run examples:backend` starts the backend and envoy proxy using docker-compose
-
-Run one of the applications and the backend and open your browser at [http://localhost:4200/](http://localhost:4200/).
+- basic grpc-web-client example at [http://localhost:4201/](http://localhost:4201/)
+- worker-client example at [http://localhost:4202/](http://localhost:4202/)
 
 The source code for the examples could be found at [examples](examples) directory.
 
