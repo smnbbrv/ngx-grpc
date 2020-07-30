@@ -3,7 +3,7 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldType } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
-import { getDataType, getMapKeyValueFields } from '../../misc/helpers';
+import { getDataType, getMapKeyValueFields, isFieldMessage } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
@@ -67,8 +67,15 @@ export class MapMessageField implements MessageField {
   }
 
   printInitializer(printer: Printer) {
-    // TODO properly clone submessages
-    printer.add(`this.${this.attributeName} = {...(value.${this.attributeName} || {})};`);
+    let cloneFn = `value!.${this.attributeName}![k]`;
+
+    if (isFieldMessage(this.valueField)) {
+      cloneFn = `value!.${this.attributeName}![k] ? value!.${this.attributeName}![k].toObject() : undefined,`;
+    } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
+      cloneFn = `value!.${this.attributeName}![k] ? value!.${this.attributeName}![k].subarray(0) : undefined`;
+    }
+
+    printer.add(`this.${this.attributeName} = value!.${this.attributeName} ? Object.keys(value!.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
   }
 
   printDefaultValueSetter(printer: Printer) {
@@ -91,8 +98,15 @@ export class MapMessageField implements MessageField {
   }
 
   printToObjectMapping(printer: Printer) {
-    // TODO properly clone submessages
-    printer.add(`${this.attributeName}: {...(this.${this.attributeName} || {})},`);
+    let cloneFn = `this.${this.attributeName}![k]`;
+
+    if (isFieldMessage(this.valueField)) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toObject() : undefined,`;
+    } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].subarray(0) : undefined`;
+    }
+
+    printer.add(`${this.attributeName}: this.${this.attributeName} ? Object.keys(this.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
   }
 
 }
