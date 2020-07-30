@@ -3,6 +3,7 @@ import { GrpcCallType, GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/com
 import { Observable } from 'rxjs';
 import { GrpcInterceptor } from './grpc-interceptor';
 import { GRPC_INTERCEPTORS } from './injection-tokens';
+import { ServerStreamRpcRef, UnaryRpcRef } from './rpc-ref';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,14 @@ export class GrpcHandler {
     @Optional() @Inject(GRPC_INTERCEPTORS) private interceptors: GrpcInterceptor[],
   ) {
     this.interceptors = interceptors || [];
+  }
+
+  createUnaryRpcRef<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>) {
+    return new UnaryRpcRef(this.handle(request));
+  }
+
+  createServerStreamRpcRef<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>) {
+    return new ServerStreamRpcRef(this.handle(request));
   }
 
   handle<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>): Observable<GrpcEvent<S>> {
