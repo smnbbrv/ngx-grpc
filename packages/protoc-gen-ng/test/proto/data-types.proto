@@ -6,6 +6,7 @@ enum TestEnum {
   value0 = 0;
   value1 = 1;
   value2 = 2;
+  VALUE3 = 3;
 }
 
 message TestSubMessage { string string = 1; }
@@ -35,7 +36,7 @@ message TestMessage {
   map<string, string> map_string_string = 15;
   map<int64, TestSubMessage> map_int64_sub = 16;
   map<bool, string> map_bool_string = 17;
-  
+
   oneof oneof {
     string oneofstring = 18;
     TestSubEnum oneofenum = 19;

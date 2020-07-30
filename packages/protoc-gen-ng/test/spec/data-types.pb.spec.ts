@@ -10,6 +10,14 @@ describe('data-types.proto', () => {
     expect(dataTypes.TestEnum.value2).toBe(2);
   });
 
+  it('should preserve enum values case', () => {
+    expect(dataTypes.TestEnum).toBeTruthy();
+    expect(dataTypes.TestEnum.value0).toBe(0);
+    expect(dataTypes.TestEnum.value1).toBe(1);
+    expect(dataTypes.TestEnum.value2).toBe(2);
+    expect(dataTypes.TestEnum.VALUE3).toBe(3);
+  });
+
   it('should produce TestSubMessage', () => {
     expect(dataTypes.TestSubMessage).toBeTruthy();
   });

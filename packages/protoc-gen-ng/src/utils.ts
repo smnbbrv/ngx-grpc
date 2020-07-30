@@ -45,6 +45,10 @@ export function pascalize(str: string) {
     .toUpperCase();
 }
 
+export function preserveCaseSafe(name: string) {
+  return ['default', 'var', 'let', 'const', 'function', 'class'].includes(name) ? 'pb_' + name : name;
+}
+
 export function camelizeSafe(name: string) {
   const escaped = ['default', 'var', 'let', 'const', 'function', 'class'].includes(name) ? 'pb_' + name : name;
 
