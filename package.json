@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start:lib:protoc-gen-ng": "nodemon --watch src --watch test/proto -e ts,proto --exec 'npm run build:lib:protoc-gen-ng && npm run test:lib:protoc-gen-ng:generate && npm run test:lib:protoc-gen-ng:generate-grpc-web && echo \"Done\"'",
+    "start:lib:protoc-gen-ng": "nodemon --watch packages/protoc-gen-ng/src --watch packages/protoc-gen-ng/test/spec --watch packages/protoc-gen-ng/test/proto -e ts,proto --exec 'npm run build:lib:protoc-gen-ng && npm run test:lib:protoc-gen-ng:generate && npm run test:lib:protoc-gen-ng:generate-grpc-web && echo \"Done\"'",
     "build": "run-s build:lib",
     "build:lib": "run-s build:lib:common build:lib:core build:lib:grpc-web-client build:lib:worker build:lib:worker-client build:lib:protoc-gen-ng",
     "build:lib:core": "ng build core --prod && cpy LICENSE.md dist/core/",
