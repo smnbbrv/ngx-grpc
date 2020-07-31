@@ -15,7 +15,7 @@ export function throwStatusErrors<T extends GrpcMessage>() {
 
 /**
  * RxJS operator
- * When applied to gRPC events stream emits only messages
+ * When applied to gRPC events stream extracts and returns only messages
  * @return Observable of messages
  */
 export function takeMessages<T extends GrpcMessage>() {
