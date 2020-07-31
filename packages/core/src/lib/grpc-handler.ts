@@ -15,10 +15,12 @@ import { ServerStreamRpcRef, UnaryRpcRef } from './rpc-ref';
 })
 export class GrpcHandler {
 
+  private interceptors: GrpcInterceptor[];
+
   constructor(
-    @Optional() @Inject(GRPC_INTERCEPTORS) private interceptors: GrpcInterceptor[],
+    @Optional() @Inject(GRPC_INTERCEPTORS) configuredInterceptors: GrpcInterceptor | GrpcInterceptor[],
   ) {
-    this.interceptors = interceptors || [];
+    this.interceptors = !configuredInterceptors ? [] : Array.isArray(configuredInterceptors) ? configuredInterceptors : [configuredInterceptors];
   }
 
   /**
