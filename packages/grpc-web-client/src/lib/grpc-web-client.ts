@@ -4,6 +4,9 @@ import { AbstractClientBase, GrpcWebClientBase, Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
+/**
+ * GrpcClientFactory implementation based on grpc-web
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +28,9 @@ export class GrpcWebClientFactory implements GrpcClientFactory {
 
 }
 
+/**
+ * GrpcClient implementation based on grpc-web
+ */
 export class GrpcWebClient implements GrpcClient {
 
   private client: GrpcWebClientBase;
