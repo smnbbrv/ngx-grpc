@@ -6,6 +6,9 @@ import { tap } from 'rxjs/operators';
 import { GrpcWorkerGateway } from './grpc-worker-gateway';
 import { GRPC_WORKER_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
+/**
+ * GrpcClientFactory implementation based on grpc-web running in worker
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +35,9 @@ export class GrpcWorkerClientFactory implements GrpcClientFactory {
 
 }
 
+/**
+ * GrpcClient implementation based on grpc-web running in worker
+ */
 export class GrpcWorkerClient implements GrpcClient {
 
   constructor(
