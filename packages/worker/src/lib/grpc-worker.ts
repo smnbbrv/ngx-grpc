@@ -3,6 +3,27 @@ import { AbstractClientBase, Error, GrpcWebClientBase, Status } from 'grpc-web';
 import { GrpcWorkerApi } from './api';
 import { GrpcWorkerServiceClientDef } from './service-client-def';
 
+/**
+ * A worker-side service of worker client implementation based on grpc-web
+ *
+ * Example:
+ *
+ * ```
+ * /// <reference lib="webworker" />
+ *
+ * import { GrpcWorker } from '@ngx-grpc/worker';
+ * import { GrpcWorkerEchoServiceClientDef } from '../proto/echo.pbwsc';
+ *
+ * const worker = new GrpcWorker();
+ *
+ * worker.register(
+ *   // register here all the service clients definitions
+ *   GrpcWorkerEchoServiceClientDef,
+ * );
+ *
+ * worker.start();
+ * ```
+ */
 export class GrpcWorker {
 
   private definitions = new Map<string, GrpcWorkerServiceClientDef>();
@@ -14,10 +35,18 @@ export class GrpcWorker {
 
   private requestCancelHandlers = new Map<number, () => void>();
 
+  /**
+   * Register one or more service clients.
+   * Add here only the services you use, otherwise the worker size can explode.
+   * @param defs generated service client definitions to register
+   */
   register(...defs: GrpcWorkerServiceClientDef[]) {
     defs.forEach(def => this.definitions.set(def.serviceId, def));
   }
 
+  /**
+   * Start the service
+   */
   start() {
     addEventListener('message', ({ data }: GrpcWorkerApi.WorkerMessageEvent<GrpcWorkerApi.GrpcWorkerMessage>) => {
       switch (data.type) {
