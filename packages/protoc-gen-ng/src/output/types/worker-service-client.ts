@@ -28,6 +28,9 @@ export class WorkerServiceClient {
     });
 
     printer.add(`
+      /**
+       * Client definition for use in worker
+       */
       export const GrpcWorker${this.service.name}ClientDef: GrpcWorkerServiceClientDef = {
         serviceId: '${serviceId}',
         methods: {

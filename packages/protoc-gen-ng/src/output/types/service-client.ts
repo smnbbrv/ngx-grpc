@@ -30,6 +30,9 @@ export class ServiceClient {
     const serviceId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.service.name;
 
     printer.add(`
+      /**
+       * Service client implementation for ${serviceId}
+       */
       @Injectable({
         providedIn: 'root',
       })

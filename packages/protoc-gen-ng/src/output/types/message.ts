@@ -13,7 +13,6 @@ import { MessageMessageField } from './fields/message-message-field';
 import { NumberMessageField } from './fields/number-message-field';
 import { Number64MessageField as Number64MessageField } from './fields/number64-message-field';
 import { StringMessageField } from './fields/string-message-field';
-import { JSDoc } from './js-doc';
 import { MessageField } from './message-field';
 import { OneOf } from './oneof';
 
@@ -75,14 +74,28 @@ export class Message {
       ExternalDependencies.RecursivePartial,
     );
 
-    printer.addLine(`export class ${this.message.name} implements GrpcMessage {
+    const messageId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.message.name;
 
+    printer.addLine(`
+    /**
+     * Message implementation for ${messageId}
+     */
+    export class ${this.message.name} implements GrpcMessage {
+
+      /**
+       * Serialize message to binary data
+       * @param instance message instance
+       */
       static toBinary(instance: ${this.message.name}) {
         const writer = new BinaryWriter();
         ${this.message.name}.toBinaryWriter(instance, writer);
         return writer.getResultBuffer();
       }
 
+      /**
+       * Deserialize binary data to message
+       * @param instance message instance
+       */
       static fromBinary(bytes: ByteSource) {
         const instance = new ${this.message.name}();
         ${this.message.name}.fromBinaryReader(instance, new BinaryReader(bytes));
@@ -124,7 +137,13 @@ export class Message {
 
     this.printToObject(printer);
 
-    printer.addLine('toJSON() { return this.toObject(); }');
+    printer.addLine(`
+      /**
+       * JSON serializer
+       * Only intended to be used by \`JSON.stringify\` function. If you want to cast message to standard JavaScript object, use \`toObject()\` instead
+       */
+      toJSON() { return this.toObject(); }
+    `);
 
     if (this.message.name === 'Timestamp' && this.proto.pb_package === 'google.protobuf') {
       this.printTimestampMemberMethods(printer);
@@ -136,7 +155,13 @@ export class Message {
   }
 
   private printStaticRefineValues(printer: Printer) {
-    printer.addLine(`static refineValues(instance: ${this.message.name}) {`);
+    printer.addLine(`
+      /**
+       * Check all the properties and set default protobuf values if necessary
+       * @param instance message instance
+       */
+      static refineValues(instance: ${this.message.name}) {
+    `);
     this.messageFields.forEach(f => {
       f.printDefaultValueSetter(printer);
       printer.newLine();
@@ -145,11 +170,17 @@ export class Message {
   }
 
   private printStaticFromBinaryReader(printer: Printer) {
-    printer.addLine(`static fromBinaryReader(instance: ${this.message.name}, reader: BinaryReader) {
-      while (reader.nextField()) {
-        if (reader.isEndGroup()) break;
+    printer.addLine(`
+      /**
+       * Deserializes / reads binary message into message instance using provided binary reader
+       * @param instance message instance
+       * @param reader binary reader instance
+       */
+      static fromBinaryReader(instance: ${this.message.name}, reader: BinaryReader) {
+        while (reader.nextField()) {
+          if (reader.isEndGroup()) break;
 
-        switch (reader.getFieldNumber()) {`);
+          switch (reader.getFieldNumber()) {`);
 
     this.messageFields.forEach(f => {
       f.printFromBinaryReader(printer);
@@ -166,7 +197,14 @@ export class Message {
   }
 
   private printStaticToBinaryWriter(printer: Printer) {
-    printer.addLine(`static toBinaryWriter(instance: ${this.message.name}, writer: BinaryWriter) {`);
+    printer.addLine(`
+      /**
+       * Serializes a message to binary format using provided binary reader
+       * @param instance message instance
+       * @param writer binary writer instance
+       */
+      static toBinaryWriter(instance: ${this.message.name}, writer: BinaryWriter) {
+    `);
     this.messageFields.forEach(f => {
       f.printToBinaryWriter(printer);
       printer.newLine();
@@ -184,17 +222,13 @@ export class Message {
   }
 
   private printConstructor(printer: Printer) {
-    const jsdoc = new JSDoc();
-
-    jsdoc.setDescription('Creates an object and applies default Protobuf values');
-    jsdoc.addParam({
-      name: 'value',
-      type: `${this.message.name}`,
-      description: `Initial values object or instance of ${this.message.name} to clone from (deep cloning)`,
-    });
-
-    printer.addLine(jsdoc.toString());
-    printer.addLine(`constructor(value?: RecursivePartial<${this.message.name}>) {`);
+    printer.addLine(`
+      /**
+       * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+       * @param value initial values object or instance of ${this.message.name} to deeply clone from
+       */
+      constructor(value?: RecursivePartial<${this.message.name}>) {
+    `);
     printer.addLine('value = value || {};');
 
     this.messageFields.forEach(f => {
@@ -207,7 +241,12 @@ export class Message {
   }
 
   private printToObject(printer: Printer) {
-    printer.addLine('toObject() {');
+    printer.addLine(`
+      /**
+       * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+       */
+      toObject() {
+    `);
     printer.addLine('return {');
     this.messageFields.forEach(f => {
       f.printToObjectMapping(printer);

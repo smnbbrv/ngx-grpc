@@ -4,7 +4,6 @@ import { ServiceMethod } from '../../input/proto-service-method';
 import { camelizeSafe } from '../../utils';
 import { ExternalDependencies } from '../misc/dependencies';
 import { Printer } from '../misc/printer';
-import { JSDoc } from './js-doc';
 
 export class ServiceClientMethod {
 
@@ -26,22 +25,21 @@ export class ServiceClientMethod {
     const inputType = this.proto.getRelativeTypeName(this.serviceMethod.inputType, 'thisProto');
     const outputType = this.proto.getRelativeTypeName(this.serviceMethod.outputType, 'thisProto');
     const rpcRefType = this.serviceMethod.serverStreaming ? 'ServerStreamRpcRef' : 'UnaryRpcRef';
-
-    const jsdoc = new JSDoc();
-
-    jsdoc.setDescription(`${this.serviceMethod.serverStreaming ? 'Server streaming' : 'Unary'} RPC`);
-    jsdoc.addParam({ type: inputType, name: 'request', description: 'Request message' });
-    jsdoc.addParam({ type: 'Metadata', name: 'metadata', description: 'Additional data' });
-    jsdoc.setReturn(`${rpcRefType}<${outputType}>`);
-    jsdoc.setDeprecation(!!this.serviceMethod.options && this.serviceMethod.options.deprecated);
+    const rpcPath = `/${serviceUrlPrefix}${this.service.name}/${this.serviceMethod.name}`;
 
     printer.add(`
-      ${jsdoc.toString()}
+      /**
+       * ${this.serviceMethod.serverStreaming ? 'Server streaming' : 'Unary'} RPC for ${rpcPath}
+       * ${!!this.serviceMethod.options && this.serviceMethod.options.deprecated ? '@deprecated' : ''}
+       * @param requestMessage Request message
+       * @param requestMetadata Request metadata
+       * @returns ${rpcRefType}
+       */
       ${camelizeSafe(this.serviceMethod.name)}(requestData: ${inputType}, requestMetadata: Metadata = {}): ${rpcRefType}<${outputType}> {
         return this.handler.create${rpcRefType}({
           type: GrpcCallType.${this.serviceMethod.serverStreaming ? 'serverStream' : 'unary'},
           client: this.client,
-          path: '/${serviceUrlPrefix}${this.service.name}/${this.serviceMethod.name}',
+          path: '${rpcPath}',
           requestData,
           requestMetadata,
           requestClass: ${inputType},

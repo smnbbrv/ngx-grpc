@@ -1,6 +1,6 @@
 import { Proto } from '../../input/proto';
 import { ProtoService } from '../../input/proto-service';
-import { pascalize } from '../../utils';
+import { classify, pascalize } from '../../utils';
 import { ExternalDependencies } from '../misc/dependencies';
 import { Printer } from '../misc/printer';
 
@@ -17,8 +17,14 @@ export class ServiceClientConfig {
 
   print(printer: Printer) {
     printer.addDeps(ExternalDependencies.GrpcClientSettings, ExternalDependencies.InjectionToken);
-    printer.add(`export const ${this.getTokenName()} = new InjectionToken<GrpcClientSettings>('${this.getTokenName()}');`);
-    printer.newLine();
+
+    printer.addLine(`
+      /**
+       * Specific GrpcClientSettings for ${classify(this.service.name)}.
+       * Use it only if your default settings are not set or the service requires other settings.
+       */
+      export const ${this.getTokenName()} = new InjectionToken<GrpcClientSettings>('${this.getTokenName()}');
+    `);
   }
 
 }
