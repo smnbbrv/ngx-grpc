@@ -25,7 +25,7 @@ export class BytesMessageField implements MessageField {
     this.dataType = getDataType(this.proto, this.messageField);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const readerCall = 'reader.readBytes()';
 
     if (this.isArray) {
@@ -37,7 +37,7 @@ export class BytesMessageField implements MessageField {
     printer.add('break;');
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
       writer.write${this.isArray ? 'Repeated' : ''}Bytes(${this.messageField.number}, instance.${this.attributeName});
     }`);

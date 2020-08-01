@@ -4,13 +4,13 @@ import * as oneOf from '../out/oneof.pb';
 describe('data-types.proto', () => {
 
   it('should create OneofTest', () => {
-    const msg = oneOf.OneofTest.fromBinary('');
+    const msg = oneOf.OneofTest.deserializeBinary('');
 
     expect(msg instanceof oneOf.OneofTest).toBeTruthy();
   });
 
   it('should assign "none" to the enum getter if no value is given', () => {
-    const msg = oneOf.OneofTest.fromBinary('');
+    const msg = oneOf.OneofTest.deserializeBinary('');
 
     expect(msg.oneOf).toBe(oneOf.OneofTest.OneOfCase.none);
     expect(msg.testString).toBeUndefined();
@@ -18,7 +18,7 @@ describe('data-types.proto', () => {
   });
 
   it('should assign a proper enum type to the enum getter and nullify others after new assignment', () => {
-    const msg = oneOf.OneofTest.fromBinary('');
+    const msg = oneOf.OneofTest.deserializeBinary('');
 
     msg.testString = '123';
 

@@ -29,20 +29,20 @@ export class MapMessageField implements MessageField {
     this.mapMessageClassName = this.proto.getRelativeTypeName(this.messageField.typeName);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const msgVarName = `msg_${this.messageField.number}`;
 
     printer.add(
       `case ${this.messageField.number}:
         const ${msgVarName} = {} as any;
-        reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.fromBinaryReader);
+        reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
         instance.${this.attributeName} = instance.${this.attributeName} || {};
         instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
         break;`
     );
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     const varName = `instance.${this.attributeName}`;
     const keysVarName = `keys_${this.messageField.number}`;
     const repeatedVarName = `repeated_${this.messageField.number}`;
@@ -57,7 +57,7 @@ export class MapMessageField implements MessageField {
           .map(key => ({ key: ${castedKey}, value: (${varName} as any)[key] }))
           .reduce((r, v) => [...r, v], [] as any[]);
 
-        writer.writeRepeatedMessage(${this.messageField.number}, ${repeatedVarName}, ${this.mapMessageClassName}.toBinaryWriter);
+        writer.writeRepeatedMessage(${this.messageField.number}, ${repeatedVarName}, ${this.mapMessageClassName}.serializeBinaryToWriter);
       }
     }`);
   }

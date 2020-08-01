@@ -23,7 +23,7 @@ describe('struct.proto', () => {
     expect(msg.fields?.someBool.boolValue).toEqual(true);
 
     const msgWebGrpc = structGoogle.Struct.deserializeBinary(
-      struct.Struct.toBinary(msg),
+      msg.serializeBinary(),
     );
 
     expect(
@@ -82,7 +82,7 @@ describe('struct.proto', () => {
     expect(msg.fields?.someBool.boolValue).toEqual(false);
 
     const msgWebGrpc = structGoogle.Struct.deserializeBinary(
-      struct.Struct.toBinary(msg),
+      msg.serializeBinary(),
     );
 
     expect(

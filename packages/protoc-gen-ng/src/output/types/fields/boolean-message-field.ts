@@ -25,7 +25,7 @@ export class BooleanMessageField implements MessageField {
     this.dataType = getDataType(this.proto, this.messageField);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const readerCall = 'reader.readBool()';
 
     if (this.isArray) {
@@ -37,7 +37,7 @@ export class BooleanMessageField implements MessageField {
     printer.add('break;');
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     if (this.isArray) {
       printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
         writer.writeRepeatedBool(${this.messageField.number}, instance.${this.attributeName});

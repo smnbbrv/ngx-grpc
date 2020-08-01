@@ -25,7 +25,7 @@ export class StringMessageField implements MessageField {
     this.dataType = getDataType(this.proto, this.messageField);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const readerCall = 'reader.readString()';
 
     if (this.isArray) {
@@ -37,7 +37,7 @@ export class StringMessageField implements MessageField {
     printer.add('break;');
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     if (this.isArray) {
       printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
         writer.writeRepeatedString(${this.messageField.number}, instance.${this.attributeName});

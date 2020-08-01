@@ -23,7 +23,7 @@ describe('data-types.proto', () => {
   });
 
   it('should implement proper TestSubMessage reader', () => {
-    const msg = dataTypes.TestSubMessage.fromBinary('');
+    const msg = dataTypes.TestSubMessage.deserializeBinary('');
 
     expect(msg instanceof dataTypes.TestSubMessage).toBeTruthy();
 
@@ -31,7 +31,7 @@ describe('data-types.proto', () => {
   });
 
   it('should implement proper TestTreeItemMessage reader', () => {
-    const msg = dataTypes.TestTreeItemMessage.fromBinary('');
+    const msg = dataTypes.TestTreeItemMessage.deserializeBinary('');
 
     expect(msg instanceof dataTypes.TestTreeItemMessage).toBeTruthy();
 
@@ -39,7 +39,7 @@ describe('data-types.proto', () => {
   });
 
   it('should implement proper TestMessage reader', () => {
-    const msg = dataTypes.TestMessage.fromBinary('');
+    const msg = dataTypes.TestMessage.deserializeBinary('');
 
     expect(msg instanceof dataTypes.TestMessage).toBeTruthy();
 
@@ -64,7 +64,7 @@ describe('data-types.proto', () => {
   });
 
   it('should implement proper RepeatedTestMessage reader', () => {
-    const msg = dataTypes.RepeatedTestMessage.fromBinary('');
+    const msg = dataTypes.RepeatedTestMessage.deserializeBinary('');
 
     expect(msg instanceof dataTypes.RepeatedTestMessage).toBeTruthy();
 
@@ -152,7 +152,7 @@ describe('data-types.proto', () => {
     });
 
     const msgWebGrpc = dataTypesWebGrpc.TestMessage.deserializeBinary(
-      dataTypes.TestMessage.toBinary(msg),
+      msg.serializeBinary(),
     );
     expect(msgWebGrpc.getString()).toEqual('someString');
     expect(msgWebGrpc.getInt32()).toEqual(32);

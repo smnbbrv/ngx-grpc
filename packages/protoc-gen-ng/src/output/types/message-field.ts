@@ -1,8 +1,8 @@
 import { Printer } from '../misc/printer';
 
 export interface MessageField {
-  printFromBinaryReader(printer: Printer): void;
-  printToBinaryWriter(printer: Printer): void;
+  printDeserializeBinaryFromReader(printer: Printer): void;
+  printSerializeBinaryToWriter(printer: Printer): void;
   printPrivateAttribute(printer: Printer): void;
   printInitializer(printer: Printer): void;
   printDefaultValueSetter(printer: Printer): void;

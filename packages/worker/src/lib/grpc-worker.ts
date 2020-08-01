@@ -91,7 +91,7 @@ export class GrpcWorker {
     const request = new reqclss(message.request);
     const url = service.settings.host + message.path;
     const metadata = message.metadata || {};
-    const info = new AbstractClientBase.MethodInfo(resclss, (rq: any) => reqclss.toBinary(rq), resclss.fromBinary);
+    const info = new AbstractClientBase.MethodInfo(resclss, (rq: GrpcMessage) => rq.serializeBinary(), resclss.deserializeBinary);
 
     if (type === GrpcCallType.unary) {
       const stream = service.client.rpcCall(url, request, metadata, info, (error, response: GrpcMessage) => {

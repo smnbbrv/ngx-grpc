@@ -47,7 +47,7 @@ export class Number64MessageField implements MessageField {
     return number64Types.includes(field.type);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const readerCall = 'reader.read' + this.protoDataType + '()';
 
     if (this.isArray) {
@@ -59,7 +59,7 @@ export class Number64MessageField implements MessageField {
     printer.add('break;');
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     if (this.isArray) {
       printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
         writer.writeRepeated${this.protoDataType}(${this.messageField.number}, instance.${this.attributeName});

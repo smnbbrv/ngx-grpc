@@ -19,6 +19,9 @@ import {
 import { Metadata } from 'grpc-web';
 import * as thisProto from './echo.pb';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
+/**
+ * Service client implementation for echo.EchoService
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -36,10 +39,11 @@ export class EchoServiceClient {
   }
 
   /**
-   * Unary RPC
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return UnaryRpcRef<thisProto.EchoResponse>
+   * Unary RPC for /echo.EchoService/EchoOnce
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns UnaryRpcRef
    */
   echoOnce(
     requestData: thisProto.EchoRequest,
@@ -57,10 +61,11 @@ export class EchoServiceClient {
   }
 
   /**
-   * Server streaming RPC
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return ServerStreamRpcRef<thisProto.EchoResponse>
+   * Server streaming RPC for /echo.EchoService/EchoStream
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns ServerStreamRpcRef
    */
   echoStream(
     requestData: thisProto.EchoRequest,

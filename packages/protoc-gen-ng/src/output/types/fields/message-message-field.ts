@@ -29,31 +29,31 @@ export class MessageMessageField implements MessageField {
     this.asObjectDataType = getDataType(this.proto, this.messageField, true);
   }
 
-  printFromBinaryReader(printer: Printer) {
+  printDeserializeBinaryFromReader(printer: Printer) {
     const varName = `messageInitializer${this.messageField.number}`;
 
     if (this.isArray) {
       printer.add(`case ${this.messageField.number}:
         const ${varName} = new ${this.messageClassName}();
-        reader.readMessage(${varName}, ${this.messageClassName}.fromBinaryReader);
+        reader.readMessage(${varName}, ${this.messageClassName}.deserializeBinaryFromReader);
         (instance.${this.attributeName} = instance.${this.attributeName} || []).push(${varName});`);
     } else {
       printer.add(`case ${this.messageField.number}:
         instance.${this.attributeName} = new ${this.messageClassName}();
-        reader.readMessage(instance.${this.attributeName}, ${this.messageClassName}.fromBinaryReader);`);
+        reader.readMessage(instance.${this.attributeName}, ${this.messageClassName}.deserializeBinaryFromReader);`);
     }
 
     printer.add('break;');
   }
 
-  printToBinaryWriter(printer: Printer) {
+  printSerializeBinaryToWriter(printer: Printer) {
     if (this.isArray) {
       printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
-        writer.writeRepeatedMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.toBinaryWriter);
+        writer.writeRepeatedMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
       }`);
     } else {
       printer.add(`if (instance.${this.attributeName}) {
-        writer.writeMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.toBinaryWriter);
+        writer.writeMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
       }`);
     }
   }

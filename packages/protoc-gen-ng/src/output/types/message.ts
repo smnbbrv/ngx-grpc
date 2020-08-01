@@ -83,22 +83,12 @@ export class Message {
     export class ${this.message.name} implements GrpcMessage {
 
       /**
-       * Serialize message to binary data
-       * @param instance message instance
-       */
-      static toBinary(instance: ${this.message.name}) {
-        const writer = new BinaryWriter();
-        ${this.message.name}.toBinaryWriter(instance, writer);
-        return writer.getResultBuffer();
-      }
-
-      /**
        * Deserialize binary data to message
        * @param instance message instance
        */
-      static fromBinary(bytes: ByteSource) {
+      static deserializeBinary(bytes: ByteSource) {
         const instance = new ${this.message.name}();
-        ${this.message.name}.fromBinaryReader(instance, new BinaryReader(bytes));
+        ${this.message.name}.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
         return instance;
       }
     `);
@@ -110,10 +100,10 @@ export class Message {
     this.printStaticRefineValues(printer);
     printer.newLine();
 
-    this.printStaticFromBinaryReader(printer);
+    this.printStaticDeserializeBinaryFromReader(printer);
     printer.newLine();
 
-    this.printStaticToBinaryWriter(printer);
+    this.printStaticSerializeBinaryToWriter(printer);
     printer.newLine();
 
     this.messageFields.forEach(f => {
@@ -134,6 +124,18 @@ export class Message {
       oneof.printGetter(printer);
       printer.newLine();
     });
+
+    printer.addLine(`
+      /**
+       * Serialize message to binary data
+       * @param instance message instance
+       */
+      serializeBinary() {
+        const writer = new BinaryWriter();
+        ${this.message.name}.serializeBinaryToWriter(this, writer);
+        return writer.getResultBuffer();
+      }
+    `);
 
     this.printToObject(printer);
 
@@ -169,21 +171,21 @@ export class Message {
     printer.addLine('}');
   }
 
-  private printStaticFromBinaryReader(printer: Printer) {
+  private printStaticDeserializeBinaryFromReader(printer: Printer) {
     printer.addLine(`
       /**
        * Deserializes / reads binary message into message instance using provided binary reader
        * @param instance message instance
        * @param reader binary reader instance
        */
-      static fromBinaryReader(instance: ${this.message.name}, reader: BinaryReader) {
+      static deserializeBinaryFromReader(instance: ${this.message.name}, reader: BinaryReader) {
         while (reader.nextField()) {
           if (reader.isEndGroup()) break;
 
           switch (reader.getFieldNumber()) {`);
 
     this.messageFields.forEach(f => {
-      f.printFromBinaryReader(printer);
+      f.printDeserializeBinaryFromReader(printer);
       printer.newLine();
     });
 
@@ -196,17 +198,17 @@ export class Message {
     );
   }
 
-  private printStaticToBinaryWriter(printer: Printer) {
+  private printStaticSerializeBinaryToWriter(printer: Printer) {
     printer.addLine(`
       /**
        * Serializes a message to binary format using provided binary reader
        * @param instance message instance
        * @param writer binary writer instance
        */
-      static toBinaryWriter(instance: ${this.message.name}, writer: BinaryWriter) {
+      static serializeBinaryToWriter(instance: ${this.message.name}, writer: BinaryWriter) {
     `);
     this.messageFields.forEach(f => {
-      f.printToBinaryWriter(printer);
+      f.printSerializeBinaryToWriter(printer);
       printer.newLine();
     });
     printer.addLine('}');
