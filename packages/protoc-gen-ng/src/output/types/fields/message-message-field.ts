@@ -12,6 +12,7 @@ export class MessageMessageField implements MessageField {
 
   private attributeName: string;
   private dataType: string;
+  private asObjectDataType: string;
   private messageClassName: string;
   private isArray: boolean;
 
@@ -25,6 +26,7 @@ export class MessageMessageField implements MessageField {
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.messageClassName = this.proto.getRelativeTypeName(this.messageField.typeName);
     this.dataType = getDataType(this.proto, this.messageField);
+    this.asObjectDataType = getDataType(this.proto, this.messageField, true);
   }
 
   printFromBinaryReader(printer: Printer) {
@@ -95,6 +97,10 @@ export class MessageMessageField implements MessageField {
     } else {
       printer.add(`${this.attributeName}: this.${this.attributeName} ? this.${this.attributeName}.toObject() : undefined,`);
     }
+  }
+
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.asObjectDataType};`);
   }
 
 }

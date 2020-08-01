@@ -27,7 +27,7 @@ export function isFieldMessage(field: ProtoMessageField) {
   return field.type === ProtoMessageFieldType.message || field.type === ProtoMessageFieldType.group;
 }
 
-export function getDataType(proto: Proto, field: ProtoMessageField) {
+export function getDataType(proto: Proto, field: ProtoMessageField, asObjectDataType = false) {
   if (isFieldMap(proto, field)) {
     const [key, value] = getMapKeyValueFields(proto, field);
 
@@ -37,7 +37,9 @@ export function getDataType(proto: Proto, field: ProtoMessageField) {
   const suffix = field.label === ProtoMessageFieldCardinality.repeated ? '[]' : '';
 
   if (field.type === ProtoMessageFieldType.enum || isFieldMessage(field)) {
-    return proto.getRelativeTypeName(field.typeName) + suffix;
+    return proto.getRelativeTypeName(field.typeName)
+      + (asObjectDataType ? '.AsObject' : '')
+      + suffix;
   }
 
   switch (field.type) {

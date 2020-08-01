@@ -109,4 +109,8 @@ export class MapMessageField implements MessageField {
     printer.add(`${this.attributeName}: this.${this.attributeName} ? Object.keys(this.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
   }
 
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }

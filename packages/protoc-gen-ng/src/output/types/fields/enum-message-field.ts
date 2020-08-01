@@ -94,4 +94,8 @@ export class EnumMessageField implements MessageField {
     }
   }
 
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }

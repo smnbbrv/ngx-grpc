@@ -84,4 +84,8 @@ export class BytesMessageField implements MessageField {
     }
   }
 
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }

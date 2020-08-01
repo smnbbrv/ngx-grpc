@@ -9,4 +9,5 @@ export interface MessageField {
   printGetter(printer: Printer): void;
   printSetter(printer: Printer): void;
   printToObjectMapping(printer: Printer): void;
+  printAsObjectMapping(printer: Printer): void;
 }

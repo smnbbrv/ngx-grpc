@@ -120,4 +120,8 @@ export class NumberMessageField implements MessageField {
     }
   }
 
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }

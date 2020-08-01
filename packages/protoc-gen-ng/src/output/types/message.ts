@@ -240,12 +240,26 @@ export class Message {
     printer.addLine('}');
   }
 
+  private printAsObjectInterface(printer: Printer) {
+    printer.addLine(`
+      /**
+       * Standard JavaScript object representation for ${this.message.name}
+       */
+      export interface AsObject {
+    `);
+    this.messageFields.forEach(f => {
+      f.printAsObjectMapping(printer);
+      printer.newLine();
+    });
+    printer.addLine('}');
+  }
+
   private printToObject(printer: Printer) {
     printer.addLine(`
       /**
        * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
        */
-      toObject() {
+      toObject(): ${this.message.name}.AsObject {
     `);
     printer.addLine('return {');
     this.messageFields.forEach(f => {
@@ -258,6 +272,8 @@ export class Message {
 
   private printSubTypes(printer: Printer) {
     printer.addLine(`export module ${this.message.name} {`);
+
+    this.printAsObjectInterface(printer);
 
     this.oneOfs.forEach(oneof => oneof.printEnum(printer));
     this.message.enumTypeList.forEach(protoEnum => new Enum(this.proto, protoEnum).print(printer));

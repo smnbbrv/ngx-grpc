@@ -112,4 +112,8 @@ export class Number64MessageField implements MessageField {
     }
   }
 
+  printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }
