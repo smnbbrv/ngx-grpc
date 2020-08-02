@@ -5,25 +5,39 @@
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
 import { GrpcMessage, RecursivePartial } from '@ngx-grpc/common';
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
-export class EchoRequest implements GrpcMessage {
-  static toBinary(instance: EchoRequest) {
-    const writer = new BinaryWriter();
-    EchoRequest.toBinaryWriter(instance, writer);
-    return writer.getResultBuffer();
-  }
 
-  static fromBinary(bytes: ByteSource) {
+/**
+ * Message implementation for echo.EchoRequest
+ */
+export class EchoRequest implements GrpcMessage {
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
     const instance = new EchoRequest();
-    EchoRequest.fromBinaryReader(instance, new BinaryReader(bytes));
+    EchoRequest.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
     return instance;
   }
 
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param instance message instance
+   */
   static refineValues(instance: EchoRequest) {
     instance.message = instance.message || '';
     instance.shouldThrow = instance.shouldThrow || false;
   }
 
-  static fromBinaryReader(instance: EchoRequest, reader: BinaryReader) {
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param instance message instance
+   * @param reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    instance: EchoRequest,
+    reader: BinaryReader
+  ) {
     while (reader.nextField()) {
       if (reader.isEndGroup()) break;
 
@@ -42,7 +56,12 @@ export class EchoRequest implements GrpcMessage {
     EchoRequest.refineValues(instance);
   }
 
-  static toBinaryWriter(instance: EchoRequest, writer: BinaryWriter) {
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param instance message instance
+   * @param writer binary writer instance
+   */
+  static serializeBinaryToWriter(instance: EchoRequest, writer: BinaryWriter) {
     if (instance.message) {
       writer.writeString(1, instance.message);
     }
@@ -55,8 +74,8 @@ export class EchoRequest implements GrpcMessage {
   private _shouldThrow?: boolean;
 
   /**
-   * Creates an object and applies default Protobuf values
-   * @param EchoRequest value
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param value initial values object or instance of EchoRequest to deeply clone from
    */
   constructor(value?: RecursivePartial<EchoRequest>) {
     value = value || {};
@@ -76,35 +95,76 @@ export class EchoRequest implements GrpcMessage {
   set shouldThrow(value: boolean | undefined) {
     this._shouldThrow = value;
   }
-  toObject() {
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    EchoRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): EchoRequest.AsObject {
     return {
       message: this.message,
-      shouldThrow: this.shouldThrow
+      shouldThrow: this.shouldThrow,
     };
   }
+
+  /**
+   * JSON serializer
+   * Only intended to be used by `JSON.stringify` function. If you want to cast message to standard JavaScript object, use `toObject()` instead
+   */
   toJSON() {
     return this.toObject();
   }
 }
-export module EchoRequest {}
-export class EchoResponse implements GrpcMessage {
-  static toBinary(instance: EchoResponse) {
-    const writer = new BinaryWriter();
-    EchoResponse.toBinaryWriter(instance, writer);
-    return writer.getResultBuffer();
+export module EchoRequest {
+  /**
+   * Standard JavaScript object representation for EchoRequest
+   */
+  export interface AsObject {
+    message?: string;
+    shouldThrow?: boolean;
   }
+}
 
-  static fromBinary(bytes: ByteSource) {
+/**
+ * Message implementation for echo.EchoResponse
+ */
+export class EchoResponse implements GrpcMessage {
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
     const instance = new EchoResponse();
-    EchoResponse.fromBinaryReader(instance, new BinaryReader(bytes));
+    EchoResponse.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
     return instance;
   }
 
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param instance message instance
+   */
   static refineValues(instance: EchoResponse) {
     instance.message = instance.message || '';
   }
 
-  static fromBinaryReader(instance: EchoResponse, reader: BinaryReader) {
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param instance message instance
+   * @param reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    instance: EchoResponse,
+    reader: BinaryReader
+  ) {
     while (reader.nextField()) {
       if (reader.isEndGroup()) break;
 
@@ -120,7 +180,12 @@ export class EchoResponse implements GrpcMessage {
     EchoResponse.refineValues(instance);
   }
 
-  static toBinaryWriter(instance: EchoResponse, writer: BinaryWriter) {
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param instance message instance
+   * @param writer binary writer instance
+   */
+  static serializeBinaryToWriter(instance: EchoResponse, writer: BinaryWriter) {
     if (instance.message) {
       writer.writeString(1, instance.message);
     }
@@ -129,8 +194,8 @@ export class EchoResponse implements GrpcMessage {
   private _message?: string;
 
   /**
-   * Creates an object and applies default Protobuf values
-   * @param EchoResponse value
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param value initial values object or instance of EchoResponse to deeply clone from
    */
   constructor(value?: RecursivePartial<EchoResponse>) {
     value = value || {};
@@ -143,13 +208,39 @@ export class EchoResponse implements GrpcMessage {
   set message(value: string | undefined) {
     this._message = value;
   }
-  toObject() {
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    EchoResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): EchoResponse.AsObject {
     return {
-      message: this.message
+      message: this.message,
     };
   }
+
+  /**
+   * JSON serializer
+   * Only intended to be used by `JSON.stringify` function. If you want to cast message to standard JavaScript object, use `toObject()` instead
+   */
   toJSON() {
     return this.toObject();
   }
 }
-export module EchoResponse {}
+export module EchoResponse {
+  /**
+   * Standard JavaScript object representation for EchoResponse
+   */
+  export interface AsObject {
+    message?: string;
+  }
+}

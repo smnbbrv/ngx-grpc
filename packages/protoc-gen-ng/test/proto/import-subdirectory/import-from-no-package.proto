@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message MessageNoPackage {}
+
+message MessagePossibleConflict {}
+
+enum ExportedEnum { none = 0; }

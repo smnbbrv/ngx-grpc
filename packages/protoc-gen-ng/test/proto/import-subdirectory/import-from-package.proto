@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package some.package.name;
+
+message MessageInPackage {}
+
+message MessagePossibleConflict {}
+
+enum ExportedEnum { none = 0; }

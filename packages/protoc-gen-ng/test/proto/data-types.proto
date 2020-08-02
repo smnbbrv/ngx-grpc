@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package test.datatypes;
+
+enum TestEnum {
+  value0 = 0;
+  value1 = 1;
+  value2 = 2;
+  VALUE3 = 3;
+}
+
+message TestSubMessage { string string = 1; }
+
+message TestTreeItemMessage { TestSubMessage sub = 1; }
+
+message TestMessage {
+  enum TestSubEnum {
+    value0 = 0;
+    value1 = 1;
+    value2 = 2;
+  }
+
+  string string = 1;
+  int32 int32 = 2;
+  bool bool = 3;
+  TestSubMessage subMessage = 5;
+  double double = 6;
+  float float = 7;
+  bytes bytes = 8;
+  int64 int64 = 9;
+  TestEnum enum = 10;
+  fixed32 fixed32 = 11;
+  fixed64 fixed64 = 12;
+  uint32 uint32 = 13;
+  uint64 uint64 = 14;
+  map<string, string> map_string_string = 15;
+  map<int64, TestSubMessage> map_int64_sub = 16;
+  map<bool, string> map_bool_string = 17;
+
+  oneof oneof {
+    string oneofstring = 18;
+    TestSubEnum oneofenum = 19;
+  }
+}
+
+message RepeatedTestMessage {
+  repeated string string = 1;
+  repeated int32 int32 = 2;
+  repeated bool bool = 3;
+  repeated TestSubMessage subMessage = 5;
+  repeated double double = 6;
+  repeated float float = 7;
+  repeated bytes bytes = 8;
+  repeated int64 int64 = 9;
+  repeated TestEnum enum = 10;
+  repeated fixed32 fixed32 = 11;
+  repeated fixed64 fixed64 = 12;
+  repeated uint32 uint32 = 13;
+  repeated uint64 uint64 = 14;
+}

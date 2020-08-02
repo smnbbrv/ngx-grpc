@@ -7,18 +7,21 @@ import { GrpcCallType } from '@ngx-grpc/common';
 import { GrpcWorkerServiceClientDef } from '@ngx-grpc/worker';
 import * as thisProto from './echo.pb';
 
+/**
+ * Client definition for use in worker
+ */
 export const GrpcWorkerEchoServiceClientDef: GrpcWorkerServiceClientDef = {
   serviceId: 'echo.EchoService',
   methods: {
     '/echo.EchoService/EchoOnce': {
       type: GrpcCallType.unary,
       reqclss: thisProto.EchoRequest,
-      resclss: thisProto.EchoResponse
+      resclss: thisProto.EchoResponse,
     },
     '/echo.EchoService/EchoStream': {
       type: GrpcCallType.serverStream,
       reqclss: thisProto.EchoRequest,
-      resclss: thisProto.EchoResponse
-    }
-  }
+      resclss: thisProto.EchoResponse,
+    },
+  },
 };

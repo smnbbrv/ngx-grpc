@@ -2,14 +2,9 @@
 
 Angular gRPC framework.
 
-| Package                                                                                    | Workflow status                                                                                                                                                                            | Changelog                                                                       |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/packages/core)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/packages/common)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/packages/grpc-web-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/grpc-web-client)                         | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/packages/worker)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/packages/worker-client)     | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
+![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Push) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)
+
+[Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)
 
 ## Features
 
@@ -24,19 +19,20 @@ Angular gRPC framework.
 
 ## Example
 
-> The example requires docker & docker-compose to be installed
+> The example requires protoc, docker & docker-compose to be installed
 
-Clone this repository and run `npm ci` in the root directory. This will install all required dependencies.
+Clone this repository and run
 
-Then, build the libs with `npm run build`. 
+```
+npm ci
+npm run build
+npm run examples
+```
 
-Finally, in separate terminal sessions run
+Now you can see following examples:
 
-- `npm run examples:basic` starts the basic example Angular app with standard client
-- `npm run examples:worker` starts the example Angular app which uses worker client
-- `npm run examples:backend` starts the backend and envoy proxy using docker-compose
-
-Run one of the applications and the backend and open your browser at [http://localhost:4200/](http://localhost:4200/).
+- basic grpc-web-client example at [http://localhost:4201/](http://localhost:4201/)
+- worker-client example at [http://localhost:4202/](http://localhost:4202/)
 
 The source code for the examples could be found at [examples](examples) directory.
 
@@ -150,7 +146,7 @@ From now on this particular service is set.
 
 It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
 
-### Service clients methods
+### Service client methods
 
 Each RPC has two corresponding methods, the first emits messages, the second - events. E.g. for `rpc Echo(...)` there would be the following:
 

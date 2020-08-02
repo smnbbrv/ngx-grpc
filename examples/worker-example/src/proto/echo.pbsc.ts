@@ -3,32 +3,37 @@
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   GrpcCallType,
   GrpcClient,
   GrpcClientFactory,
   GrpcClientSettings,
-  GrpcEvent
+  GrpcEvent,
 } from '@ngx-grpc/common';
 import {
   GRPC_CLIENT_FACTORY,
   GrpcHandler,
   takeMessages,
-  throwStatusErrors
+  throwStatusErrors,
 } from '@ngx-grpc/core';
 import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import * as thisProto from './echo.pb';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
+/**
+ * Service client implementation for echo.EchoService
+ */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EchoServiceClient {
   private client: GrpcClient;
 
   constructor(
-    @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS) settings: GrpcClientSettings,
+    @Optional()
+    @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS)
+    settings: GrpcClientSettings,
     @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory,
     private handler: GrpcHandler
   ) {
@@ -36,10 +41,11 @@ export class EchoServiceClient {
   }
 
   /**
-   * Unary RPC. Emits messages and throws errors on non-zero status codes
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return Observable<thisProto.EchoResponse>
+   * Unary RPC for /echo.EchoService/EchoOnce
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.EchoResponse>
    */
   echoOnce(
     requestData: thisProto.EchoRequest,
@@ -52,10 +58,11 @@ export class EchoServiceClient {
   }
 
   /**
-   * Unary RPC. Emits data and status events; does not throw errors by design
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return Observable<GrpcEvent<thisProto.EchoResponse>>
+   * Unary RPC for /echo.EchoService/EchoOnce
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
    */
   echoOnce$eventStream(
     requestData: thisProto.EchoRequest,
@@ -68,15 +75,16 @@ export class EchoServiceClient {
       requestData,
       requestMetadata,
       requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse
+      responseClass: thisProto.EchoResponse,
     });
   }
 
   /**
-   * Server streaming RPC. Emits messages and throws errors on non-zero status codes
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return Observable<thisProto.EchoResponse>
+   * Server streaming RPC for /echo.EchoService/EchoStream
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.EchoResponse>
    */
   echoStream(
     requestData: thisProto.EchoRequest,
@@ -89,10 +97,11 @@ export class EchoServiceClient {
   }
 
   /**
-   * Server streaming RPC. Emits data and status events; does not throw errors by design
-   * @param thisProto.EchoRequest request
-   * @param Metadata metadata
-   * @return Observable<GrpcEvent<thisProto.EchoResponse>>
+   * Server streaming RPC for /echo.EchoService/EchoStream
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
    */
   echoStream$eventStream(
     requestData: thisProto.EchoRequest,
@@ -105,7 +114,7 @@ export class EchoServiceClient {
       requestData,
       requestMetadata,
       requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse
+      responseClass: thisProto.EchoResponse,
     });
   }
 }

@@ -4,17 +4,30 @@ import { Observable } from 'rxjs';
 import { GrpcInterceptor } from './grpc-interceptor';
 import { GRPC_INTERCEPTORS } from './injection-tokens';
 
+/**
+ * Core gRPC transport class. Implements creation and binding of RPCs to the clients.
+ * There is a root GrpcHandler that handles all initial requests;
+ * however for every interception a new instance of GrpcHandler is created and passed to the interceptor
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class GrpcHandler {
 
+  private interceptors: GrpcInterceptor[];
+
   constructor(
-    @Optional() @Inject(GRPC_INTERCEPTORS) private interceptors: GrpcInterceptor[],
+    @Optional() @Inject(GRPC_INTERCEPTORS) configuredInterceptors: GrpcInterceptor | GrpcInterceptor[],
   ) {
-    this.interceptors = interceptors || [];
+    this.interceptors = !configuredInterceptors ? [] : Array.isArray(configuredInterceptors) ? configuredInterceptors : [configuredInterceptors];
   }
 
+  /**
+   * Handles the gRPC request passing it through the interceptors array
+   * Recursively calls all interceptors with a new instance of the GrpcHandler
+   * @param request a GrpcRequest to execute
+   * @returns Observable of events returned by the GrpcClient implementation
+   */
   handle<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>): Observable<GrpcEvent<S>> {
     const interceptors = (this.interceptors || []).slice();
     const interceptor = interceptors.shift();

@@ -5,8 +5,32 @@ import { tap } from 'rxjs/operators';
 import { GrpcHandler } from './grpc-handler';
 import { GrpcInterceptor } from './grpc-interceptor';
 
+/**
+ * A configuration for GrpcConsoleLoggerInterceptor to turn it on or off
+ *
+ * Example:
+ *
+ * ```
+ * providers: [
+ *   { provide: GRPC_CONSOLE_LOGGER_ENABLED, useValue: true },
+ * ]
+ * ```
+ *
+ * or more complex:
+ *
+ * ```
+ * providers: [
+ *   { provide: GRPC_CONSOLE_LOGGER_ENABLED, useFactory: () => localStorage.getItem('GRPC_CONSOLE_LOGGER_ENABLED') === 'true' || !environment.prod },
+ * ]
+ * ```
+ */
 export const GRPC_CONSOLE_LOGGER_ENABLED = new InjectionToken('GRPC_CONSOLE_LOGGER_ENABLED');
 
+/**
+ * Interceptor that implements logging of every request to the browser console
+ *
+ * Can be enabled / disabled by GRPC_CONSOLE_LOGGER_ENABLED injection token
+ */
 @Injectable()
 export class GrpcConsoleLoggerInterceptor implements GrpcInterceptor {
 

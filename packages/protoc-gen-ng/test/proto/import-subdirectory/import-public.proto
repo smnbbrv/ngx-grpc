@@ -1,0 +1,3 @@
+syntax = "proto3";
+
+import public "import-subdirectory/import-from-no-package.proto";

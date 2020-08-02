@@ -16,6 +16,7 @@
     "@types/node": "~8.10.59"
   },
   "devDependencies": {
+    "grpc-tools": "^1.9.1",
     "grpc_tools_node_protoc_ts": "^2.5.10"
   }
 }

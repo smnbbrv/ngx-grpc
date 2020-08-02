@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package package_with_underscores;
+
+service SomeServiceFromUnderscorePackage {
+  rpc SomeEndpoint (SomeRequestMessageFromUnderscorePackage) returns (SomeResponseMessageFromUnderscorePackage) {};
+}
+
+message SomeRequestMessageFromUnderscorePackage {
+  string some_string = 1;
+}
+
+message SomeResponseMessageFromUnderscorePackage {
+  string some_string = 1;
+}

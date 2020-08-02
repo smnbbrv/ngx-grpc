@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "import-subdirectory/import-from-package.proto";
+import "import-subdirectory/import-from-no-package.proto";
+
+package import;
+
+message ImporterMessage {
+  MessageNoPackage sub1 = 1;
+  MessagePossibleConflict sub2 = 2;
+  some.package.name.MessageInPackage sub3 = 3;
+  some.package.name.MessagePossibleConflict sub4 = 4;
+  ExportedEnum enum1 = 5;
+  some.package.name.ExportedEnum enum2 = 6;
+}

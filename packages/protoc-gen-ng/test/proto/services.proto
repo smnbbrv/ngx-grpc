@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message EchoRequest { string message = 1; }
+
+message EchoResponse { string messageReturn = 1; }
+
+message ServerStreamingEchoRequest { string message = 1; }
+
+message ServerStreamingEchoResponse { string messageReturn = 1; }
+
+service EchoService {
+  rpc Echo(EchoRequest) returns (EchoResponse);
+
+  rpc ServerStreamingEcho(ServerStreamingEchoRequest)
+      returns (stream ServerStreamingEchoResponse);
+}

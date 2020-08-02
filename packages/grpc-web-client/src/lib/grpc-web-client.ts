@@ -4,6 +4,9 @@ import { AbstractClientBase, GrpcWebClientBase, Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
+/**
+ * GrpcClientFactory implementation based on grpc-web
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +28,9 @@ export class GrpcWebClientFactory implements GrpcClientFactory {
 
 }
 
+/**
+ * GrpcClient implementation based on grpc-web
+ */
 export class GrpcWebClient implements GrpcClient {
 
   private client: GrpcWebClientBase;
@@ -49,8 +55,8 @@ export class GrpcWebClient implements GrpcClient {
         metadata || {},
         new AbstractClientBase.MethodInfo(
           resclss,
-          (request: Q) => reqclss.toBinary(request),
-          resclss.fromBinary
+          (request: Q) => request.serializeBinary(),
+          resclss.deserializeBinary
         ),
         (error, data) => {
           if (error) {
@@ -82,7 +88,7 @@ export class GrpcWebClient implements GrpcClient {
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo(resclss, (request: Q) => reqclss.toBinary(request), resclss.fromBinary)
+        new AbstractClientBase.MethodInfo(resclss, (request: Q) => request.serializeBinary(), resclss.deserializeBinary)
       );
 
       stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)));

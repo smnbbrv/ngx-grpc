@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test.maps;
+
+message MapSubMessage { string string = 1; }
+
+message MessageWithMap {
+  map<string, string> map_string_string = 1;
+  map<string, MapSubMessage> map_string_msg = 2;
+  map<string, bytes> map_string_bytes = 3;
+}
