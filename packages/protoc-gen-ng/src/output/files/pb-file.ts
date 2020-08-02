@@ -1,4 +1,5 @@
 import { Proto } from '../../input/proto';
+import { Services } from '../../services';
 import { Printer } from '../misc/printer';
 import { Enum } from '../types/enum';
 import { Message } from '../types/message';
@@ -10,6 +11,8 @@ export class PbFile {
   ) { }
 
   print(printer: Printer) {
+    Services.Logger.debug(`Start printing pb for ${this.proto.name}`);
+
     printer.add(this.proto.getImportedDependencies());
 
     this.proto.enumTypeList.forEach(protoEnum => {
@@ -23,6 +26,8 @@ export class PbFile {
 
       message.print(printer);
     });
+
+    Services.Logger.debug(`End printing pb for ${this.proto.name}`);
   }
 
 }

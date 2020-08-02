@@ -2,14 +2,9 @@
 
 Angular gRPC framework.
 
-| Package                                                                                    | Workflow status                                                                                                                                                                            | Changelog                                                                       |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/packages/core)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)                                    | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/packages/common)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/common)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/packages/grpc-web-client) | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/grpc-web-client)                         | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker](https://github.com/ngx-grpc/ngx-grpc/packages/worker)                   | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker)                                  | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/packages/worker-client)     | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Publish) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/worker-client)                           | [Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)      |
-| [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng)                       | ![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/protoc-gen-ng/Push) ![@ngx-grpc/protoc-gen-ng npm version](https://img.shields.io/npm/v/@ngx-grpc/protoc-gen-ng) | [Changelog](https://github.com/ngx-grpc/protoc-gen-ng/blob/master/CHANGELOG.md) |
+![Workflow status](https://img.shields.io/github/workflow/status/ngx-grpc/ngx-grpc/Push) ![Npm version](https://img.shields.io/npm/v/@ngx-grpc/core)
+
+[Changelog](https://github.com/ngx-grpc/ngx-grpc/blob/master/CHANGELOG.md)
 
 ## Features
 
@@ -151,20 +146,19 @@ From now on this particular service is set.
 
 It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
 
-### Service clients methods
+### Service client methods
 
-Each RPC returns `UnaryRpcRef` or `ServerStreamRpcRef` with the following properties:
+Each RPC has two corresponding methods, the first emits messages, the second - events. E.g. for `rpc Echo(...)` there would be the following:
 
-- `data`: `Observable` of messages and throws errors in case of non-zero status codes. This is the most common use-case
-- `events`: `Observable` of `GrpcEvent`s. Events could be of two kinds: `GrpcDataEvent` containing the message inside and `GrpcStatusEvent` containing gRPC status response. Apart from the returned data type there is important difference in the behaviour. There are no errors thrown in this stream (by design). All errors are considered to be normal `GrpcStatusEvent`s. Furthermore, this method is the only one where it is anyhow possible to read the gRPC status code `0` (`OK`) metadata. This method is not that comfortable to use in every place, but it can do things that are not achievable with the method above.
-
-The RPC calls are lazy: the calls are triggered only after `data` or `events` gets subscribed.
+- `echo(...)` - returns `Observable` of messages and throws errors in case of non-zero status codes. This is the most common use-case
+- `echo$eventStream(...)` - returns `Observable` of `GrpcEvent`s. Events could be of two kinds: `GrpcDataEvent` containing the message inside and `GrpcStatusEvent` containing gRPC status response. Apart from the returned data type there is important difference in the behaviour. There are no errors thrown in this stream (by design). All errors are considered to be normal `GrpcStatusEvent`s. Furthermore, this method is the only one where it is anyhow possible to read the gRPC status code `0` (`OK`) metadata. This method is not that comfortable to use in every place, but it can do things that are not achievable with the method above.
 
 There are two custom RxJS operators that could be used on the stream to make it easier:
 
 - `throwStatusErrors` - searches for the non-zero status codes and throws them as errors
-- `takeMessages` - returns only extracted messages from events
+- `takeMessages` - searches for the messages
 
+For usage example look at any of your generated `.pbsc.ts` file. In fact, those two operators turn `echo$eventStream()` into `echo()` from example above.
 
 ### Messages
 

@@ -26,8 +26,6 @@ const ngxGrpcCommon = {
 
 const ngxGrpcCore = {
   GrpcHandler: new Dependency('@ngx-grpc/core', 'GrpcHandler'),
-  UnaryRpcRef: new Dependency('@ngx-grpc/core', 'UnaryRpcRef'),
-  ServerStreamRpcRef: new Dependency('@ngx-grpc/core', 'ServerStreamRpcRef'),
   takeMessages: new Dependency('@ngx-grpc/core', 'takeMessages'),
   throwStatusErrors: new Dependency('@ngx-grpc/core', 'throwStatusErrors'),
   GRPC_CLIENT_FACTORY: new Dependency('@ngx-grpc/core', 'GRPC_CLIENT_FACTORY'),

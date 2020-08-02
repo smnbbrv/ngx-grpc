@@ -3,7 +3,6 @@ import { GrpcCallType, GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/com
 import { Observable } from 'rxjs';
 import { GrpcInterceptor } from './grpc-interceptor';
 import { GRPC_INTERCEPTORS } from './injection-tokens';
-import { ServerStreamRpcRef, UnaryRpcRef } from './rpc-ref';
 
 /**
  * Core gRPC transport class. Implements creation and binding of RPCs to the clients.
@@ -21,22 +20,6 @@ export class GrpcHandler {
     @Optional() @Inject(GRPC_INTERCEPTORS) configuredInterceptors: GrpcInterceptor | GrpcInterceptor[],
   ) {
     this.interceptors = !configuredInterceptors ? [] : Array.isArray(configuredInterceptors) ? configuredInterceptors : [configuredInterceptors];
-  }
-
-  /**
-   * Create a UnaryRpcRef
-   * @param request request to create RPC call from
-   */
-  createUnaryRpcRef<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>) {
-    return new UnaryRpcRef(this.handle(request));
-  }
-
-  /**
-   * Create a ServerStreamRpcRef
-   * @param request request to create RPC call from
-   */
-  createServerStreamRpcRef<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>) {
-    return new ServerStreamRpcRef(this.handle(request));
   }
 
   /**

@@ -47,6 +47,8 @@ function main() {
         );
 
       return protos.reduce((res, proto) => {
+        Services.Logger.debug(`Start processing proto ${proto.name}`);
+
         const basename = proto.getGeneratedFileBaseName();
         const files: any[] = [];
 
@@ -82,11 +84,17 @@ function main() {
 
         files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
 
+        Services.Logger.debug(`End processing proto ${proto.name}`);
+
         return [...res, ...files];
       }, [] as any[]);
     })
     .then(CodeGeneratorResponse())
-    .catch(CodeGeneratorResponseError());
+    .catch(err => {
+      Services.Logger.debug(err);
+      Services.Logger.debug(err.stack);
+      return CodeGeneratorResponseError()(err);
+    });
 }
 
 main();

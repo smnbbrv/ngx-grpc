@@ -11,7 +11,7 @@
     "build:lib:worker": "ng build worker --prod && cpy LICENSE.md dist/worker/",
     "build:lib:worker-client": "ng build worker-client --prod && cpy LICENSE.md dist/worker-client/",
     "build:lib:protoc-gen-ng": "cd packages/protoc-gen-ng && rimraf ../../dist/protoc-gen-ng && tsc -p tsconfig.build.json && chmod +x ../../dist/protoc-gen-ng/main.js && cpy package.json ../../dist/protoc-gen-ng/ && cpy ../../LICENSE.md ../../dist/protoc-gen-ng/ && cpy README.md ../../dist/protoc-gen-ng/",
-    "test": "run-s test:lib",
+    "test": "run-s test:lib:protoc-gen-ng",
     "test:lib": "run-s test:lib:common test:lib:core test:lib:worker test:lib:worker-client test:lib:protoc-gen-ng",
     "test:lib:common": "ng test common --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage",
     "test:lib:core": "ng test core --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage",

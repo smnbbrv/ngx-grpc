@@ -1,5 +1,6 @@
 import { Proto } from '../../input/proto';
 import { ProtoService } from '../../input/proto-service';
+import { Services } from '../../services';
 import { ExternalDependencies } from '../misc/dependencies';
 import { Printer } from '../misc/printer';
 import { ServiceClientConfig } from './service-client-config';
@@ -14,6 +15,8 @@ export class ServiceClient {
   ) { }
 
   print(printer: Printer) {
+    Services.Logger.debug(`Start printing service client ${this.service.name} in proto ${this.proto.name}`);
+
     const tokenName = this.serviceClientConfig.getTokenName();
 
     printer.addDeps(
@@ -59,6 +62,8 @@ export class ServiceClient {
     });
 
     printer.add('}');
+
+    Services.Logger.debug(`End printing service client ${this.service.name} in proto ${this.proto.name}`);
   }
 
 }

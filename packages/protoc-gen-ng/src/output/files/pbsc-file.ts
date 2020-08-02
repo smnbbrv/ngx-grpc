@@ -1,5 +1,6 @@
 import { basename } from 'path';
 import { Proto } from '../../input/proto';
+import { Services } from '../../services';
 import { Printer } from '../misc/printer';
 import { ServiceClient } from '../types/service-client';
 import { ServiceClientConfig } from '../types/service-client-config';
@@ -11,6 +12,8 @@ export class PbscFile {
   ) { }
 
   print(printer: Printer) {
+    Services.Logger.debug(`Start printing pbsc for ${this.proto.name}`);
+
     const serviceClientConfigs: ServiceClientConfig[] = [];
     const serviceClients: ServiceClient[] = [];
 
@@ -33,6 +36,8 @@ export class PbscFile {
     }
 
     serviceClients.forEach(serviceClient => serviceClient.print(printer));
+
+    Services.Logger.debug(`End printing pbsc for ${this.proto.name}`);
   }
 
 }
