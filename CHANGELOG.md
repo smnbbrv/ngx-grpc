@@ -1,3 +1,36 @@
+# [1.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.3...v1.0.0) (2020-08-02)
+
+
+### Bug Fixes
+
+* **core:** handle non-multi interceptors configuration ([e3fa1bf](https://github.com/ngx-grpc/ngx-grpc/commit/e3fa1bf0eb830a009ded661ebaa8c5e207768b0a))
+* **protoc-gen-ng:** properly clone maps in initialization and toObject functions ([3b0844b](https://github.com/ngx-grpc/ngx-grpc/commit/3b0844ba08fc1e63dea05ad5b103d5bf43f4ea96))
+
+
+### Features
+
+* **core:** add types documentation ([896ea98](https://github.com/ngx-grpc/ngx-grpc/commit/896ea98684dd1c96e6c534e28f47cf2e6cb22e51))
+* rename serialize / deserialize methods to be compliant wit h corresponding methods in standard protobuf message ([161dd38](https://github.com/ngx-grpc/ngx-grpc/commit/161dd384e44efed55635406ce91b141651d426cb))
+* **common:** add types documentation ([1f162f0](https://github.com/ngx-grpc/ngx-grpc/commit/1f162f0bcaeb12f58842b04e1395e17f5ece7a26))
+* upgrade to angular 10 ([0236ca7](https://github.com/ngx-grpc/ngx-grpc/commit/0236ca7bd84c990fd881fa89b891ca2d3ed55840))
+* **core:** add UnaryRpcRef and ServerStreamRpcRef ([8be14a7](https://github.com/ngx-grpc/ngx-grpc/commit/8be14a7ddf9d8d2edb0df4ea867075015be4615c))
+* **grpc-web-client:** add types documentation ([ca8ae41](https://github.com/ngx-grpc/ngx-grpc/commit/ca8ae41b0561a0c14c7c72bb0bce66fef514c6be))
+* **protoc-gen-ng:** add AsObject interface for each message type and use it as toObject() return type, closes [#5](https://github.com/ngx-grpc/ngx-grpc/issues/5) ([3afeec4](https://github.com/ngx-grpc/ngx-grpc/commit/3afeec4a9f3c5ea3353271e9bf2d6146c1207ff4))
+* **protoc-gen-ng:** change the output of RPCs to corresponding RpcRef ([f55ebda](https://github.com/ngx-grpc/ngx-grpc/commit/f55ebda61dd82757e9928ffa91e309ad7dd2df2f))
+* **protoc-gen-ng:** extend generated types documentation ([6d74d52](https://github.com/ngx-grpc/ngx-grpc/commit/6d74d52e522ca483df74abf089a8f68ecabcdca8))
+* **protoc-gen-ng:** move from https://github.com/ngx-grpc/protoc-gen-ng ([814db17](https://github.com/ngx-grpc/ngx-grpc/commit/814db17122f57ff43374cdf71b4bfa5a9629f064))
+* **protoc-gen-ng:** preserve enum values case, closes [#11](https://github.com/ngx-grpc/ngx-grpc/issues/11) ([cea22a0](https://github.com/ngx-grpc/ngx-grpc/commit/cea22a08dfbe65523f6d955fba8bc3ae315ff186))
+* **worker:** add types documentation ([c8f4049](https://github.com/ngx-grpc/ngx-grpc/commit/c8f4049f35fe975173337b409f5fd9a5122321d6))
+* **worker-client:** add types documentation ([8b7a10d](https://github.com/ngx-grpc/ngx-grpc/commit/8b7a10dca6ab2d28e65b0b8b886c3b2842888b80))
+
+
+### BREAKING CHANGES
+
+* toBinary is now non-static method and is called serializeBinary; fromBinary, fromBinaryReader and toBinaryWriter are renamed to deserializeBinary, deserializeBinaryFromReader and serializeBinaryToWriter correspondingly
+* **protoc-gen-ng:** every rpc has only one corresponding method ($eventStream methods got removed) and the returned type is changed from Observable to UnaryRpcRef or ServerStreamRpcRef; the RpcRef contains data and events observables that represent the 2 methods that were generated before
+* **protoc-gen-ng:** generated enum values now fully reflect the way they are defined in proto file (the same name is used, unless it is not a reserved JS word)
+* **protoc-gen-ng:** protoc-gen-ng is tracked with the rest of the packages ecosystem and will follow the same versioning system
+
 ## [0.4.3](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.2...v0.4.3) (2020-06-24)
 
 
