@@ -5,9 +5,13 @@ package test.wkt;
 import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
 
 message TestMessage {
   google.protobuf.Any any = 1;
   google.protobuf.Timestamp timestamp = 2;
   google.protobuf.Duration duration = 3;
+  google.protobuf.Empty empty = 4;
+  google.protobuf.Struct struct = 5;
 }

@@ -26,20 +26,20 @@ export class BytesMessageField implements MessageField {
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
-    const readerCall = 'reader.readBytes()';
+    const readerCall = '_reader.readBytes()';
 
     if (this.isArray) {
-      printer.add(`case ${this.messageField.number}: (instance.${this.attributeName} = instance.${this.attributeName} || []).push(${readerCall});`);
+      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(${readerCall});`);
     } else {
-      printer.add(`case ${this.messageField.number}: instance.${this.attributeName} = ${readerCall};`);
+      printer.add(`case ${this.messageField.number}: _instance.${this.attributeName} = ${readerCall};`);
     }
 
     printer.add('break;');
   }
 
   printSerializeBinaryToWriter(printer: Printer) {
-    printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
-      writer.write${this.isArray ? 'Repeated' : ''}Bytes(${this.messageField.number}, instance.${this.attributeName});
+    printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
+      _writer.write${this.isArray ? 'Repeated' : ''}Bytes(${this.messageField.number}, _instance.${this.attributeName});
     }`);
   }
 
@@ -49,9 +49,9 @@ export class BytesMessageField implements MessageField {
 
   printInitializer(printer: Printer) {
     if (this.isArray) {
-      printer.add(`this.${this.attributeName} = (value.${this.attributeName} || []).map(b => b ? b.subarray(0) : new Uint8Array());`);
+      printer.add(`this.${this.attributeName} = (_value.${this.attributeName} || []).map(b => b ? b.subarray(0) : new Uint8Array());`);
     } else {
-      printer.add(`this.${this.attributeName} = value.${this.attributeName}`);
+      printer.add(`this.${this.attributeName} = _value.${this.attributeName}`);
     }
   }
 
@@ -59,9 +59,9 @@ export class BytesMessageField implements MessageField {
     if (this.oneOf) {
       return;
     } else if (this.isArray) {
-      printer.add(`instance.${this.attributeName} = instance.${this.attributeName} || []`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
     } else {
-      printer.add(`instance.${this.attributeName} = instance.${this.attributeName} || new Uint8Array()`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || new Uint8Array()`);
     }
   }
 

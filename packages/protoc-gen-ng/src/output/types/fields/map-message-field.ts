@@ -35,15 +35,15 @@ export class MapMessageField implements MessageField {
     printer.add(
       `case ${this.messageField.number}:
         const ${msgVarName} = {} as any;
-        reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
-        instance.${this.attributeName} = instance.${this.attributeName} || {};
-        instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
+        _reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
+        _instance.${this.attributeName} = _instance.${this.attributeName} || {};
+        _instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
         break;`
     );
   }
 
   printSerializeBinaryToWriter(printer: Printer) {
-    const varName = `instance.${this.attributeName}`;
+    const varName = `_instance.${this.attributeName}`;
     const keysVarName = `keys_${this.messageField.number}`;
     const repeatedVarName = `repeated_${this.messageField.number}`;
     const isStringKey = ProtoMessageFieldType.string || Number64MessageField.isNumber64Field(this.keyField);
@@ -57,7 +57,7 @@ export class MapMessageField implements MessageField {
           .map(key => ({ key: ${castedKey}, value: (${varName} as any)[key] }))
           .reduce((r, v) => [...r, v], [] as any[]);
 
-        writer.writeRepeatedMessage(${this.messageField.number}, ${repeatedVarName}, ${this.mapMessageClassName}.serializeBinaryToWriter);
+        _writer.writeRepeatedMessage(${this.messageField.number}, ${repeatedVarName}, ${this.mapMessageClassName}.serializeBinaryToWriter);
       }
     }`);
   }
@@ -67,22 +67,22 @@ export class MapMessageField implements MessageField {
   }
 
   printInitializer(printer: Printer) {
-    let cloneFn = `value!.${this.attributeName}![k]`;
+    let cloneFn = `_value!.${this.attributeName}![k]`;
 
     if (isFieldMessage(this.valueField)) {
-      cloneFn = `value!.${this.attributeName}![k] ? value!.${this.attributeName}![k].toObject() : undefined,`;
+      cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].toObject() : undefined,`;
     } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
-      cloneFn = `value!.${this.attributeName}![k] ? value!.${this.attributeName}![k].subarray(0) : undefined`;
+      cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].subarray(0) : undefined`;
     }
 
-    printer.add(`this.${this.attributeName} = value!.${this.attributeName} ? Object.keys(value!.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
+    printer.add(`this.${this.attributeName} = _value!.${this.attributeName} ? Object.keys(_value!.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
   }
 
   printDefaultValueSetter(printer: Printer) {
     if (this.oneOf) {
       return;
     } else {
-      printer.add(`instance.${this.attributeName} = instance.${this.attributeName} || {}`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || {}`);
     }
   }
 
