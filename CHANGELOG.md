@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.0...v1.0.1) (2020-08-05)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** add support of strict typescript compiler options: noUnusedParameters, noImplicitReturns, noImplicitThis and noUnusedLocals, closes [#9](https://github.com/ngx-grpc/ngx-grpc/issues/9) ([a90af3f](https://github.com/ngx-grpc/ngx-grpc/commit/a90af3f580de0d0659bba4d4dc970d176c01d7e1))
+
 # [1.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.3...v1.0.0) (2020-08-02)
 
 
