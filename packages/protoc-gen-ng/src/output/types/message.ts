@@ -160,9 +160,9 @@ export class Message {
     printer.addLine(`
       /**
        * Check all the properties and set default protobuf values if necessary
-       * @param instance message instance
+       * @param _instance message instance
        */
-      static refineValues(instance: ${this.message.name}) {
+      static refineValues(_instance: ${this.message.name}) {
     `);
     this.messageFields.forEach(f => {
       f.printDefaultValueSetter(printer);
@@ -175,25 +175,25 @@ export class Message {
     printer.addLine(`
       /**
        * Deserializes / reads binary message into message instance using provided binary reader
-       * @param instance message instance
-       * @param reader binary reader instance
+       * @param _instance message instance
+       * @param _reader binary reader instance
        */
-      static deserializeBinaryFromReader(instance: ${this.message.name}, reader: BinaryReader) {
-        while (reader.nextField()) {
-          if (reader.isEndGroup()) break;
+      static deserializeBinaryFromReader(_instance: ${this.message.name}, _reader: BinaryReader) {
+        while (_reader.nextField()) {
+          if (_reader.isEndGroup()) break;
 
-          switch (reader.getFieldNumber()) {`);
+          switch (_reader.getFieldNumber()) {`);
 
     this.messageFields.forEach(f => {
       f.printDeserializeBinaryFromReader(printer);
       printer.newLine();
     });
 
-    printer.addLine(`default: reader.skipField();
+    printer.addLine(`default: _reader.skipField();
           }
         }
 
-        ${this.message.name}.refineValues(instance);
+        ${this.message.name}.refineValues(_instance);
       }`,
     );
   }
@@ -202,10 +202,10 @@ export class Message {
     printer.addLine(`
       /**
        * Serializes a message to binary format using provided binary reader
-       * @param instance message instance
-       * @param writer binary writer instance
+       * @param _instance message instance
+       * @param _writer binary writer instance
        */
-      static serializeBinaryToWriter(instance: ${this.message.name}, writer: BinaryWriter) {
+      static serializeBinaryToWriter(_instance: ${this.message.name}, _writer: BinaryWriter) {
     `);
     this.messageFields.forEach(f => {
       f.printSerializeBinaryToWriter(printer);
@@ -227,11 +227,11 @@ export class Message {
     printer.addLine(`
       /**
        * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-       * @param value initial values object or instance of ${this.message.name} to deeply clone from
+       * @param _value initial values object or instance of ${this.message.name} to deeply clone from
        */
-      constructor(value?: RecursivePartial<${this.message.name}>) {
+      constructor(_value?: RecursivePartial<${this.message.name}>) {
     `);
-    printer.addLine('value = value || {};');
+    printer.addLine('_value = _value || {};');
 
     this.messageFields.forEach(f => {
       f.printInitializer(printer);

@@ -9,10 +9,14 @@
       "dom"
     ],
     "rootDir": ".",
-    "noImplicitAny": false,
-    "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strict": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
     "types": [
       "node",
       "jest"

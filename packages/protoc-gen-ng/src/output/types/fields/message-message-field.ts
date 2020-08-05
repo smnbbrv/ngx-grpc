@@ -35,12 +35,12 @@ export class MessageMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`case ${this.messageField.number}:
         const ${varName} = new ${this.messageClassName}();
-        reader.readMessage(${varName}, ${this.messageClassName}.deserializeBinaryFromReader);
-        (instance.${this.attributeName} = instance.${this.attributeName} || []).push(${varName});`);
+        _reader.readMessage(${varName}, ${this.messageClassName}.deserializeBinaryFromReader);
+        (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(${varName});`);
     } else {
       printer.add(`case ${this.messageField.number}:
-        instance.${this.attributeName} = new ${this.messageClassName}();
-        reader.readMessage(instance.${this.attributeName}, ${this.messageClassName}.deserializeBinaryFromReader);`);
+        _instance.${this.attributeName} = new ${this.messageClassName}();
+        _reader.readMessage(_instance.${this.attributeName}, ${this.messageClassName}.deserializeBinaryFromReader);`);
     }
 
     printer.add('break;');
@@ -48,12 +48,12 @@ export class MessageMessageField implements MessageField {
 
   printSerializeBinaryToWriter(printer: Printer) {
     if (this.isArray) {
-      printer.add(`if (instance.${this.attributeName} && instance.${this.attributeName}.length) {
-        writer.writeRepeatedMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
+      printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
+        _writer.writeRepeatedMessage(${this.messageField.number}, _instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
       }`);
     } else {
-      printer.add(`if (instance.${this.attributeName}) {
-        writer.writeMessage(${this.messageField.number}, instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
+      printer.add(`if (_instance.${this.attributeName}) {
+        _writer.writeMessage(${this.messageField.number}, _instance.${this.attributeName} as any, ${this.messageClassName}.serializeBinaryToWriter);
       }`);
     }
   }
@@ -64,9 +64,9 @@ export class MessageMessageField implements MessageField {
 
   printInitializer(printer: Printer) {
     if (this.isArray) {
-      printer.add(`this.${this.attributeName} = (value.${this.attributeName} || []).map(m => new ${this.messageClassName}(m));`);
+      printer.add(`this.${this.attributeName} = (_value.${this.attributeName} || []).map(m => new ${this.messageClassName}(m));`);
     } else {
-      printer.add(`this.${this.attributeName} = value.${this.attributeName} ? new ${this.messageClassName}(value.${this.attributeName}) : undefined;`);
+      printer.add(`this.${this.attributeName} = _value.${this.attributeName} ? new ${this.messageClassName}(_value.${this.attributeName}) : undefined;`);
     }
   }
 
@@ -74,9 +74,9 @@ export class MessageMessageField implements MessageField {
     if (this.oneOf) {
       return;
     } else if (this.isArray) {
-      printer.add(`instance.${this.attributeName} = instance.${this.attributeName} || []`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
     } else {
-      printer.add(`instance.${this.attributeName} = instance.${this.attributeName} || undefined`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || undefined`);
     }
   }
 
