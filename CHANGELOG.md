@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.1...v1.0.2) (2020-09-17)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly handle packed fields, close [#19](https://github.com/ngx-grpc/ngx-grpc/issues/19) ([45c630d](https://github.com/ngx-grpc/ngx-grpc/commit/45c630d60bcef10740ee267099fbe14d9b371e84))
+
 ## [1.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.0...v1.0.1) (2020-08-05)
 
 
