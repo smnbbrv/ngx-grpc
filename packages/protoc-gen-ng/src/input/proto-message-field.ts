@@ -16,6 +16,7 @@ export class ProtoMessageField {
     lazy: boolean;
     uninterpretedOptionList: any[];
     weak: boolean;
+    packed: boolean;
   };
 
   constructor(value: ProtoMessageField) {

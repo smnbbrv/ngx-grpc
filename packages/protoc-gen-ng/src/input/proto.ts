@@ -21,6 +21,7 @@ export class Proto {
   enumTypeList: ProtoEnum[];
   serviceList: ProtoService[];
   extensionList: any[];
+  syntax: string;
 
   resolved: {
     dependencies: Proto[];
@@ -40,6 +41,7 @@ export class Proto {
     this.enumTypeList = value.enumTypeList.map(e => new ProtoEnum(e));
     this.serviceList = value.serviceList.map(e => new ProtoService(e));
     this.extensionList = value.extensionList;
+    this.syntax = value.syntax;
 
     this.index();
   }

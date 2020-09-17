@@ -3,7 +3,7 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
-import { getDataType } from '../../misc/helpers';
+import { getDataType, isPacked } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
@@ -13,6 +13,7 @@ export class EnumMessageField implements MessageField {
   private attributeName: string;
   private dataType: string;
   private isArray: boolean;
+  private isPacked: boolean;
 
   constructor(
     private proto: Proto,
@@ -22,23 +23,28 @@ export class EnumMessageField implements MessageField {
   ) {
     this.attributeName = camelizeSafe(this.messageField.name);
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
+    this.isPacked = isPacked(this.proto, this.messageField);
     this.dataType = getDataType(this.proto, this.messageField);
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
-    const readerCall = '_reader.readEnum()';
-
-    if (this.isArray) {
-      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(${readerCall});`);
+    if (this.isPacked) {
+      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(...(_reader.readPackedEnum() || []));`);
+    } else if (this.isArray) {
+      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(_reader.readEnum());`);
     } else {
-      printer.add(`case ${this.messageField.number}: _instance.${this.attributeName} = ${readerCall};`);
+      printer.add(`case ${this.messageField.number}: _instance.${this.attributeName} = _reader.readEnum();`);
     }
 
     printer.add('break;');
   }
 
   printSerializeBinaryToWriter(printer: Printer) {
-    if (this.isArray) {
+    if (this.isPacked) {
+      printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
+        _writer.writePackedEnum(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
+    } else if (this.isArray) {
       printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
         _writer.writeRepeatedEnum(${this.messageField.number}, _instance.${this.attributeName});
       }`);

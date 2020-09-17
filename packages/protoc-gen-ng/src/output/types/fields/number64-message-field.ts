@@ -3,12 +3,18 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality, ProtoMessageFieldType } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
-import { getDataType } from '../../misc/helpers';
+import { getDataType, isPacked } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
 
 export class Number64MessageField implements MessageField {
+
+  private attributeName: string;
+  private dataType: string;
+  private isPacked: boolean;
+  private protoDataType: string; // used in reader and writer as part of the method call
+  private isArray: boolean;
 
   constructor(
     private proto: Proto,
@@ -18,6 +24,7 @@ export class Number64MessageField implements MessageField {
   ) {
     this.attributeName = camelizeSafe(this.messageField.name);
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
+    this.isPacked = isPacked(this.proto, this.messageField);
     this.dataType = getDataType(this.proto, this.messageField);
 
     switch (this.messageField.type) {
@@ -29,11 +36,6 @@ export class Number64MessageField implements MessageField {
       default: throw new Error('Unknown int64 type ' + this.messageField.type);
     }
   }
-
-  private attributeName: string;
-  private dataType: string;
-  private protoDataType: string; // used in reader and writer as part of the method call
-  private isArray: boolean;
 
   static isNumber64Field(field: ProtoMessageField) {
     const number64Types = [
@@ -48,19 +50,23 @@ export class Number64MessageField implements MessageField {
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
-    const readerCall = '_reader.read' + this.protoDataType + '()';
-
-    if (this.isArray) {
-      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(${readerCall});`);
+    if (this.isPacked) {
+      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(...(_reader.readPacked${this.protoDataType}() || []));`);
+    } else if (this.isArray) {
+      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(_reader.read${this.protoDataType}());`);
     } else {
-      printer.add(`case ${this.messageField.number}: _instance.${this.attributeName} = ${readerCall};`);
+      printer.add(`case ${this.messageField.number}: _instance.${this.attributeName} = _reader.read${this.protoDataType}();`);
     }
 
     printer.add('break;');
   }
 
   printSerializeBinaryToWriter(printer: Printer) {
-    if (this.isArray) {
+    if (this.isPacked) {
+      printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
+        _writer.writePacked${this.protoDataType}(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
+    } else if (this.isArray) {
       printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
         _writer.writeRepeated${this.protoDataType}(${this.messageField.number}, _instance.${this.attributeName});
       }`);
