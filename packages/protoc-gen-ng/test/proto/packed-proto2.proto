@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package packed.proto2;
+
+enum TestEnum { value0 = 0; }
+
+message TestMessage {
+  repeated int64 int64ExplicitlyPacked = 1 [packed = true];
+  repeated int64 int64 = 2;
+  repeated TestEnum enumExplicitlyPacked = 3 [packed = true];
+  repeated TestEnum enum = 4;
+  repeated int32 int32ExplicitlyPacked = 5 [packed = true];
+  repeated int32 int32 = 6;
+  repeated bool boolExplicitlyPacked = 7 [packed = true];
+  repeated bool bool = 8;
+}
