@@ -46,13 +46,13 @@ export class GrpcConsoleLoggerInterceptor implements GrpcInterceptor {
       return next.handle(request).pipe(
         tap(event => {
           if (event instanceof GrpcDataEvent) {
-            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, this.dataStyle);
+            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.client.settings.host}${request.path}`, this.dataStyle);
             console.log('%c>>', this.dataStyle, request.requestData.toObject());
             console.log('%c**', this.dataStyle, request.requestMetadata);
             console.log('%c<<', this.dataStyle, event.data.toObject());
             console.groupEnd();
           } else if (event.code !== 0) {
-            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, this.errorStyle);
+            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.client.settings.host}${request.path}`, this.errorStyle);
             console.log('%c>>', this.errorStyle, request.requestData.toObject());
             console.error('%c<<', this.errorStyle, event);
             console.groupEnd();
