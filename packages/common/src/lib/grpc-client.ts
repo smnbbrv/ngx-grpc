@@ -28,6 +28,11 @@ export interface GrpcClientFactory {
 export interface GrpcClient {
 
   /**
+   * Settings for the client
+   */
+  settings: GrpcClientSettings;
+
+  /**
    * Handle unary RPC
    * @param path gRPC method path (rpc path)
    * @param req request data
