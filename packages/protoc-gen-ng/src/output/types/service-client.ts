@@ -37,7 +37,7 @@ export class ServiceClient {
        * Service client implementation for ${serviceId}
        */
       @Injectable({
-        providedIn: 'root',
+        providedIn: 'any',
       })
       export class ${this.service.name}Client {
 
