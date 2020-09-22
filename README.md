@@ -61,6 +61,8 @@ Where:
 
 ## Generate the code
 
+### MacOS / Linux
+
 Add `proto:generate` script to your `package.json` `scripts` section:
 
 ```json
@@ -88,6 +90,18 @@ Example:
 ```
 
 Finally, run `npm run proto:generate` every time you want to (re)generate the code
+
+### Windows
+
+Unfortunately the way to generate files on Windows slightly differs. Here is a sophisticated example that shows how to scan windows folder with proto files and pass it to protoc-gen-ng.
+
+```json
+{
+  "scripts": {
+    "proto:generate:win": "for /f %G in ('dir /b ..\\proto\\*.proto') do grpc_tools_node_protoc --plugin=protoc-gen-ng=.\\node_modules\\.bin\\protoc-gen-ng.cmd --ng_out=.\\output\\path -I ..\\proto ..\\proto\\%G",
+  }
+}
+```
 
 ## Usage
 
