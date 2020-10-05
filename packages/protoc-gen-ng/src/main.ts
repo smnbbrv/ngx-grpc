@@ -17,7 +17,7 @@ function main() {
   CodeGeneratorRequest()
     .then(r => {
       const protocInput = r.toObject();
-      const protos = protocInput.protoFileList.map(proto => new Proto(proto));
+      const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
       Services.Config = Config.fromParameter(protocInput.parameter);
       Services.Logger = new Logger();
@@ -28,23 +28,7 @@ function main() {
         writeFileSync(join('debug', 'parsed-protoc-gen-ng.json'), JSON.stringify(protos, null, 2), 'utf-8');
       }
 
-      protos.forEach(p => {
-        p.resolved.dependencies = p.dependencyList.map(d => protos.find(pp => pp.name === d) as Proto);
-        p.resolved.publicDependencies = p.publicDependencyList.map(i => p.resolved.dependencies[i]);
-      });
-
-      // TODO add cascade public import. Currently works with one-level only
-      protos
-        .filter(p => p.resolved.publicDependencies.length)
-        .forEach(protoWithPublicImport =>
-          protos
-            .filter(pp => pp.resolved.dependencies.includes(protoWithPublicImport))
-            .forEach(protoImportingProtoWithPublicImport => {
-              Services.Logger.debug(`${protoImportingProtoWithPublicImport.name} reimports ${protoWithPublicImport.resolved.publicDependencies.map(p => p.name).join(', ')} via ${protoWithPublicImport.name}`);
-
-              protoImportingProtoWithPublicImport.resolved.dependencies.push(...protoWithPublicImport.resolved.publicDependencies);
-            })
-        );
+      protos.forEach(p => p.setupDependencies(protos));
 
       return protos.reduce((res, proto) => {
         Services.Logger.debug(`Start processing proto ${proto.name}`);

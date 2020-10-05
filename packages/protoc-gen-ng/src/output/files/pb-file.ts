@@ -13,6 +13,7 @@ export class PbFile {
   print(printer: Printer) {
     Services.Logger.debug(`Start printing pb for ${this.proto.name}`);
 
+    printer.add(this.proto.getReexportedDependencies());
     printer.add(this.proto.getImportedDependencies());
 
     this.proto.enumTypeList.forEach(protoEnum => {

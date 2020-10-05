@@ -26,7 +26,6 @@ export class Proto {
   resolved: {
     dependencies: Proto[];
     publicDependencies: Proto[];
-    weakDependencies: Proto[];
   } = {} as any;
 
   messageIndex = new Map<string, MessageIndexMeta>();
@@ -71,6 +70,11 @@ export class Proto {
     indexEnums(this.pb_package ? '.' + this.pb_package : '', this.enumTypeList);
   }
 
+  setupDependencies(protos: Proto[]) {
+    this.resolved.dependencies = this.dependencyList.map(d => protos.find(pp => pp.name === d) as Proto);
+    this.resolved.publicDependencies = this.resolved.dependencies.filter((d, i) => this.publicDependencyList.includes(i));
+  }
+
   resolveTypeMetadata(pbType: string) {
     let meta = this.messageIndex.get(pbType);
 
@@ -93,13 +97,25 @@ export class Proto {
       return meta;
     }
 
-    Services.Logger.debug(`Cannot find type ${pbType} in proto ${this.name}`);
     throw new Error('Error finding ' + pbType);
   }
 
-  getDependencyPackageName(proto: Proto) {
-    const name = proto.pb_package ? proto.pb_package.replace(/\.([a-z])/g, v => v.toUpperCase()).replace(/\./g, '') : 'noPackage';
-    const index = String(this.resolved.dependencies.indexOf(proto)).padStart(3, '0'); // we always need index to avoid accidental collisions, see type.pb.ts
+  private getDependencyCarrier(dependency: Proto): Proto {
+    const hasReexported = (p: Proto, d: Proto) => p.resolved.publicDependencies.includes(d) || p.resolved.publicDependencies.some(dd => hasReexported(dd, d));
+
+    const carrier = this.resolved.dependencies.find(p => p === dependency || hasReexported(p, dependency));
+
+    if (carrier) {
+      return carrier;
+    } else {
+      throw new Error(`Cannot find dependency ${dependency.name} from proto ${this.name}`);
+    }
+  }
+
+  getDependencyPackageName(dependency: Proto) {
+    const carrier = this.getDependencyCarrier(dependency);
+    const name = carrier.pb_package ? carrier.pb_package.replace(/\.([a-z])/g, v => v.toUpperCase()).replace(/\./g, '') : 'noPackage';
+    const index = String(this.resolved.dependencies.indexOf(carrier)).padStart(3, '0'); // we always need index to avoid accidental collisions, see type.pb.ts
 
     return name + index;
   }
@@ -115,6 +131,12 @@ export class Proto {
     }
 
     return this.getDependencyPackageName(meta.proto) + '.' + typeName;
+  }
+
+  getReexportedDependencies() {
+    const root = Array(this.name.split('/').length - 1).fill('..').join('/');
+
+    return this.resolved.publicDependencies.map(pp => `export * from '${root || '.'}/${pp.getGeneratedFileBaseName()}';`).join('\n');
   }
 
   getImportedDependencies() {
