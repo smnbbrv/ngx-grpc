@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.2...v1.0.3) (2020-10-05)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** fix recursive public imports & fix possible import duplication, see [#13](https://github.com/ngx-grpc/ngx-grpc/issues/13) ([d60dffd](https://github.com/ngx-grpc/ngx-grpc/commit/d60dffd071f1c583c89245e3b4681d64879c448f))
+
 ## [1.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.1...v1.0.2) (2020-09-17)
 
 
