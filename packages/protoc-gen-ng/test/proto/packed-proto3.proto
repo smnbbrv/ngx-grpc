@@ -13,4 +13,5 @@ message TestMessage {
   repeated int32 int32 = 6;
   repeated bool boolExplicitlyPacked = 7 [packed = true];
   repeated bool bool = 8;
+  repeated int64 int64ExplicitlyNotPacked = 9 [packed = false];
 }

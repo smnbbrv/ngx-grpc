@@ -67,20 +67,26 @@ export function getDataType(proto: Proto, field: ProtoMessageField, asObjectData
 }
 
 export function isPacked(proto: Proto, field: ProtoMessageField) {
-  return field.options.packed || proto.syntax === 'proto3' && field.label === ProtoMessageFieldCardinality.repeated && [
-    ProtoMessageFieldType.int32,
-    ProtoMessageFieldType.int64,
-    ProtoMessageFieldType.uint32,
-    ProtoMessageFieldType.uint64,
-    ProtoMessageFieldType.sint32,
-    ProtoMessageFieldType.sint64,
-    ProtoMessageFieldType.fixed32,
-    ProtoMessageFieldType.fixed64,
-    ProtoMessageFieldType.sfixed32,
-    ProtoMessageFieldType.sfixed64,
-    ProtoMessageFieldType.float,
-    ProtoMessageFieldType.double,
-    ProtoMessageFieldType.bool,
-    ProtoMessageFieldType.enum,
-  ].includes(field.type);
+  const explicitlyPacked = !!field.options.packed;
+  const implicitlyPacked = proto.syntax === 'proto3'
+    && typeof field.options.packed === 'undefined'
+    && field.label === ProtoMessageFieldCardinality.repeated
+    && [
+      ProtoMessageFieldType.int32,
+      ProtoMessageFieldType.int64,
+      ProtoMessageFieldType.uint32,
+      ProtoMessageFieldType.uint64,
+      ProtoMessageFieldType.sint32,
+      ProtoMessageFieldType.sint64,
+      ProtoMessageFieldType.fixed32,
+      ProtoMessageFieldType.fixed64,
+      ProtoMessageFieldType.sfixed32,
+      ProtoMessageFieldType.sfixed64,
+      ProtoMessageFieldType.float,
+      ProtoMessageFieldType.double,
+      ProtoMessageFieldType.bool,
+      ProtoMessageFieldType.enum,
+    ].includes(field.type);
+
+  return explicitlyPacked || implicitlyPacked;
 }
