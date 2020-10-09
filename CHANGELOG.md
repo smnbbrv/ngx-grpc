@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.3...v1.0.4) (2020-10-09)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly handle explicit [packed=false] fields ([5abae75](https://github.com/ngx-grpc/ngx-grpc/commit/5abae75e5f01cc5bbedf65203e9732b53c12f88d))
+
 ## [1.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.2...v1.0.3) (2020-10-05)
 
 
