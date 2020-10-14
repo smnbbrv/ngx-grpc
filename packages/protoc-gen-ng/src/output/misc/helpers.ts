@@ -44,12 +44,13 @@ export function getDataType(proto: Proto, field: ProtoMessageField, asObjectData
 
   switch (field.type) {
     case ProtoMessageFieldType.string:
+      return 'string' + suffix;
     case ProtoMessageFieldType.fixed64:
     case ProtoMessageFieldType.int64:
     case ProtoMessageFieldType.sfixed64:
     case ProtoMessageFieldType.sint64:
     case ProtoMessageFieldType.uint64:
-      return 'string' + suffix;
+      return (isNumberString(field) ? 'string' : 'number') + suffix;
     case ProtoMessageFieldType.bool:
       return 'boolean' + suffix;
     case ProtoMessageFieldType.bytes:
@@ -90,3 +91,38 @@ export function isPacked(proto: Proto, field: ProtoMessageField) {
 
   return explicitlyPacked || implicitlyPacked;
 }
+
+const alwaysNumber = [
+  ProtoMessageFieldType.double,
+  ProtoMessageFieldType.fixed32,
+  ProtoMessageFieldType.float,
+  ProtoMessageFieldType.int32,
+  ProtoMessageFieldType.sfixed32,
+  ProtoMessageFieldType.sint32,
+  ProtoMessageFieldType.uint32,
+];
+
+const implicitlyString = [
+  ProtoMessageFieldType.fixed64,
+  ProtoMessageFieldType.int64,
+  ProtoMessageFieldType.sfixed64,
+  ProtoMessageFieldType.sint64,
+  ProtoMessageFieldType.uint64,
+];
+
+export function isNumberNumber(field: ProtoMessageField) {
+  const always = alwaysNumber.includes(field.type);
+  const explicitly = implicitlyString.includes(field.type) && field.options.jstype === 2;
+
+  return isNumeric(field) && (always || explicitly);
+}
+
+export function isNumberString(field: ProtoMessageField) {
+  return isNumeric(field) && !isNumberNumber(field);
+}
+
+export function isNumeric(field: ProtoMessageField) {
+  return [...alwaysNumber, ...implicitlyString].includes(field.type);
+}
+
+

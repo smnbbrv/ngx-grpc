@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package jstype;
+
+enum TestEnum { value0 = 0; }
+
+message TestMessage {
+  repeated int64 int64Normal = 1 [jstype = JS_NORMAL];
+  repeated int64 int64String = 2 [jstype = JS_STRING];
+  repeated int64 int64Number = 3 [jstype = JS_NUMBER];
+  repeated uint64 uint64Normal = 4 [jstype = JS_NORMAL];
+  repeated uint64 uint64String = 5 [jstype = JS_STRING];
+  repeated uint64 uint64Number = 6 [jstype = JS_NUMBER];
+  repeated sint64 sint64Normal = 7 [jstype = JS_NORMAL];
+  repeated sint64 sint64String = 8 [jstype = JS_STRING];
+  repeated sint64 sint64Number = 9 [jstype = JS_NUMBER];
+  repeated fixed64 fixed64Normal = 10 [jstype = JS_NORMAL];
+  repeated fixed64 fixed64String = 11 [jstype = JS_STRING];
+  repeated fixed64 fixed64Number = 12 [jstype = JS_NUMBER];
+  repeated sfixed64 sfixed64Normal = 13 [jstype = JS_NORMAL];
+  repeated sfixed64 sfixed64String = 14 [jstype = JS_STRING];
+  repeated sfixed64 sfixed64Number = 15 [jstype = JS_NUMBER];
+}
