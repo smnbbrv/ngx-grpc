@@ -69,7 +69,7 @@ export class MapMessageField implements MessageField {
     let cloneFn = `_value!.${this.attributeName}![k]`;
 
     if (isFieldMessage(this.valueField)) {
-      cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].toObject() : undefined,`;
+      cloneFn = `_value!.${this.attributeName}![k] ? new ${getDataType(this.proto, this.valueField)}(_value!.${this.attributeName}![k]) : undefined,`;
     } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
       cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].subarray(0) : undefined`;
     }
@@ -100,7 +100,7 @@ export class MapMessageField implements MessageField {
     let cloneFn = `this.${this.attributeName}![k]`;
 
     if (isFieldMessage(this.valueField)) {
-      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toObject() : undefined,`;
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toObject() : undefined`;
     } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
       cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].subarray(0) : undefined`;
     }
