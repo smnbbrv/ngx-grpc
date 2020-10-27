@@ -53,7 +53,7 @@ export class GrpcWebClient implements GrpcClient {
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo(
+        new AbstractClientBase.MethodInfo( // TODO change to MethodDescriptor when it is exported from grpc-web
           resclss,
           (request: Q) => request.serializeBinary(),
           resclss.deserializeBinary
@@ -88,7 +88,7 @@ export class GrpcWebClient implements GrpcClient {
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo(resclss, (request: Q) => request.serializeBinary(), resclss.deserializeBinary)
+        new AbstractClientBase.MethodInfo(resclss, (request: Q) => request.serializeBinary(), resclss.deserializeBinary) // TODO change to MethodDescriptor when it is exported from grpc-web
       );
 
       stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)));

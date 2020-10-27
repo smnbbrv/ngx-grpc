@@ -91,6 +91,7 @@ export class GrpcWorker {
     const request = new reqclss(message.request);
     const url = service.settings.host + message.path;
     const metadata = message.metadata || {};
+    // TODO change to MethodDescriptor when it is exported from grpc-web
     const info = new AbstractClientBase.MethodInfo(resclss, (rq: GrpcMessage) => rq.serializeBinary(), resclss.deserializeBinary);
 
     if (type === GrpcCallType.unary) {
