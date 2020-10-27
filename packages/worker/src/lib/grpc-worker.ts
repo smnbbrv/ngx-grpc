@@ -1,5 +1,5 @@
 import { GrpcCallType, GrpcClientSettings, GrpcMessage } from '@ngx-grpc/common';
-import { AbstractClientBase, Error, GrpcWebClientBase, Status } from 'grpc-web';
+import { Error, GrpcWebClientBase, MethodDescriptor, Status } from 'grpc-web';
 import { GrpcWorkerApi } from './api';
 import { GrpcWorkerServiceClientDef } from './service-client-def';
 
@@ -91,11 +91,17 @@ export class GrpcWorker {
     const request = new reqclss(message.request);
     const url = service.settings.host + message.path;
     const metadata = message.metadata || {};
-    // TODO change to MethodDescriptor when it is exported from grpc-web
-    const info = new AbstractClientBase.MethodInfo(resclss, (rq: GrpcMessage) => rq.serializeBinary(), resclss.deserializeBinary);
+    const descriptor = new MethodDescriptor(
+      message.path,
+      type === GrpcCallType.unary ? 'unary' : 'server_streaming',
+      reqclss,
+      resclss,
+      (req: GrpcMessage) => req.serializeBinary(),
+      resclss.deserializeBinary
+    );
 
     if (type === GrpcCallType.unary) {
-      const stream = service.client.rpcCall(url, request, metadata, info, (error, response: GrpcMessage) => {
+      const stream = service.client.rpcCall(url, request, metadata, descriptor, (error, response: GrpcMessage) => {
         if (error) {
           this.requestCancelHandlers.delete(message.id);
           respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.error, error });
@@ -114,7 +120,7 @@ export class GrpcWorker {
 
       this.requestCancelHandlers.set(message.id, () => stream.cancel());
     } else {
-      const stream = service.client.serverStreaming(url, request, metadata, info);
+      const stream = service.client.serverStreaming(url, request, metadata, descriptor);
 
       stream.on('error', (error: Error) => {
         this.requestCancelHandlers.delete(message.id);
