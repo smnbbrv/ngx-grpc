@@ -29,6 +29,7 @@ function main() {
       }
 
       protos.forEach(p => p.setupDependencies(protos));
+      protos.forEach(p => p.resolveTransitiveDependencies());
 
       return protos.reduce((res, proto) => {
         Services.Logger.debug(`Start processing proto ${proto.name}`);
