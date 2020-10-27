@@ -21,7 +21,7 @@
     "test:lib:protoc-gen-ng": "jest -c packages/protoc-gen-ng/jest.config.js",
     "test:lib:protoc-gen-ng:watch": "jest -c packages/protoc-gen-ng/jest.config.js --watchAll",
     "test:lib:protoc-gen-ng:generate": "cd packages/protoc-gen-ng && mkdir -p ./test/out && rimraf ./test/out/* && protoc --plugin=protoc-gen-ng=$(pwd)/../../dist/protoc-gen-ng/main.js --ng_out=worker=true,debug=true:./test/out -I test/proto $(find test/proto -iname \"*.proto\")",
-    "test:lib:protoc-gen-ng:generate-grpc-web": "cd packages/protoc-gen-ng && mkdir -p ./test/out-grpc-web && rimraf ./test/out-grpc-web/* && protoc -I=test/proto --js_out=import_style=commonjs:test/out-grpc-web --grpc-web_out=import_style=typescript,mode=grpcweb:test/out-grpc-web $(find test/proto -iname \"*.proto\")",
+    "test:lib:protoc-gen-ng:generate-grpc-web": "cd packages/protoc-gen-ng && mkdir -p ./test/out-grpc-web && rimraf ./test/out-grpc-web/* && protoc -I=test/proto --js_out=import_style=commonjs:test/out-grpc-web --grpc-web_out=import_style=commonjs+dts,mode=grpcweb:test/out-grpc-web $(find test/proto -iname \"*.proto\")",
     "lint": "ng lint && npm run lint:lib:protoc-gen-ng",
     "lint:lib:protoc-gen-ng": "tslint -c tslint.json -e 'packages/protoc-gen-ng/test/**/*.ts' 'packages/protoc-gen-ng/**/*.ts'",
     "release": "semantic-release",
@@ -47,7 +47,7 @@
     "@angular/platform-browser-dynamic": "^10.0.7",
     "@angular/router": "^10.0.7",
     "google-protobuf": "^3.12.4",
-    "grpc-web": "^1.2.0",
+    "grpc-web": "^1.2.1",
     "rxjs": "^6.6.2",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

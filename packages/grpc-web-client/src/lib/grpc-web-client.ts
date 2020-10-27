@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
-import { AbstractClientBase, GrpcWebClientBase, Metadata } from 'grpc-web';
+import { GrpcWebClientBase, Metadata, MethodDescriptor } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
@@ -48,22 +48,27 @@ export class GrpcWebClient implements GrpcClient {
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
+    const descriptor = new MethodDescriptor(
+      path,
+      'unary',
+      reqclss,
+      resclss,
+      (request: Q) => request.serializeBinary(),
+      resclss.deserializeBinary
+    );
+
     return new Observable(obs => {
       const stream = this.client.rpcCall(
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo( // TODO change to MethodDescriptor when it is exported from grpc-web
-          resclss,
-          (request: Q) => request.serializeBinary(),
-          resclss.deserializeBinary
-        ),
+        descriptor,
         (error, data) => {
           if (error) {
             obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
             obs.complete();
           } else {
-            obs.next(new GrpcDataEvent(data));
+            obs.next(new GrpcDataEvent(data as any));
           }
         }
       );
@@ -83,12 +88,21 @@ export class GrpcWebClient implements GrpcClient {
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>
   ): Observable<GrpcEvent<S>> {
+    const descriptor = new MethodDescriptor(
+      path,
+      'server_streaming',
+      reqclss,
+      resclss,
+      (request: Q) => request.serializeBinary(),
+      resclss.deserializeBinary
+    );
+
     return new Observable(obs => {
       const stream = this.client.serverStreaming(
         this.settings.host + path,
         req,
         metadata || {},
-        new AbstractClientBase.MethodInfo(resclss, (request: Q) => request.serializeBinary(), resclss.deserializeBinary) // TODO change to MethodDescriptor when it is exported from grpc-web
+        descriptor,
       );
 
       stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)));
@@ -96,7 +110,7 @@ export class GrpcWebClient implements GrpcClient {
         obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
         obs.complete();
       });
-      stream.on('data', data => obs.next(new GrpcDataEvent(data)));
+      stream.on('data', data => obs.next(new GrpcDataEvent(data as any)));
       stream.on('end', () => obs.complete());
 
       return () => stream.cancel();
