@@ -68,6 +68,7 @@ export interface GrpcClientSettings {
   host: string;
   format?: string;
   suppressCorsPreflight?: boolean;
+  withCredentials?: boolean;
 }
 
 /**
