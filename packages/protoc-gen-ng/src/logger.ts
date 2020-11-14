@@ -16,7 +16,7 @@ export class Logger {
         ),
         level: 'debug',
         transports: [
-          new (winston.transports.File)({ filename: './debug/log.txt', options: { flags: 'w' } })
+          new (winston.transports.File)({ filename: './debug/log.txt', options: { flags: 'w' } }),
         ],
       });
     }

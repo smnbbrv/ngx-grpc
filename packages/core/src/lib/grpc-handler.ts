@@ -10,7 +10,7 @@ import { GRPC_INTERCEPTORS } from './injection-tokens';
  * however for every interception a new instance of GrpcHandler is created and passed to the interceptor
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GrpcHandler {
 

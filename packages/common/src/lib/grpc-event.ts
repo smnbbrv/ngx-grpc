@@ -6,7 +6,7 @@ import { GrpcMessage } from './grpc-message';
  */
 export class GrpcDataEvent<T extends GrpcMessage> {
   constructor(
-    public data: T
+    public data: T,
   ) { }
 }
 

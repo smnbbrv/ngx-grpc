@@ -10,13 +10,13 @@ import { GRPC_WORKER_CLIENT_DEFAULT_SETTINGS } from './tokens';
  * GrpcClientFactory implementation based on grpc-web running in worker
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GrpcWorkerClientFactory implements GrpcClientFactory {
 
   constructor(
     @Optional() @Inject(GRPC_WORKER_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcClientSettings,
-    private gateway: GrpcWorkerGateway
+    private gateway: GrpcWorkerGateway,
   ) { }
 
   createClient(serviceId: string, customSettings: GrpcClientSettings) {
@@ -62,7 +62,7 @@ export class GrpcWorkerClient implements GrpcClient {
           if (res instanceof GrpcDataEvent) {
             res.data = new resclss(res.data as any);
           }
-        })
+        }),
       );
   }
 
@@ -71,7 +71,7 @@ export class GrpcWorkerClient implements GrpcClient {
     req: Q,
     metadata: Metadata,
     reqclss: GrpcMessageClass<Q>,
-    resclss: GrpcMessageClass<S>
+    resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
     return this.gateway
       .callServerStreamFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
@@ -80,7 +80,7 @@ export class GrpcWorkerClient implements GrpcClient {
           if (res instanceof GrpcDataEvent) {
             res.data = new resclss(res.data as any);
           }
-        })
+        }),
       );
   }
 

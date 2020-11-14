@@ -90,7 +90,7 @@ export class Proto {
     this.resolved.allDependencies = [
       ...new Set([
         ...getTransitiveDependencies(this.resolved.dependencies),
-        ...this.resolved.dependencies
+        ...this.resolved.dependencies,
       ]),
     ];
   }

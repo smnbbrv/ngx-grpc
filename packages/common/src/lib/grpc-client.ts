@@ -56,7 +56,7 @@ export interface GrpcClient {
     req: Q,
     metadata: Metadata,
     reqclss: GrpcMessageClass<Q>,
-    resclss: GrpcMessageClass<S>
+    resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
 
 }

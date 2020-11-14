@@ -60,7 +60,7 @@ export class GrpcWorkerGateway {
         serviceId,
         path,
         request,
-        metadata
+        metadata,
       } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
 
       return () => this.closeConnection(id);
@@ -79,7 +79,7 @@ export class GrpcWorkerGateway {
         serviceId,
         path,
         request,
-        metadata
+        metadata,
       } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
 
       return () => this.closeConnection(id);

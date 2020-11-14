@@ -84,7 +84,7 @@ export class GrpcWorker {
     const respond = (msg: any) => ((postMessage as any)({
       type: GrpcWorkerApi.GrpcWorkerMessageType.rpcResponse,
       id: message.id,
-      ...msg
+      ...msg,
     }));
 
     const { type, reqclss, resclss } = def.methods[message.path];
@@ -97,7 +97,7 @@ export class GrpcWorker {
       reqclss,
       resclss,
       (req: GrpcMessage) => req.serializeBinary(),
-      resclss.deserializeBinary
+      resclss.deserializeBinary,
     );
 
     if (type === GrpcCallType.unary) {

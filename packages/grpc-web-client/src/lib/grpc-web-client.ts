@@ -8,7 +8,7 @@ import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
  * GrpcClientFactory implementation based on grpc-web
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GrpcWebClientFactory implements GrpcClientFactory {
 
@@ -54,7 +54,7 @@ export class GrpcWebClient implements GrpcClient {
       reqclss,
       resclss,
       (request: Q) => request.serializeBinary(),
-      resclss.deserializeBinary
+      resclss.deserializeBinary,
     );
 
     return new Observable(obs => {
@@ -70,7 +70,7 @@ export class GrpcWebClient implements GrpcClient {
           } else {
             obs.next(new GrpcDataEvent(data as any));
           }
-        }
+        },
       );
 
       // take only status 0 because unary error already includes non-zero statuses
@@ -86,7 +86,7 @@ export class GrpcWebClient implements GrpcClient {
     req: Q,
     metadata: Metadata,
     reqclss: GrpcMessageClass<Q>,
-    resclss: GrpcMessageClass<S>
+    resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
     const descriptor = new MethodDescriptor(
       path,
@@ -94,7 +94,7 @@ export class GrpcWebClient implements GrpcClient {
       reqclss,
       resclss,
       (request: Q) => request.serializeBinary(),
-      resclss.deserializeBinary
+      resclss.deserializeBinary,
     );
 
     return new Observable(obs => {
