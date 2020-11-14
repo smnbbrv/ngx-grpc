@@ -8,12 +8,14 @@ Angular gRPC framework.
 
 ## Features
 
-- two-way binding thanks to properties instead of Java-like setters / getters
+- two-way-binding-friendly thanks to custom protobuf messages implementation (instead of Java-like setters / getters in original google-protobuf)
 - client services are wired to Angular's dependency injection
 - rxjs first-class support
 - typescript first-class support
 - interceptors
 - simple console logger
+- support for well-known types, including `Any`
+- support for [JSON mappings](https://developers.google.com/protocol-buffers/docs/proto3#json)
 - web worker (experimental)
 - easy to install, update and support thanks to npm packages
 
@@ -162,11 +164,45 @@ For usage example look at any of your generated `.pbsc.ts` file. In fact, those 
 
 ### Messages
 
-Every message has `toObject()` and `toJSON()` methods which could be used to cast message to the normal JavaScript object.
+To create a new message just pass its initial values to the constructor: `new Message(myInitialValues)`. Here is some information on the message's methods:
 
-To cast a JavaScript object to a message just pass it to the constructor: `new Message(myObject)`.
+- `constructor` - accepts a message or an object with initial values. All values are safely / deeply cloned.
+- `toObject()` - casts message *as is* to a normal JavaScript object
+- `toJSON()` - convenience method to be able to pass message to `JSON.stringify(msg)`
+- `toProtobufJSON()` - constructs a [protobuf-defined JSON](https://developers.google.com/protocol-buffers/docs/proto3#json). Accepts an optional `GrpcMessagePool` (see `google.protobuf.Any` section) which is required only if the message or some of its descendants embeds `google.protobuf.Any`
 
-As a side effect: just pass an instance of message to `new Message()` constructor and it will be deeply cloned.
+### Well-known types
+
+All well-known types are automatically wrapped and unwrapped. However, some types have additional functionality.
+
+#### google.protobuf.Any
+
+The `google.protobuf.Any` has additional methods `pack` and `unpack`.
+
+Unpacking the message requires a special message pool `GrpcMessagePool` where the expected message types are listed; otherwise the unpacking would not be possible.
+
+Example of type-safe unpacking:
+
+```ts
+// we expect one of 3 message types to be packed into Any
+const myAny: Any;
+const pool = new GrpcMessagePool([Empty, Timestamp, MyMessage]);
+
+try {
+  switch(myAny.getPackedMessageType(pool)) {
+    case Empty: console.log('Empty found', myAny.unpack<Empty>(pool)); break;
+    case Timestamp: console.log('Timestamp found', myAny.unpack<Timestamp>(pool)); break;
+    case MyMessage: console.log('MyMessage found', myAny.unpack<MyMessage>(pool)); break;
+    default: console.log('No packed message inside');
+  }
+} catch (ex) {
+  console.error('Something went wrong, e.g. packed message definition is not in the pool');
+}
+```
+
+#### google.protobuf.Timestamp
+
+The `google.protobuf.Timestamp` has additional methods to cast from / to `Date` and ISO string date representation.
 
 ### Interceptors
 
@@ -262,7 +298,7 @@ That's it. All your requests are served by worker.
 
 ## Not implemented (yet)
 
-[Proto 3 Any](https://developers.google.com/protocol-buffers/docs/proto3#any) and [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
+[Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
 
 ## License
 

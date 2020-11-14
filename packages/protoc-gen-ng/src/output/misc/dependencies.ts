@@ -22,6 +22,10 @@ const ngxGrpcCommon = {
   GrpcMessage: new Dependency('@ngx-grpc/common', 'GrpcMessage'),
   RecursivePartial: new Dependency('@ngx-grpc/common', 'RecursivePartial'),
   GrpcEvent: new Dependency('@ngx-grpc/common', 'GrpcEvent'),
+  uint8ArrayToBase64: new Dependency('@ngx-grpc/common', 'uint8ArrayToBase64'),
+  GrpcMessagePool: new Dependency('@ngx-grpc/common', 'GrpcMessagePool'),
+  GrpcMessageClass: new Dependency('@ngx-grpc/common', 'GrpcMessageClass'),
+  ToProtobufJSONOptions: new Dependency('@ngx-grpc/common', 'ToProtobufJSONOptions'),
 };
 
 const ngxGrpcCore = {

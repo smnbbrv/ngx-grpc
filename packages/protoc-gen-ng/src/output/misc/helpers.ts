@@ -27,18 +27,24 @@ export function isFieldMessage(field: ProtoMessageField) {
   return field.type === ProtoMessageFieldType.message || field.type === ProtoMessageFieldType.group;
 }
 
-export function getDataType(proto: Proto, field: ProtoMessageField, asObjectDataType = false) {
+interface GetDataTypeOptions {
+  ignoreRepeating?: boolean;
+  asObjectDataType?: boolean;
+  asProtobufJSONDataType?: boolean;
+}
+
+export function getDataType(proto: Proto, field: ProtoMessageField, options: GetDataTypeOptions = {}) {
   if (isFieldMap(proto, field)) {
     const [key, value] = getMapKeyValueFields(proto, field);
 
     return `{ [prop: ${key.type === ProtoMessageFieldType.string ? 'string' : 'number'}]: ${getDataType(proto, value)}; }`;
   }
 
-  const suffix = field.label === ProtoMessageFieldCardinality.repeated ? '[]' : '';
+  const suffix = !options.ignoreRepeating && field.label === ProtoMessageFieldCardinality.repeated ? '[]' : '';
 
   if (field.type === ProtoMessageFieldType.enum || isFieldMessage(field)) {
     return proto.getRelativeTypeName(field.typeName)
-      + (asObjectDataType ? '.AsObject' : '')
+      + (options.asObjectDataType ? '.AsObject' : options.asProtobufJSONDataType ? '.AsProtobufJSON' : '')
       + suffix;
   }
 

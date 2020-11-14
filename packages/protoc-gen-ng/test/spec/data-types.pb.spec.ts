@@ -172,7 +172,6 @@ describe('data-types.proto', () => {
     expect(
       msgWebGrpc
         .getMapInt64SubMap()
-        // TODO: investigate and fix int64 map key serialization
         .get(0)
         ?.getString(),
     ).toEqual('someSubString');
@@ -193,4 +192,124 @@ describe('data-types.proto', () => {
         ?.getString(),
     ).toEqual(testString);
   });
+
+  it('should correctly produce protobuf JSON for non-repeated fields', () => {
+    const notNullValues = new dataTypes.TestMessage({
+      bool: true,
+      bytes: new Uint8Array(),
+      double: 12.3,
+      float: 12.3,
+      enum: dataTypes.TestEnum.value1,
+      fixed32: 12,
+      fixed64: '12',
+      int32: 12,
+      int64: '12',
+      string: 'abc12',
+      oneofstring: 'abc12',
+      mapBoolString: {
+        [1]: 'true',
+      },
+      mapInt64Sub: {
+        [2]: new dataTypes.TestSubMessage({ string: 'str' }),
+      },
+      mapStringString: {
+        ['key']: 'value',
+      },
+      uint32: 12,
+      uint64: '12',
+      subMessage: new dataTypes.TestSubMessage({
+        string: 'test',
+      }),
+    });
+
+    expect(notNullValues.toProtobufJSON()).toEqual({
+      bool: true,
+      bytes: '',
+      double: 12.3,
+      float: 12.3,
+      enum: 'value1',
+      fixed32: 12,
+      fixed64: '12',
+      int32: 12,
+      int64: '12',
+      string: 'abc12',
+      oneofstring: 'abc12',
+      oneofenum: null,
+      mapBoolString: {
+        1: 'true',
+      },
+      mapInt64Sub: {
+        2: {
+          string: 'str',
+        },
+      },
+      mapStringString: {
+        key: 'value',
+      },
+      uint32: 12,
+      uint64: '12',
+      subMessage: {
+        string: 'test',
+      },
+    });
+
+    const nullValues = new dataTypes.TestMessage();
+
+    expect(nullValues.toProtobufJSON()).toEqual({
+      bool: false,
+      bytes: '',
+      double: 0,
+      float: 0,
+      enum: 'value0',
+      fixed32: 0,
+      fixed64: '0',
+      int32: 0,
+      int64: '0',
+      string: '',
+      mapBoolString: {},
+      mapInt64Sub: {},
+      mapStringString: {},
+      uint32: 0,
+      uint64: '0',
+      oneofenum: null,
+      oneofstring: null,
+      subMessage: null,
+    });
+  });
+
+  it('should correctly produce protobuf JSON for repeated fields', () => {
+    const msg = new dataTypes.RepeatedTestMessage({
+      bool: [true],
+      bytes: [new Uint8Array()],
+      double: [12.3],
+      float: [12.3],
+      enum: [dataTypes.TestEnum.value1],
+      fixed32: [12],
+      fixed64: ['12'],
+      int32: [12],
+      int64: ['12'],
+      string: ['abc12'],
+      uint32: [12],
+      uint64: ['12'],
+      subMessage: [new dataTypes.TestSubMessage({ string: 'test' })],
+    });
+
+    expect(msg.toProtobufJSON()).toEqual({
+      bool: [true],
+      bytes: [''],
+      double: [12.3],
+      float: [12.3],
+      enum: ['value1'],
+      fixed32: [12],
+      fixed64: ['12'],
+      int32: [12],
+      int64: ['12'],
+      string: ['abc12'],
+      uint32: [12],
+      uint64: ['12'],
+      subMessage: [{ string: 'test' }],
+    });
+  });
+
+
 });

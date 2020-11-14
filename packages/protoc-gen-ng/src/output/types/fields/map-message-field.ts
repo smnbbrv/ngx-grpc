@@ -37,7 +37,7 @@ export class MapMessageField implements MessageField {
         _reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
         _instance.${this.attributeName} = _instance.${this.attributeName} || {};
         _instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
-        break;`
+        break;`,
     );
   }
 
@@ -109,6 +109,22 @@ export class MapMessageField implements MessageField {
   }
 
   printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    let cloneFn = `this.${this.attributeName}![k]`;
+
+    if (isFieldMessage(this.valueField)) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toJSON() : null`;
+    } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].subarray(0) : null`;
+    }
+
+    printer.add(`${this.attributeName}: this.${this.attributeName} ? Object.keys(this.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
+  }
+
+  printAsJSONMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
   }
 

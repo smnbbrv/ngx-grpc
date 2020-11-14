@@ -10,4 +10,6 @@ export interface MessageField {
   printSetter(printer: Printer): void;
   printToObjectMapping(printer: Printer): void;
   printAsObjectMapping(printer: Printer): void;
+  printToProtobufJSONMapping(printer: Printer): void;
+  printAsJSONMapping(printer: Printer): void;
 }

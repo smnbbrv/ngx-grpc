@@ -8,7 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '@ngx-grpc/(.*)': '<rootDir>/../../dist/$1',
   },
-  testEnvironment: 'node',
+  testEnvironment: './jest.env.js',
   roots: [
     'test/spec',
     'test/out',

@@ -98,4 +98,16 @@ export class StringMessageField implements MessageField {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
   }
 
+  printToProtobufJSONMapping(printer: Printer) {
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
+    } else {
+      printer.add(`${this.attributeName}: this.${this.attributeName}${this.oneOf ? ' ?? null' : ''},`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType}${this.oneOf ? ' | null' : ''};`);
+  }
+
 }
