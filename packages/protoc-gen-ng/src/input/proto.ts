@@ -143,7 +143,13 @@ export class Proto {
   getImportedDependencies() {
     const root = Array(this.name.split('/').length - 1).fill('..').join('/');
 
-    return this.resolved.allDependencies.map(pp => `import * as ${this.getDependencyPackageName(pp)} from '${root || '.'}/${pp.getGeneratedFileBaseName()}';`).join('\n');
+    return this.resolved.allDependencies.map(pp => {
+      const isWKT = pp.pb_package === 'google.protobuf';
+      const genwkt = Services.Config.generateWellKnownTypes;
+      const path = (genwkt || !genwkt && !isWKT) ? `${root || '.'}/${pp.getGeneratedFileBaseName()}` : '@ngx-grpc/well-known-types';
+
+      return `import * as ${this.getDependencyPackageName(pp)} from '${path}';`;
+    }).join('\n');
   }
 
   getGeneratedFileBaseName() {

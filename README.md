@@ -48,7 +48,7 @@ First ensure that you
 Then in your Angular project's root directory run
 
 ```sh
-npm i -S @ngx-grpc/common @ngx-grpc/core @ngx-grpc/grpc-web-client google-protobuf grpc-web
+npm i -S @ngx-grpc/common @ngx-grpc/core @ngx-grpc/grpc-web-client @ngx-grpc/well-known-types google-protobuf grpc-web
 npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 ```
 
@@ -58,6 +58,7 @@ Where:
 - [@ngx-grpc/core](https://github.com/ngx-grpc/core) contains angular specific implementation
 - [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/grpc-web-client) provides a client based on [grpc-web](https://github.com/grpc/grpc-web)
 - [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
+- [@ngx-grpc/well-known-types](https://github.com/ngx-grpc/well-known-types) contains well-known types
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
 
@@ -173,7 +174,9 @@ To create a new message just pass its initial values to the constructor: `new Me
 
 ### Well-known types
 
-All well-known types are automatically wrapped and unwrapped. However, some types have additional functionality.
+The well-known types are served as a separate package. If you want to generate the well-known types together with your proto definitions (like older versions did) just pass `generateWellKnownTypes=true` as the protoc plugin options.
+
+Some types have additional functionality, see below.
 
 #### google.protobuf.Any
 

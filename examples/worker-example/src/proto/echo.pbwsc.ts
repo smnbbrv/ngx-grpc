@@ -6,7 +6,7 @@
 import { GrpcCallType } from '@ngx-grpc/common';
 import { GrpcWorkerServiceClientDef } from '@ngx-grpc/worker';
 import * as thisProto from './echo.pb';
-
+import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
 /**
  * Client definition for use in worker
  */

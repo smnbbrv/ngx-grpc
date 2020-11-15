@@ -3,6 +3,7 @@
 'use strict';
 var grpc = require('grpc');
 var echo_pb = require('./echo_pb.js');
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 
 function serialize_echo_EchoRequest(arg) {
   if (!(arg instanceof echo_pb.EchoRequest)) {

@@ -20,6 +20,7 @@ import {
 import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import * as thisProto from './echo.pb';
+import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
 /**
  * Service client implementation for echo.EchoService

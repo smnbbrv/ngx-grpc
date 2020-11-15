@@ -7,8 +7,8 @@
       "@semantic-release/exec",
       {
         "verifyConditionsCmd": "node custom-publish/verify.js",
-        "prepareCmd": "node custom-publish/prepare.js dist/common/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/core/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/grpc-web-client/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker-client/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/protoc-gen-ng/package.json \"${nextRelease.version}\"",
-        "publishCmd": "npm publish dist/common --access public && npm publish dist/core --access public && npm publish dist/grpc-web-client --access public && npm publish dist/worker --access public && npm publish dist/worker-client --access public && npm publish dist/protoc-gen-ng --access public"
+        "prepareCmd": "node custom-publish/prepare.js dist/common/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/core/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/grpc-web-client/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/worker-client/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/protoc-gen-ng/package.json \"${nextRelease.version}\" && node custom-publish/prepare.js dist/well-known-types/package.json \"${nextRelease.version}\"",
+        "publishCmd": "npm publish dist/common --access public && npm publish dist/core --access public && npm publish dist/grpc-web-client --access public && npm publish dist/worker --access public && npm publish dist/worker-client --access public && npm publish dist/protoc-gen-ng --access public && npm publish dist/well-known-types --access public"
       }
     ],
     [
