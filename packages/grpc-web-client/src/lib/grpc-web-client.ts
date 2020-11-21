@@ -1,8 +1,18 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
 import { GrpcWebClientBase, Metadata, MethodDescriptor } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
+
+/**
+ * Settings for the chosen implementation of GrpcClient
+ */
+export interface GrpcWebClientSettings {
+  host: string;
+  format?: string;
+  suppressCorsPreflight?: boolean;
+  withCredentials?: boolean;
+}
 
 /**
  * GrpcClientFactory implementation based on grpc-web
@@ -10,13 +20,13 @@ import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 @Injectable({
   providedIn: 'root',
 })
-export class GrpcWebClientFactory implements GrpcClientFactory {
+export class GrpcWebClientFactory implements GrpcClientFactory<GrpcWebClientSettings> {
 
   constructor(
-    @Optional() @Inject(GRPC_WEB_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcClientSettings,
+    @Optional() @Inject(GRPC_WEB_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcWebClientSettings,
   ) { }
 
-  createClient(serviceId: string, customSettings: GrpcClientSettings) {
+  createClient(serviceId: string, customSettings: GrpcWebClientSettings) {
     const settings = customSettings || this.defaultSettings;
 
     if (!settings) {
@@ -31,17 +41,17 @@ export class GrpcWebClientFactory implements GrpcClientFactory {
 /**
  * GrpcClient implementation based on grpc-web
  */
-export class GrpcWebClient implements GrpcClient {
+export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
 
   private client: GrpcWebClientBase;
 
   constructor(
-    private settings: GrpcClientSettings,
+    private settings: GrpcWebClientSettings,
   ) {
     this.client = new GrpcWebClientBase(this.settings);
   }
 
-  getSettings() {
+  getSettings(): GrpcWebClientSettings {
     return { ...this.settings };
   }
 

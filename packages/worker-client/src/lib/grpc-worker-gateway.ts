@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
-import { GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcStatusEvent } from '@ngx-grpc/common';
 import { GrpcWorkerApi } from '@ngx-grpc/worker';
 import { Metadata } from 'grpc-web';
 import { Observable, Observer } from 'rxjs';
+import { GrpcWorkerClientSettings } from './grpc-worker-client';
 import { GRPC_WORKER } from './tokens';
 
 /** @dynamic */
@@ -44,7 +45,7 @@ export class GrpcWorkerGateway {
     };
   }
 
-  configureServiceClient(serviceId: string, settings: GrpcClientSettings) {
+  configureServiceClient(serviceId: string, settings: GrpcWorkerClientSettings) {
     this.worker.postMessage({ type: GrpcWorkerApi.GrpcWorkerMessageType.serviceClientConfig, serviceId, settings } as GrpcWorkerApi.GrpcWorkerMessageServiceClientConfig);
   }
 

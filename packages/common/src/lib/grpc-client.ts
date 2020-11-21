@@ -9,7 +9,7 @@ import { GrpcMessageClass } from './grpc-message-class';
  * because the GrpcClientFactory is bound to the dependency injection (use constructor to inject normal Angular services & config),
  * while GrpcClient has none
  */
-export interface GrpcClientFactory {
+export interface GrpcClientFactory<ST> {
 
   /**
    * Create a GrpcClient
@@ -17,7 +17,7 @@ export interface GrpcClientFactory {
    * @param settings settings for underlying grpc client implementation
    * @returns new GrpcClient
    */
-  createClient(serviceId: string, settings: GrpcClientSettings): GrpcClient;
+  createClient(serviceId: string, settings: ST): GrpcClient<ST>;
 
 }
 
@@ -25,12 +25,12 @@ export interface GrpcClientFactory {
  * A transport layer client implementation interface
  * Instance of GrpcClient is created for every gRPC service client by corresponding GrpcClientFactory
  */
-export interface GrpcClient {
+export interface GrpcClient<ST> {
 
   /**
    * Returns a copy of current client settings
    */
-  getSettings(): any;
+  getSettings(): ST;
 
   /**
    * Handle unary RPC
@@ -67,16 +67,6 @@ export interface GrpcClient {
 }
 
 /**
- * Settings for the chosen implementation of GrpcClient
- */
-export interface GrpcClientSettings {
-  host: string;
-  format?: string;
-  suppressCorsPreflight?: boolean;
-  withCredentials?: boolean;
-}
-
-/**
  * Type of the RPC
  */
 export enum GrpcCallType {
@@ -89,7 +79,7 @@ export enum GrpcCallType {
  */
 export interface GrpcRequest<Q extends GrpcMessage, S extends GrpcMessage> {
   path: string;
-  client: GrpcClient;
+  client: GrpcClient<any>;
   type: GrpcCallType;
   requestData: Q;
   requestMetadata: Metadata;

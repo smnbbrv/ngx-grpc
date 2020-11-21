@@ -9,7 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GrpcMessage } from '@ngx-grpc/common/public-api';
 import { GrpcLoggerInterceptor, GrpcLoggerSettings, GRPC_CLIENT_FACTORY, GRPC_INTERCEPTORS, GRPC_LOGGER_SETTINGS } from '@ngx-grpc/core';
-import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
+import { GrpcWebClientFactory, GrpcWebClientSettings } from '@ngx-grpc/grpc-web-client';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
 import { AppComponent } from './app.component';
 
@@ -29,7 +29,7 @@ import { AppComponent } from './app.component';
   ],
   providers: [
     { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
-    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcWebClientSettings },
     {
       provide: GRPC_LOGGER_SETTINGS,
       useValue: {

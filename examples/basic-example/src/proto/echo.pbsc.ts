@@ -8,7 +8,6 @@ import {
   GrpcCallType,
   GrpcClient,
   GrpcClientFactory,
-  GrpcClientSettings,
   GrpcEvent,
 } from '@ngx-grpc/common';
 import {
@@ -29,13 +28,11 @@ import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
   providedIn: 'root',
 })
 export class EchoServiceClient {
-  private client: GrpcClient;
+  private client: GrpcClient<any>;
 
   constructor(
-    @Optional()
-    @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS)
-    settings: GrpcClientSettings,
-    @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory,
+    @Optional() @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS) settings: any,
+    @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory<any>,
     private handler: GrpcHandler
   ) {
     this.client = clientFactory.createClient('echo.EchoService', settings);

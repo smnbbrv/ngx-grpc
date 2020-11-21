@@ -21,7 +21,6 @@ export class ServiceClient {
 
     printer.addDeps(
       ExternalDependencies.GrpcClient,
-      ExternalDependencies.GrpcClientSettings,
       ExternalDependencies.GrpcHandler,
       ExternalDependencies.Inject,
       ExternalDependencies.Injectable,
@@ -41,11 +40,11 @@ export class ServiceClient {
       })
       export class ${this.service.name}Client {
 
-        private client: GrpcClient;
+        private client: GrpcClient<any>;
 
         constructor(
-          @Optional() @Inject(${tokenName}) settings: GrpcClientSettings,
-          @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory,
+          @Optional() @Inject(${tokenName}) settings: any,
+          @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory<any>,
           private handler: GrpcHandler,
         ) {
           this.client = clientFactory.createClient('${serviceId}', settings);

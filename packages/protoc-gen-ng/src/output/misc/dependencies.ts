@@ -18,7 +18,6 @@ const ngxGrpcCommon = {
   GrpcCallType: new Dependency('@ngx-grpc/common', 'GrpcCallType'),
   GrpcClient: new Dependency('@ngx-grpc/common', 'GrpcClient'),
   GrpcClientFactory: new Dependency('@ngx-grpc/common', 'GrpcClientFactory'),
-  GrpcClientSettings: new Dependency('@ngx-grpc/common', 'GrpcClientSettings'),
   GrpcMessage: new Dependency('@ngx-grpc/common', 'GrpcMessage'),
   RecursivePartial: new Dependency('@ngx-grpc/common', 'RecursivePartial'),
   GrpcEvent: new Dependency('@ngx-grpc/common', 'GrpcEvent'),

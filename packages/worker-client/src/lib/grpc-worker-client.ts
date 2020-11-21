@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
+import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
 import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -7,19 +7,29 @@ import { GrpcWorkerGateway } from './grpc-worker-gateway';
 import { GRPC_WORKER_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
 /**
+ * Settings for the chosen implementation of GrpcClient
+ */
+export interface GrpcWorkerClientSettings {
+  host: string;
+  format?: string;
+  suppressCorsPreflight?: boolean;
+  withCredentials?: boolean;
+}
+
+/**
  * GrpcClientFactory implementation based on grpc-web running in worker
  */
 @Injectable({
   providedIn: 'root',
 })
-export class GrpcWorkerClientFactory implements GrpcClientFactory {
+export class GrpcWorkerClientFactory implements GrpcClientFactory<GrpcWorkerClientSettings> {
 
   constructor(
-    @Optional() @Inject(GRPC_WORKER_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcClientSettings,
+    @Optional() @Inject(GRPC_WORKER_CLIENT_DEFAULT_SETTINGS) private defaultSettings: GrpcWorkerClientSettings,
     private gateway: GrpcWorkerGateway,
   ) { }
 
-  createClient(serviceId: string, customSettings: GrpcClientSettings) {
+  createClient(serviceId: string, customSettings: GrpcWorkerClientSettings) {
     const settings = customSettings || this.defaultSettings;
 
     if (!settings) {
@@ -38,17 +48,17 @@ export class GrpcWorkerClientFactory implements GrpcClientFactory {
 /**
  * GrpcClient implementation based on grpc-web running in worker
  */
-export class GrpcWorkerClient implements GrpcClient {
+export class GrpcWorkerClient implements GrpcClient<GrpcWorkerClientSettings> {
 
   constructor(
     private serviceId: string,
-    private settings: GrpcClientSettings,
+    private settings: GrpcWorkerClientSettings,
     private gateway: GrpcWorkerGateway,
   ) {
     this.gateway.configureServiceClient(this.serviceId, this.settings);
   }
 
-  getSettings() {
+  getSettings(): GrpcWorkerClientSettings {
     return { ...this.settings };
   }
 

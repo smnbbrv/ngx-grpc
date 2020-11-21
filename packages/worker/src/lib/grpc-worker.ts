@@ -1,6 +1,7 @@
-import { GrpcCallType, GrpcClientSettings, GrpcMessage } from '@ngx-grpc/common';
+import { GrpcCallType, GrpcMessage } from '@ngx-grpc/common';
 import { Error, GrpcWebClientBase, MethodDescriptor, Status } from 'grpc-web';
 import { GrpcWorkerApi } from './api';
+import { GrpcWorkerClientSettings } from './client-settings';
 import { GrpcWorkerServiceClientDef } from './service-client-def';
 
 /**
@@ -29,7 +30,7 @@ export class GrpcWorker {
   private definitions = new Map<string, GrpcWorkerServiceClientDef>();
 
   private clients = new Map<string, {
-    settings: GrpcClientSettings;
+    settings: GrpcWorkerClientSettings;
     client: GrpcWebClientBase;
   }>();
 

@@ -9,7 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GrpcMessage } from '@ngx-grpc/common/public-api';
 import { GrpcLoggerSettings, GRPC_CLIENT_FACTORY, GRPC_LOGGER_SETTINGS } from '@ngx-grpc/core';
-import { GrpcWorkerClientFactory, GRPC_WORKER } from '@ngx-grpc/worker-client';
+import { GrpcWorkerClientFactory, GrpcWorkerClientSettings, GRPC_WORKER } from '@ngx-grpc/worker-client';
 import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
 import { AppComponent } from './app.component';
 
@@ -30,7 +30,7 @@ import { AppComponent } from './app.component';
   providers: [
     { provide: GRPC_WORKER, useFactory: () => new Worker('./grpc.worker', { type: 'module' }) },
     { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWorkerClientFactory },
-    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
+    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcWorkerClientSettings },
     {
       provide: GRPC_LOGGER_SETTINGS,
       useValue: {
