@@ -1,3 +1,69 @@
+## [1.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.3...v1.0.4) (2020-10-09)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly handle explicit [packed=false] fields ([5abae75](https://github.com/ngx-grpc/ngx-grpc/commit/5abae75e5f01cc5bbedf65203e9732b53c12f88d))
+
+## [1.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.2...v1.0.3) (2020-10-05)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** fix recursive public imports & fix possible import duplication, see [#13](https://github.com/ngx-grpc/ngx-grpc/issues/13) ([d60dffd](https://github.com/ngx-grpc/ngx-grpc/commit/d60dffd071f1c583c89245e3b4681d64879c448f))
+
+## [1.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.1...v1.0.2) (2020-09-17)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly handle packed fields, close [#19](https://github.com/ngx-grpc/ngx-grpc/issues/19) ([45c630d](https://github.com/ngx-grpc/ngx-grpc/commit/45c630d60bcef10740ee267099fbe14d9b371e84))
+
+## [1.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.0...v1.0.1) (2020-08-05)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** add support of strict typescript compiler options: noUnusedParameters, noImplicitReturns, noImplicitThis and noUnusedLocals, closes [#9](https://github.com/ngx-grpc/ngx-grpc/issues/9) ([a90af3f](https://github.com/ngx-grpc/ngx-grpc/commit/a90af3f580de0d0659bba4d4dc970d176c01d7e1))
+
+# [1.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.3...v1.0.0) (2020-08-02)
+
+
+### Bug Fixes
+
+* **core:** handle non-multi interceptors configuration ([e3fa1bf](https://github.com/ngx-grpc/ngx-grpc/commit/e3fa1bf0eb830a009ded661ebaa8c5e207768b0a))
+* **protoc-gen-ng:** properly clone maps in initialization and toObject functions ([3b0844b](https://github.com/ngx-grpc/ngx-grpc/commit/3b0844ba08fc1e63dea05ad5b103d5bf43f4ea96))
+
+
+### Features
+
+* **core:** add types documentation ([896ea98](https://github.com/ngx-grpc/ngx-grpc/commit/896ea98684dd1c96e6c534e28f47cf2e6cb22e51))
+* rename serialize / deserialize methods to be compliant wit h corresponding methods in standard protobuf message ([161dd38](https://github.com/ngx-grpc/ngx-grpc/commit/161dd384e44efed55635406ce91b141651d426cb))
+* **common:** add types documentation ([1f162f0](https://github.com/ngx-grpc/ngx-grpc/commit/1f162f0bcaeb12f58842b04e1395e17f5ece7a26))
+* upgrade to angular 10 ([0236ca7](https://github.com/ngx-grpc/ngx-grpc/commit/0236ca7bd84c990fd881fa89b891ca2d3ed55840))
+* **grpc-web-client:** add types documentation ([ca8ae41](https://github.com/ngx-grpc/ngx-grpc/commit/ca8ae41b0561a0c14c7c72bb0bce66fef514c6be))
+* **protoc-gen-ng:** add AsObject interface for each message type and use it as toObject() return type, closes [#5](https://github.com/ngx-grpc/ngx-grpc/issues/5) ([3afeec4](https://github.com/ngx-grpc/ngx-grpc/commit/3afeec4a9f3c5ea3353271e9bf2d6146c1207ff4))
+* **protoc-gen-ng:** extend generated types documentation ([6d74d52](https://github.com/ngx-grpc/ngx-grpc/commit/6d74d52e522ca483df74abf089a8f68ecabcdca8))
+* **protoc-gen-ng:** move from https://github.com/ngx-grpc/protoc-gen-ng ([814db17](https://github.com/ngx-grpc/ngx-grpc/commit/814db17122f57ff43374cdf71b4bfa5a9629f064))
+* **protoc-gen-ng:** preserve enum values case, closes [#11](https://github.com/ngx-grpc/ngx-grpc/issues/11) ([cea22a0](https://github.com/ngx-grpc/ngx-grpc/commit/cea22a08dfbe65523f6d955fba8bc3ae315ff186))
+* **worker:** add types documentation ([c8f4049](https://github.com/ngx-grpc/ngx-grpc/commit/c8f4049f35fe975173337b409f5fd9a5122321d6))
+* **worker-client:** add types documentation ([8b7a10d](https://github.com/ngx-grpc/ngx-grpc/commit/8b7a10dca6ab2d28e65b0b8b886c3b2842888b80))
+
+
+### BREAKING CHANGES
+
+* toBinary is now non-static method and is called serializeBinary; fromBinary, fromBinaryReader and toBinaryWriter are renamed to deserializeBinary, deserializeBinaryFromReader and serializeBinaryToWriter correspondingly
+* **protoc-gen-ng:** generated enum values now fully reflect the way they are defined in proto file (the same name is used, unless it is not a reserved JS word)
+* **protoc-gen-ng:** protoc-gen-ng is tracked with the rest of the packages ecosystem and will follow the same versioning system
+
+## [0.4.3](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.2...v0.4.3) (2020-06-24)
+
+
+### Bug Fixes
+
+* **grpc-web-client:** handle breaking changes of grpc-web@1.2.0 ([1d931ce](https://github.com/ngx-grpc/ngx-grpc/commit/1d931ce1a605015fb9d443cc3d8ccd781312d8a3))
+* **worker:** handle breaking changes of grpc-web@1.2.0 ([db9d21d](https://github.com/ngx-grpc/ngx-grpc/commit/db9d21d364dfb237f67ced8264c5d5dec0572078))
+
 ## [0.4.2](https://github.com/ngx-grpc/ngx-grpc/compare/v0.4.1...v0.4.2) (2020-06-09)
 
 

@@ -54,15 +54,17 @@ npm i -D @ngx-grpc/protoc-gen-ng @types/google-protobuf
 
 Where:
 
-- [@ngx-grpc/common](https://github.com/ngx-grpc/common) contains common reusable types for other ngx-grpc packages
-- [@ngx-grpc/core](https://github.com/ngx-grpc/core) contains angular specific implementation
-- [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/grpc-web-client) provides a client based on [grpc-web](https://github.com/grpc/grpc-web)
-- [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/protoc-gen-ng) generates the code based on your proto files
-- [@ngx-grpc/well-known-types](https://github.com/ngx-grpc/well-known-types) contains well-known types
+- [@ngx-grpc/common](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/common) contains common reusable types for other ngx-grpc packages
+- [@ngx-grpc/core](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/core) contains angular specific implementation
+- [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/grpc-web-client) provides a client based on [grpc-web](https://github.com/grpc/grpc-web)
+- [@ngx-grpc/protoc-gen-ng](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/protoc-gen-ng) generates the code based on your proto files
+- [@ngx-grpc/well-known-types](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/well-known-types) contains well-known types
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
 
 ## Generate the code
+
+### MacOS / Linux
 
 Add `proto:generate` script to your `package.json` `scripts` section:
 
@@ -91,6 +93,18 @@ Example:
 ```
 
 Finally, run `npm run proto:generate` every time you want to (re)generate the code
+
+### Windows
+
+Unfortunately the way to generate files on Windows slightly differs. Here is a sophisticated example that shows how to scan windows folder with proto files and pass it to protoc-gen-ng.
+
+```json
+{
+  "scripts": {
+    "proto:generate:win": "for /f %G in ('dir /b ..\\proto\\*.proto') do grpc_tools_node_protoc --plugin=protoc-gen-ng=.\\node_modules\\.bin\\protoc-gen-ng.cmd --ng_out=.\\output\\path -I ..\\proto ..\\proto\\%G",
+  }
+}
+```
 
 ## Usage
 
