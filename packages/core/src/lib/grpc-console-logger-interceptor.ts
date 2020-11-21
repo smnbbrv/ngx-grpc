@@ -54,6 +54,7 @@ export class GrpcConsoleLoggerInterceptor implements GrpcInterceptor {
           } else if (event.code !== 0) {
             console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, this.errorStyle);
             console.log('%c>>', this.errorStyle, request.requestData.toObject());
+            console.log('%c**', this.errorStyle, request.requestMetadata);
             console.error('%c<<', this.errorStyle, event);
             console.groupEnd();
           }
