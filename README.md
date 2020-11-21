@@ -213,19 +213,32 @@ You can add global interceptors to all gRPC calls like Angular's built-in `HttpC
 
 The important difference is that unlike `HttpClient` interceptors `GrpcInterceptor`s need to work with event streams; there are no errors thrown. Instead you should listen to the `GrpcStatusEvent` and decide whether it is an error or not. Please keep this in mind.
 
-As an example see `GrpcConsoleLoggerInterceptor` [in the core package](packages/core/src/lib/grpc-console-logger-interceptor.ts).
+As an example see `GrpcLoggerInterceptor` [in the core package](packages/core/src/lib/grpc-console-logger-interceptor.ts).
 
-### Console logger
+### Logger
 
-You can enable loggin using `GrpcConsoleLoggerInterceptor` (provided by @ngx-grpc/core).
-
-To enable it provide it as interceptor and provide the parameter `GRPC_CONSOLE_LOGGER_ENABLED` in your app.module.ts.
-
-Example:
+You can enable logging using `GrpcLoggerInterceptor` (provided by @ngx-grpc/core).
 
 ```ts
-{ provide: GRPC_CONSOLE_LOGGER_ENABLED, useFactory: () => localStorage.getItem('GRPC_CONSOLE_LOGGER_ENABLED') === 'true' || !environment.prod },
-{ provide: GRPC_INTERCEPTORS, useClass: GrpcConsoleLoggerInterceptor, multi: true },
+{ provide: GRPC_INTERCEPTORS, useClass: GrpcLoggerInterceptor, multi: true },
+```
+
+Then open the browser console and you should see all the requests and responses in a readable format.
+
+Optionally, you can provide provide the more detailed configuration as `GRPC_LOGGER_SETTINGS`. Example:
+
+```ts
+{ 
+  provide: GRPC_LOGGER_SETTINGS, 
+  useValue: { 
+     // enables logger in dev mode and still lets you see them in production when running `localStorage.setItem('logger', 'true') in the console`
+    enabled: localStorage.getItem('logger') === 'true' || !environment.prod,
+     // protobuf json is more human-readable than the default toObject() mapping
+     // please beware: if you use google.protobuf.Any you must pass the proper `messagePool` argument
+    requestMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
+    responseMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
+  } as GrpcLoggerSettings
+},
 ```
 
 ## Web worker
