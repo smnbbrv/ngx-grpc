@@ -145,7 +145,7 @@ export class Proto {
 
     return this.resolved.allDependencies.map(pp => {
       const isWKT = pp.pb_package === 'google.protobuf';
-      const genwkt = Services.Config.generateWellKnownTypes;
+      const genwkt = Services.Config.embedWellKnownTypes;
       const path = (genwkt || !genwkt && !isWKT) ? `${root || '.'}/${pp.getGeneratedFileBaseName()}` : '@ngx-grpc/well-known-types';
 
       return `import * as ${this.getDependencyPackageName(pp)} from '${path}';`;

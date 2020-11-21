@@ -15,7 +15,7 @@ import { Services } from './services';
 
 function main() {
   CodeGeneratorRequest()
-    .then(r => {
+    .then((r: any) => {
       const protocInput = r.toObject();
       const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
@@ -24,6 +24,7 @@ function main() {
 
       if (Services.Config.debug) {
         mkdirSync('debug', { recursive: true });
+        writeFileSync(join('debug', 'config.json'), JSON.stringify(Services.Config, null, 2), 'utf-8');
         writeFileSync(join('debug', 'protoc-input.json'), JSON.stringify(protocInput, null, 2), 'utf-8');
         writeFileSync(join('debug', 'parsed-protoc-gen-ng.json'), JSON.stringify(protos, null, 2), 'utf-8');
       }
@@ -31,7 +32,7 @@ function main() {
       protos.forEach(p => p.setupDependencies(protos));
       protos.forEach(p => p.resolveTransitiveDependencies());
 
-      const genwkt = Services.Config.generateWellKnownTypes;
+      const genwkt = Services.Config.embedWellKnownTypes;
 
       return protos
         .filter(p => genwkt || !genwkt && p.pb_package !== 'google.protobuf')
@@ -42,21 +43,25 @@ function main() {
           const files: any[] = [];
 
           if (proto.serviceList.length) {
-            const configPrinter = new Printer();
-            const configFile = new PbConfFile(proto);
+            if (Services.Config.files.pbconf.generate) {
+              const configPrinter = new Printer();
+              const configFile = new PbConfFile(proto);
 
-            configFile.print(configPrinter);
+              configFile.print(configPrinter);
 
-            files.push({ name: basename + 'conf.ts', content: configPrinter.finalize() });
+              files.push({ name: basename + 'conf.ts', content: configPrinter.finalize() });
+            }
 
-            const pbscPrinter = new Printer();
-            const pbscFile = new PbscFile(proto);
+            if (Services.Config.files.pbsc.generate) {
+              const pbscPrinter = new Printer();
+              const pbscFile = new PbscFile(proto);
 
-            pbscFile.print(pbscPrinter);
+              pbscFile.print(pbscPrinter);
 
-            files.push({ name: basename + 'sc.ts', content: pbscPrinter.finalize() });
+              files.push({ name: basename + 'sc.ts', content: pbscPrinter.finalize() });
+            }
 
-            if (Services.Config.worker) {
+            if (Services.Config.files.pbwsc.generate) {
               const pbwscPrinter = new Printer();
               const pbwscFile = new PbwscFile(proto);
 
@@ -66,20 +71,21 @@ function main() {
             }
           }
 
-          const pbPrinter = new Printer();
-          const pbFile = new PbFile(proto);
+          if (Services.Config.files.pb.generate) {
+            const pbPrinter = new Printer();
+            const pbFile = new PbFile(proto);
 
-          pbFile.print(pbPrinter);
+            pbFile.print(pbPrinter);
 
-          files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
-
+            files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
+          }
           Services.Logger.debug(`End processing proto ${proto.name}`);
 
           return [...res, ...files];
         }, [] as any[]);
     })
     .then(CodeGeneratorResponse())
-    .catch(err => {
+    .catch((err: any) => {
       Services.Logger.debug(err);
       Services.Logger.debug(err.stack);
       return CodeGeneratorResponseError()(err);

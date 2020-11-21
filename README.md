@@ -71,7 +71,7 @@ Add `proto:generate` script to your `package.json` `scripts` section:
 ```json
 {
   "scripts": {
-    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
+    "proto:generate": "protoc --plugin=protoc-gen-ng=$(which protoc-gen-ng) --ng_out=<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
   }
 }
 ```
@@ -87,12 +87,36 @@ Example:
 ```json
 {
   "scripts": {
-    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=./src/proto -I ../proto $(find ../proto -iname \"*.proto\")"
+    "proto:generate": "protoc --plugin=protoc-gen-ng=$(which protoc-gen-ng) --ng_out=./src/proto -I ../proto $(find ../proto -iname \"*.proto\")"
   }
 }
 ```
 
 Finally, run `npm run proto:generate` every time you want to (re)generate the code
+
+### Advanced generator config
+
+You can have more control on what and how is being generated. Create a `ngx-grpc.conf.js` (`.json` format also supported) file in your project root.
+
+E.g. to generate well-known types in your project instead of using `@ngx-grpc/well-known-types`, use this config:
+
+```js
+module.exports = {
+  embedWellKnownTypes: true,
+};
+```
+
+More details on the configuration properties and their default values see [here](https://github.com/ngx-grpc/ngx-grpc/blob/master/packages/protoc-gen-ng/src/config.ts).
+
+Then update your package.json command with path to this file `config=./ngx-grpc.conf.js`:
+
+```json
+{
+  "scripts": {
+    "proto:generate": "protoc --plugin=protoc-gen-ng=$(which protoc-gen-ng) --ng_out=config=./ngx-grpc.conf.js:./src/proto -I ../proto $(find ../proto -iname \"*.proto\")"
+  }
+}
+```
 
 ### Windows
 
@@ -265,17 +289,7 @@ First, install additional packages:
 npm i -S @ngx-grpc/worker @ngx-grpc/worker-client
 ```
 
-Then configure the web worker. First you need to adapt the code generation command from above to pass the parameter `worker=true:`:
-
-```json
-{
-  "scripts": {
-    "proto:generate": "protoc --plugin=protoc-gen-ng=./node_modules/.bin/protoc-gen-ng --ng_out=worker=true:<OUTPUT_PATH> -I <PROTO_DIR_PATH> <PROTO_FILES>"
-  }
-}
-```
-
-It will additionally generate `*.pbwsc.ts` files containing the worker service client definitions.
+Then configure the web worker. First you need to adapt the code generation settings (see above) to generate `pbwsc` files. These files will contain the worker service client definitions.
 
 Now, generate the worker (angular cli), e.g. with the name `grpc`:
 
