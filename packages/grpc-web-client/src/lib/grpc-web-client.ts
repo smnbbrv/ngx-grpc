@@ -41,6 +41,10 @@ export class GrpcWebClient implements GrpcClient {
     this.client = new GrpcWebClientBase(this.settings);
   }
 
+  getSettings() {
+    return { ...this.settings };
+  }
+
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,

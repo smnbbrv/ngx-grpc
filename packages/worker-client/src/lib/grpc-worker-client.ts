@@ -48,6 +48,10 @@ export class GrpcWorkerClient implements GrpcClient {
     this.gateway.configureServiceClient(this.serviceId, this.settings);
   }
 
+  getSettings() {
+    return { ...this.settings };
+  }
+
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
