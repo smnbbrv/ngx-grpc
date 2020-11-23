@@ -9,9 +9,7 @@ import { GRPC_INTERCEPTORS } from './injection-tokens';
  * There is a root GrpcHandler that handles all initial requests;
  * however for every interception a new instance of GrpcHandler is created and passed to the interceptor
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GrpcHandler {
 
   private interceptors: GrpcInterceptor[];

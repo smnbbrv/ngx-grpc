@@ -17,9 +17,7 @@ export interface GrpcWebClientSettings {
 /**
  * GrpcClientFactory implementation based on grpc-web
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GrpcWebClientFactory implements GrpcClientFactory<GrpcWebClientSettings> {
 
   constructor(

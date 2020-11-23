@@ -1,6 +1,15 @@
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { Metadata, sendUnaryData, ServerUnaryCall, ServerWritableStream, ServiceError, status } from 'grpc';
 import { IEchoServiceServer } from './proto/echo_grpc_pb';
 import { EchoRequest, EchoResponse } from './proto/echo_pb';
+
+function createTimestamp(date: Date) {
+  const ts = new Timestamp();
+
+  ts.fromDate(date);
+
+  return ts;
+}
 
 export class EchoServiceServiceImpl implements IEchoServiceServer {
 
@@ -26,6 +35,7 @@ export class EchoServiceServiceImpl implements IEchoServiceServer {
           const response = new EchoResponse();
 
           response.setMessage(messageBack);
+          response.setTimestamp(createTimestamp(new Date()));
 
           call.write(response);
 
@@ -71,6 +81,7 @@ export class EchoServiceServiceImpl implements IEchoServiceServer {
     const messageBack = `Response for "${message}"`;
 
     response.setMessage(messageBack);
+    response.setTimestamp(createTimestamp(new Date()));
 
     console.log(`Responding with: ${messageBack}`);
 

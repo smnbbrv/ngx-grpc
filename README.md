@@ -132,46 +132,37 @@ Unfortunately the way to generate files on Windows slightly differs. Here is a s
 
 ## Usage
 
-### Provide the client factory
+### Import the required modules
+
+In general, you need to import at least
+
+- GrpcCoreModule
+- GrpcWebClientModule (or another client implementation, see below)
 
 ```ts
 @NgModule({
-  providers: [
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
+  imports: [
+    GrpcCoreModule.forRoot(),
+    GrpcWebClientModule.forRoot({
+      settings: { host: 'http://localhost:8080' },
+    }),
   ],
 })
 export class AppModule {}
 ```
 
-### Global clients configuration
-
-If you set `GRPC_WEB_CLIENT_DEFAULT_SETTINGS` all the services will use the configuration you provide. 
-
-```ts
-@NgModule({
-  providers: [
-    { provide: GRPC_WEB_CLIENT_DEFAULT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcWebClientSettings },
-  ],
-})
-export class AppModule {}
-```
-
-You can override the settings for each service (see below).
+You also can define them in child modules by using `forChild()` methods instead of `forRoot()`.
 
 ### Per-service clients configuration
 
-Every service has an injected configuration which could be found e.g. in the corresponding `*.pbconf.ts` file.
+Instead of configuring the client settings globally you can configure them per-service. Every service has an injected configuration which could be found e.g. in the corresponding `*.pbconf.ts` file.
 
 E.g. for a service `TestServiceClient` you need to provide the `GRPC_TEST_SERVICE_CLIENT_SETTINGS`:
 
 ```ts
 @NgModule({
   providers: [
-    // the name of the token can be found in corresponding service constructor
-    // uses default grpcwebtext format
     { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcWebClientSettings },
-    // or use value from environment.ts
-    // { provide: GRPC_TEST_SERVICE_CLIENT_SETTINGS, useValue: { host: environment.host } as GrpcWebClientSettings },
   ],
 })
 export class AppModule {}
@@ -255,10 +246,10 @@ As an example see `GrpcLoggerInterceptor` [in the core package](packages/core/sr
 
 ### Logger
 
-You can enable logging using `GrpcLoggerInterceptor` (provided by @ngx-grpc/core).
+You can enable logging using `GrpcLoggerInterceptor` (provided by @ngx-grpc/core). Add to your `AppModule` the following import:
 
 ```ts
-{ provide: GRPC_INTERCEPTORS, useClass: GrpcLoggerInterceptor, multi: true },
+GrpcLoggerModule.forRoot(),
 ```
 
 Then open the browser console and you should see all the requests and responses in a readable format.
@@ -266,7 +257,7 @@ Then open the browser console and you should see all the requests and responses 
 Optionally, you can provide provide the more detailed configuration as `GRPC_LOGGER_SETTINGS`. Example:
 
 ```ts
-{ 
+GrpcLoggerModule.forRoot({ 
   provide: GRPC_LOGGER_SETTINGS, 
   useValue: { 
      // enables logger in dev mode and still lets you see them in production when running `localStorage.setItem('logger', 'true') in the console`
@@ -276,7 +267,7 @@ Optionally, you can provide provide the more detailed configuration as `GRPC_LOG
     requestMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
     responseMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
   } as GrpcLoggerSettings
-},
+}),
 ```
 
 ## Web worker
@@ -321,17 +312,16 @@ worker.register(
 worker.start();
 ```
 
-Finally, provide worker client factory instead of the grpc-web-client and provide your worker
+Finally use the following imports:
 
 ```ts
 @NgModule({
-  providers: [
-    // replace grpc-web client factory
-    // { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
-    // with GrpcWorkerClientFactory
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWorkerClientFactory },
-    // and wire your worker
-    { provide: GRPC_WORKER, useFactory: () => new Worker('./grpc.worker', { type: 'module' }) },
+  imports: [
+    GrpcCoreModule.forChild(),
+    GrpcWorkerClientModule.forChild({
+      worker: () => new Worker('./grpc.worker', { type: 'module' }),
+      settings: { host: 'http://localhost:8080' },
+    }),
   ],
 })
 export class AppModule {

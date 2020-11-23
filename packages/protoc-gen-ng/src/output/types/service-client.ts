@@ -31,13 +31,14 @@ export class ServiceClient {
 
     const serviceId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.service.name;
 
+    const providedIn = Services.Config.files.pbsc.serviceClientProvidedIn;
+    const injectable = providedIn === 'none' ? '' : `{ providedIn: '${providedIn}' }`;
+
     printer.add(`
       /**
        * Service client implementation for ${serviceId}
        */
-      @Injectable({
-        providedIn: 'root',
-      })
+      @Injectable(${injectable})
       export class ${this.service.name}Client {
 
         private client: GrpcClient<any>;

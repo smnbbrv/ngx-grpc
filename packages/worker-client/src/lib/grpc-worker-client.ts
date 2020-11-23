@@ -19,9 +19,7 @@ export interface GrpcWorkerClientSettings {
 /**
  * GrpcClientFactory implementation based on grpc-web running in worker
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GrpcWorkerClientFactory implements GrpcClientFactory<GrpcWorkerClientSettings> {
 
   constructor(

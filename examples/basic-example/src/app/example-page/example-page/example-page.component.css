@@ -1,6 +1,6 @@
 :host {
   display: flex;
-  height: 100%;
+  height: calc(100% - 48px);
   flex-direction: column;
 }
 

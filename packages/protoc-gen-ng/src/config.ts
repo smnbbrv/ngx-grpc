@@ -18,6 +18,7 @@ module.exports = {
     },
     pbsc: {
       generate: true,
+      serviceClientProvidedIn: 'any',
     },
     pbwsc: {
       generate: false,
@@ -66,8 +67,14 @@ export class ConfigPbsc {
    */
   generate: boolean;
 
+  /**
+   * Provide service clients in...
+   */
+  serviceClientProvidedIn: 'root' | 'any' | 'none';
+
   constructor(config: Partial<ConfigPbsc> = {}) {
     this.generate = config.generate ?? true;
+    this.serviceClientProvidedIn = config.serviceClientProvidedIn ?? 'any';
   }
 }
 

@@ -24,9 +24,7 @@ import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
 /**
  * Service client implementation for echo.EchoService
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'any' })
 export class EchoServiceClient {
   private client: GrpcClient<any>;
 

@@ -7,9 +7,7 @@ import { GrpcWorkerClientSettings } from './grpc-worker-client';
 import { GRPC_WORKER } from './tokens';
 
 /** @dynamic */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GrpcWorkerGateway {
 
   private lastId = 0;

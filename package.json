@@ -27,14 +27,12 @@
     "lint": "ng lint && npm run lint:lib:protoc-gen-ng",
     "lint:lib:protoc-gen-ng": "tslint -c tslint.json -e 'packages/protoc-gen-ng/test/**/*.ts' 'packages/protoc-gen-ng/**/*.ts'",
     "release": "semantic-release",
-    "examples": "run-p examples:basic examples:worker examples:backend",
-    "examples:basic": "ng serve basic-example --port 4201",
-    "examples:worker": "ng serve worker-example --port 4202",
+    "examples": "run-p examples:basic examples:backend",
+    "examples:basic": "ng serve basic-example --port 4200",
     "examples:backend": "docker-compose -f examples/backend/docker-compose.yaml down && docker-compose -f examples/backend/docker-compose.yaml up --remove-orphans --build",
     "examples:backend:no-proxy": "cd examples/backend && npm start",
-    "examples:proto:generate": "run-s examples:proto:generate-backend examples:proto:generate-basic examples:proto:generate-worker",
-    "examples:proto:generate-basic": "mkdir -p examples/basic-example/src/proto && rm -rf examples/basic-example/src/proto/* && protoc --plugin=protoc-gen-ng=$(pwd)/dist/protoc-gen-ng/main.js --ng_out=examples/basic-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
-    "examples:proto:generate-worker": "mkdir -p examples/worker-example/src/proto && rm -rf examples/worker-example/src/proto/* && protoc --plugin=protoc-gen-ng=$(pwd)/dist/protoc-gen-ng/main.js --ng_out=config=examples/worker-example/ngx-grpc.conf.js:examples/worker-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
+    "examples:proto:generate": "run-s examples:proto:generate-backend examples:proto:generate-basic",
+    "examples:proto:generate-basic": "mkdir -p examples/basic-example/src/proto && rm -rf examples/basic-example/src/proto/* && protoc --plugin=protoc-gen-ng=$(pwd)/dist/protoc-gen-ng/main.js --ng_out=config=examples/worker-example/ngx-grpc.conf.js:examples/basic-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
     "examples:proto:generate-backend": "cd examples/backend && npm run proto:generate"
   },
   "dependencies": {

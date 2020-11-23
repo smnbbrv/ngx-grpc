@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GrpcEvent, GrpcStatusEvent } from '@ngx-grpc/common';
+import { Timestamp } from '@ngx-grpc/well-known-types';
+import { EchoRequest, EchoResponse } from 'examples/basic-example/src/proto/echo.pb';
 import { Subscription } from 'rxjs';
-import { EchoRequest, EchoResponse } from '../proto/echo.pb';
-import { EchoServiceClient } from '../proto/echo.pbsc';
+import { EchoServiceClient } from '../../../proto/echo.pbsc';
 
 enum ExampleEventType {
   request,
@@ -21,11 +22,11 @@ interface ExampleEvent {
 }
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'app-example-page',
+  templateUrl: './example-page.component.html',
+  styleUrls: ['./example-page.component.css'],
 })
-export class AppComponent {
+export class ExamplePageComponent {
 
   events: ExampleEvent[] = [];
 
@@ -98,7 +99,11 @@ export class AppComponent {
   private createRequest() {
     this.callNumber++;
 
-    return new EchoRequest({ message: 'Call #' + this.callNumber, shouldThrow: this.shouldThrow });
+    return new EchoRequest({
+      message: 'Call #' + this.callNumber,
+      shouldThrow: this.shouldThrow,
+      timestamp: Timestamp.fromDate(new Date()),
+    });
   }
 
   private displayGrpcEvent(event: GrpcEvent<EchoResponse>) {

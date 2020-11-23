@@ -1,16 +1,10 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GrpcMessage } from '@ngx-grpc/common/public-api';
-import { GrpcLoggerInterceptor, GrpcLoggerSettings, GRPC_CLIENT_FACTORY, GRPC_INTERCEPTORS, GRPC_LOGGER_SETTINGS } from '@ngx-grpc/core';
-import { GrpcWebClientFactory, GrpcWebClientSettings } from '@ngx-grpc/grpc-web-client';
-import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
+import { RouterModule } from '@angular/router';
+import { GrpcMessage } from '@ngx-grpc/common';
+import { GrpcLoggerModule } from '@ngx-grpc/core';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -20,24 +14,28 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    FormsModule,
-    MatButtonModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatIconModule,
-  ],
-  providers: [
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
-    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } as GrpcWebClientSettings },
-    {
-      provide: GRPC_LOGGER_SETTINGS,
-      useValue: {
+    MatTabsModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'grpc-web-client',
+      },
+      {
+        path: 'grpc-web-client',
+        loadChildren: () => import('./grpc-web-client-example/grpc-web-client-example.module').then(m => m.GrpcWebClientExampleModule),
+      },
+      {
+        path: 'grpc-worker-client',
+        loadChildren: () => import('./grpc-worker-client-example/grpc-worker-client-example.module').then(m => m.GrpcWorkerClientExampleModule),
+      },
+    ]),
+    GrpcLoggerModule.forRoot({
+      settings: {
         requestMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
         responseMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
-      } as GrpcLoggerSettings,
-    },
-    { provide: GRPC_INTERCEPTORS, useClass: GrpcLoggerInterceptor, multi: true },
+      },
+    }),
   ],
   bootstrap: [AppComponent],
 })

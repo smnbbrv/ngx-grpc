@@ -6,10 +6,11 @@ module.exports = {
       generate: true,
     },
     pbconf: {
-      generate: false,
+      generate: true,
     },
     pbsc: {
       generate: true,
+      serviceClientProvidedIn: 'root',
     },
     pbwsc: {
       generate: true,
