@@ -31,12 +31,7 @@ npm run build
 npm run examples
 ```
 
-Now you can see following examples:
-
-- basic grpc-web-client example at [http://localhost:4201/](http://localhost:4201/)
-- worker-client example at [http://localhost:4202/](http://localhost:4202/)
-
-The source code for the examples could be found at [examples](examples) directory.
+Now open your browser at [http://localhost:4200/](http://localhost:4200/). The source code could be found at [examples](examples) directory.
 
 ## Installation
 
