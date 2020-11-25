@@ -29,6 +29,10 @@ import { AppComponent } from './app.component';
         path: 'grpc-worker-client',
         loadChildren: () => import('./grpc-worker-client-example/grpc-worker-client-example.module').then(m => m.GrpcWorkerClientExampleModule),
       },
+      {
+        path: 'improbable-eng-grpc-web-client',
+        loadChildren: () => import('./improbable-eng-grpc-web-client-example/improbable-eng-grpc-web-client-example.module').then(m => m.ImprobableEngGrpcWebClientExampleModule),
+      },
     ]),
     GrpcLoggerModule.forRoot({
       settings: {

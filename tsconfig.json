@@ -48,6 +48,10 @@
       "@ngx-grpc/well-known-types": [
         "dist/well-known-types/well-known-types",
         "dist/well-known-types"
+      ],
+      "@ngx-grpc/improbable-eng-grpc-web-client": [
+        "dist/improbable-eng-grpc-web-client/improbable-eng-grpc-web-client",
+        "dist/improbable-eng-grpc-web-client"
       ]
     }
   },

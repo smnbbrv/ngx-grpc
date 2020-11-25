@@ -1,0 +1,13 @@
+{
+  "name": "improbable-eng-grpc-web-client",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@ngx-grpc/common": ">=0.2.0",
+    "@ngx-grpc/core": ">=0.2.0",
+    "@angular/core": ">=8.0.0",
+    "@improbable-eng/grpc-web": "^0.13.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

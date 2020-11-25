@@ -16,6 +16,7 @@ Angular gRPC framework.
 - simple console logger
 - support for well-known types, including `Any`
 - support for [JSON mappings](https://developers.google.com/protocol-buffers/docs/proto3#json)
+- @improbable-eng/grpc-web client implementation (experimental)
 - web worker (experimental)
 - easy to install, update and support thanks to npm packages
 
@@ -56,6 +57,12 @@ Where:
 - [@ngx-grpc/well-known-types](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/well-known-types) contains well-known types
 - [google-protobuf](https://github.com/protocolbuffers/protobuf/tree/master/js) is required to encode / decode the messages
 - [grpc-web](https://github.com/grpc/grpc-web) implements the transport between the browser and grpc proxy
+
+Also you can choose between alternative client implementations:
+
+- @ngx-grpc/grpc-web-client - based on [grpc-web](https://github.com/grpc/grpc-web)
+- @ngx-grpc/improbable-eng-grpc-web-client - alternative client implementation based on [@improbable-eng/grpc-web](https://github.com/improbable-eng/grpc-web)
+- @ngx-grpc/worker-client - similar to @ngx-grpc/grpc-web-client but running in worker
 
 ## Generate the code
 
@@ -265,6 +272,39 @@ GrpcLoggerModule.forRoot({
 }),
 ```
 
+## Alternative client / @improbable-eng/grpc-web-client
+
+The alternative grpc-web implementation from [Improbable Engineering](https://github.com/improbable-eng) provides way more features than standard grpc-web from Google. It supports [various transports](https://github.com/improbable-eng/grpc-web/blob/master/client/grpc-web/docs/transport.md) including WebSocket-based and even Node (can be useful e.g. for SSR).
+
+Installation:
+
+```sh
+npm i -S @ngx-grpc/improbable-eng-grpc-web @improbable-eng/grpc-web
+```
+
+Then configuration is similar to the other clients:
+
+```ts
+import { grpc } from '@improbable-eng/grpc-web';
+import { GrpcCoreModule } from '@ngx-grpc/core';
+import { ImprobableEngGrpcWebClientModule } from '@ngx-grpc/improbable-eng-grpc-web-client';
+
+@NgModule({
+  imports: [
+    GrpcCoreModule.forRoot(),
+    ImprobableEngGrpcWebClientModule.forRoot({
+      settings: {
+        host: 'http://localhost:8080',
+        transport: grpc.CrossBrowserHttpTransport({}),
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Choose your transport and provide it as a part of the settings. Now you are set.
+
 ## Web worker
 
 Web worker allows to run gRPC clients, messages serialization and deserialization in a separate thread. It might give some performance benefits on large data sets; however the main reason of the worker is to avoid blocking the main thread. That means that rendering engine has more resources to work on rendering while the messages processing is done in parallel.
@@ -312,8 +352,8 @@ Finally use the following imports:
 ```ts
 @NgModule({
   imports: [
-    GrpcCoreModule.forChild(),
-    GrpcWorkerClientModule.forChild({
+    GrpcCoreModule.forRoot(),
+    GrpcWorkerClientModule.forRoot({
       worker: () => new Worker('./grpc.worker', { type: 'module' }),
       settings: { host: 'http://localhost:8080' },
     }),

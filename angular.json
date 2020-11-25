@@ -362,6 +362,46 @@
           }
         }
       }
+    },
+    "improbable-eng-grpc-web-client": {
+      "projectType": "library",
+      "root": "packages/improbable-eng-grpc-web-client",
+      "sourceRoot": "packages/improbable-eng-grpc-web-client/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.lib.json",
+            "project": "packages/improbable-eng-grpc-web-client/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/improbable-eng-grpc-web-client/src/test.ts",
+            "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.spec.json",
+            "karmaConfig": "packages/improbable-eng-grpc-web-client/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/improbable-eng-grpc-web-client/tsconfig.lib.json",
+              "packages/improbable-eng-grpc-web-client/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   }
 }
