@@ -1,14 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { GrpcClientSettings, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 import { GrpcWorkerApi } from '@ngx-grpc/worker';
 import { Metadata } from 'grpc-web';
 import { Observable, Observer } from 'rxjs';
+import { GrpcWorkerClientSettings } from './grpc-worker-client';
 import { GRPC_WORKER } from './tokens';
 
 /** @dynamic */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GrpcWorkerGateway {
 
   private lastId = 0;
@@ -30,7 +29,7 @@ export class GrpcWorkerGateway {
             this.connections.delete(data.id);
             break;
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status:
-            connection.next(new GrpcStatusEvent(data.status.code, data.status.details, data.status.metadata));
+            connection.next(new GrpcStatusEvent(data.status.code, data.status.details, new GrpcMetadata(data.status.metadata)));
             break;
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data:
             connection.next(new GrpcDataEvent(data.response));
@@ -44,7 +43,7 @@ export class GrpcWorkerGateway {
     };
   }
 
-  configureServiceClient(serviceId: string, settings: GrpcClientSettings) {
+  configureServiceClient(serviceId: string, settings: GrpcWorkerClientSettings) {
     this.worker.postMessage({ type: GrpcWorkerApi.GrpcWorkerMessageType.serviceClientConfig, serviceId, settings } as GrpcWorkerApi.GrpcWorkerMessageServiceClientConfig);
   }
 
@@ -60,7 +59,7 @@ export class GrpcWorkerGateway {
         serviceId,
         path,
         request,
-        metadata
+        metadata,
       } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
 
       return () => this.closeConnection(id);
@@ -79,7 +78,7 @@ export class GrpcWorkerGateway {
         serviceId,
         path,
         request,
-        metadata
+        metadata,
       } as GrpcWorkerApi.GrpcWorkerMessageRPCRequest<Q>);
 
       return () => this.closeConnection(id);

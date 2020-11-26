@@ -16,14 +16,14 @@ export class ServiceClientConfig {
   }
 
   print(printer: Printer) {
-    printer.addDeps(ExternalDependencies.GrpcClientSettings, ExternalDependencies.InjectionToken);
+    printer.addDeps(ExternalDependencies.InjectionToken);
 
     printer.addLine(`
       /**
        * Specific GrpcClientSettings for ${classify(this.service.name)}.
        * Use it only if your default settings are not set or the service requires other settings.
        */
-      export const ${this.getTokenName()} = new InjectionToken<GrpcClientSettings>('${this.getTokenName()}');
+      export const ${this.getTokenName()} = new InjectionToken<any>('${this.getTokenName()}');
     `);
   }
 

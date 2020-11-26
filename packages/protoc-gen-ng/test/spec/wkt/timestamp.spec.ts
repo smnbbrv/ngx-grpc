@@ -1,7 +1,7 @@
 import 'jest';
 import { Timestamp } from '../../out/google/protobuf/timestamp.pb';
 
-describe('data-types.proto', () => {
+describe('Timestamp', () => {
 
   it('should create Timestamp from date', () => {
     let timestamp = Timestamp.fromDate(new Date(0));

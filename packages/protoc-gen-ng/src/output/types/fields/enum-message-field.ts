@@ -12,6 +12,7 @@ export class EnumMessageField implements MessageField {
 
   private attributeName: string;
   private dataType: string;
+  private notRepeatedDataType: string;
   private isArray: boolean;
   private isPacked: boolean;
 
@@ -25,6 +26,7 @@ export class EnumMessageField implements MessageField {
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.isPacked = isPacked(this.proto, this.messageField);
     this.dataType = getDataType(this.proto, this.messageField);
+    this.notRepeatedDataType = getDataType(this.proto, this.messageField, { ignoreRepeating: true });
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
@@ -102,6 +104,18 @@ export class EnumMessageField implements MessageField {
 
   printAsObjectMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(v => ${this.notRepeatedDataType}[v]),`);
+    } else {
+      printer.add(`${this.attributeName}: ${this.oneOf ? `this.${this.attributeName} === undefined ? null : ` : ''}${this.notRepeatedDataType}[this.${this.attributeName} ?? 0],`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''}${this.oneOf ? ' | null' : ''};`);
   }
 
 }

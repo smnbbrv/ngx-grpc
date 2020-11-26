@@ -3,13 +3,19 @@
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
-import { GrpcMessage, RecursivePartial } from '@ngx-grpc/common';
+import {
+  GrpcMessage,
+  RecursivePartial,
+  ToProtobufJSONOptions,
+} from '@ngx-grpc/common';
 import { BinaryReader, BinaryWriter, ByteSource } from 'google-protobuf';
-
+import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
 /**
  * Message implementation for echo.EchoRequest
  */
 export class EchoRequest implements GrpcMessage {
+  static id = 'echo.EchoRequest';
+
   /**
    * Deserialize binary data to message
    * @param instance message instance
@@ -22,65 +28,87 @@ export class EchoRequest implements GrpcMessage {
 
   /**
    * Check all the properties and set default protobuf values if necessary
-   * @param instance message instance
+   * @param _instance message instance
    */
-  static refineValues(instance: EchoRequest) {
-    instance.message = instance.message || '';
-    instance.shouldThrow = instance.shouldThrow || false;
+  static refineValues(_instance: EchoRequest) {
+    _instance.message = _instance.message || '';
+    _instance.shouldThrow = _instance.shouldThrow || false;
+    _instance.timestamp = _instance.timestamp || undefined;
   }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
-   * @param instance message instance
-   * @param reader binary reader instance
+   * @param _instance message instance
+   * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    instance: EchoRequest,
-    reader: BinaryReader
+    _instance: EchoRequest,
+    _reader: BinaryReader
   ) {
-    while (reader.nextField()) {
-      if (reader.isEndGroup()) break;
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
 
-      switch (reader.getFieldNumber()) {
+      switch (_reader.getFieldNumber()) {
         case 1:
-          instance.message = reader.readString();
+          _instance.message = _reader.readString();
           break;
         case 2:
-          instance.shouldThrow = reader.readBool();
+          _instance.shouldThrow = _reader.readBool();
+          break;
+        case 3:
+          _instance.timestamp = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.timestamp,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         default:
-          reader.skipField();
+          _reader.skipField();
       }
     }
 
-    EchoRequest.refineValues(instance);
+    EchoRequest.refineValues(_instance);
   }
 
   /**
    * Serializes a message to binary format using provided binary reader
-   * @param instance message instance
-   * @param writer binary writer instance
+   * @param _instance message instance
+   * @param _writer binary writer instance
    */
-  static serializeBinaryToWriter(instance: EchoRequest, writer: BinaryWriter) {
-    if (instance.message) {
-      writer.writeString(1, instance.message);
+  static serializeBinaryToWriter(
+    _instance: EchoRequest,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.message) {
+      _writer.writeString(1, _instance.message);
     }
-    if (instance.shouldThrow) {
-      writer.writeBool(2, instance.shouldThrow);
+    if (_instance.shouldThrow) {
+      _writer.writeBool(2, _instance.shouldThrow);
+    }
+    if (_instance.timestamp) {
+      _writer.writeMessage(
+        3,
+        _instance.timestamp as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
   }
 
   private _message?: string;
   private _shouldThrow?: boolean;
+  private _timestamp?: googleProtobuf000.Timestamp;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param value initial values object or instance of EchoRequest to deeply clone from
+   * @param _value initial values object or instance of EchoRequest to deeply clone from
    */
-  constructor(value?: RecursivePartial<EchoRequest>) {
-    value = value || {};
-    this.message = value.message;
-    this.shouldThrow = value.shouldThrow;
+  constructor(_value?: RecursivePartial<EchoRequest>) {
+    _value = _value || {};
+    this.message = _value.message;
+    this.shouldThrow = _value.shouldThrow;
+    this.timestamp = _value.timestamp
+      ? new googleProtobuf000.Timestamp(_value.timestamp)
+      : undefined;
     EchoRequest.refineValues(this);
   }
   get message(): string | undefined {
@@ -94,6 +122,12 @@ export class EchoRequest implements GrpcMessage {
   }
   set shouldThrow(value: boolean | undefined) {
     this._shouldThrow = value;
+  }
+  get timestamp(): googleProtobuf000.Timestamp | undefined {
+    return this._timestamp;
+  }
+  set timestamp(value: googleProtobuf000.Timestamp | undefined) {
+    this._timestamp = value;
   }
 
   /**
@@ -113,15 +147,31 @@ export class EchoRequest implements GrpcMessage {
     return {
       message: this.message,
       shouldThrow: this.shouldThrow,
+      timestamp: this.timestamp ? this.timestamp.toObject() : undefined,
     };
   }
 
   /**
-   * JSON serializer
-   * Only intended to be used by `JSON.stringify` function. If you want to cast message to standard JavaScript object, use `toObject()` instead
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
    */
   toJSON() {
     return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): EchoRequest.AsProtobufJSON {
+    return {
+      message: this.message,
+      shouldThrow: this.shouldThrow,
+      timestamp: this.timestamp ? this.timestamp.toProtobufJSON(options) : null,
+    };
   }
 }
 export module EchoRequest {
@@ -131,6 +181,16 @@ export module EchoRequest {
   export interface AsObject {
     message?: string;
     shouldThrow?: boolean;
+    timestamp?: googleProtobuf000.Timestamp.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for EchoRequest
+   */
+  export interface AsProtobufJSON {
+    message?: string;
+    shouldThrow?: boolean;
+    timestamp?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
   }
 }
 
@@ -138,6 +198,8 @@ export module EchoRequest {
  * Message implementation for echo.EchoResponse
  */
 export class EchoResponse implements GrpcMessage {
+  static id = 'echo.EchoResponse';
+
   /**
    * Deserialize binary data to message
    * @param instance message instance
@@ -150,56 +212,78 @@ export class EchoResponse implements GrpcMessage {
 
   /**
    * Check all the properties and set default protobuf values if necessary
-   * @param instance message instance
+   * @param _instance message instance
    */
-  static refineValues(instance: EchoResponse) {
-    instance.message = instance.message || '';
+  static refineValues(_instance: EchoResponse) {
+    _instance.message = _instance.message || '';
+    _instance.timestamp = _instance.timestamp || undefined;
   }
 
   /**
    * Deserializes / reads binary message into message instance using provided binary reader
-   * @param instance message instance
-   * @param reader binary reader instance
+   * @param _instance message instance
+   * @param _reader binary reader instance
    */
   static deserializeBinaryFromReader(
-    instance: EchoResponse,
-    reader: BinaryReader
+    _instance: EchoResponse,
+    _reader: BinaryReader
   ) {
-    while (reader.nextField()) {
-      if (reader.isEndGroup()) break;
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
 
-      switch (reader.getFieldNumber()) {
+      switch (_reader.getFieldNumber()) {
         case 1:
-          instance.message = reader.readString();
+          _instance.message = _reader.readString();
+          break;
+        case 2:
+          _instance.timestamp = new googleProtobuf000.Timestamp();
+          _reader.readMessage(
+            _instance.timestamp,
+            googleProtobuf000.Timestamp.deserializeBinaryFromReader
+          );
           break;
         default:
-          reader.skipField();
+          _reader.skipField();
       }
     }
 
-    EchoResponse.refineValues(instance);
+    EchoResponse.refineValues(_instance);
   }
 
   /**
    * Serializes a message to binary format using provided binary reader
-   * @param instance message instance
-   * @param writer binary writer instance
+   * @param _instance message instance
+   * @param _writer binary writer instance
    */
-  static serializeBinaryToWriter(instance: EchoResponse, writer: BinaryWriter) {
-    if (instance.message) {
-      writer.writeString(1, instance.message);
+  static serializeBinaryToWriter(
+    _instance: EchoResponse,
+    _writer: BinaryWriter
+  ) {
+    if (_instance.message) {
+      _writer.writeString(1, _instance.message);
+    }
+    if (_instance.timestamp) {
+      _writer.writeMessage(
+        2,
+        _instance.timestamp as any,
+        googleProtobuf000.Timestamp.serializeBinaryToWriter
+      );
     }
   }
 
   private _message?: string;
+  private _timestamp?: googleProtobuf000.Timestamp;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
-   * @param value initial values object or instance of EchoResponse to deeply clone from
+   * @param _value initial values object or instance of EchoResponse to deeply clone from
    */
-  constructor(value?: RecursivePartial<EchoResponse>) {
-    value = value || {};
-    this.message = value.message;
+  constructor(_value?: RecursivePartial<EchoResponse>) {
+    _value = _value || {};
+    this.message = _value.message;
+    this.timestamp = _value.timestamp
+      ? new googleProtobuf000.Timestamp(_value.timestamp)
+      : undefined;
     EchoResponse.refineValues(this);
   }
   get message(): string | undefined {
@@ -207,6 +291,12 @@ export class EchoResponse implements GrpcMessage {
   }
   set message(value: string | undefined) {
     this._message = value;
+  }
+  get timestamp(): googleProtobuf000.Timestamp | undefined {
+    return this._timestamp;
+  }
+  set timestamp(value: googleProtobuf000.Timestamp | undefined) {
+    this._timestamp = value;
   }
 
   /**
@@ -225,15 +315,30 @@ export class EchoResponse implements GrpcMessage {
   toObject(): EchoResponse.AsObject {
     return {
       message: this.message,
+      timestamp: this.timestamp ? this.timestamp.toObject() : undefined,
     };
   }
 
   /**
-   * JSON serializer
-   * Only intended to be used by `JSON.stringify` function. If you want to cast message to standard JavaScript object, use `toObject()` instead
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
    */
   toJSON() {
     return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): EchoResponse.AsProtobufJSON {
+    return {
+      message: this.message,
+      timestamp: this.timestamp ? this.timestamp.toProtobufJSON(options) : null,
+    };
   }
 }
 export module EchoResponse {
@@ -242,5 +347,14 @@ export module EchoResponse {
    */
   export interface AsObject {
     message?: string;
+    timestamp?: googleProtobuf000.Timestamp.AsObject;
+  }
+
+  /**
+   * Protobuf JSON representation for EchoResponse
+   */
+  export interface AsProtobufJSON {
+    message?: string;
+    timestamp?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
   }
 }

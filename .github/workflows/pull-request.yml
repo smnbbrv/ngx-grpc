@@ -20,7 +20,7 @@ jobs:
         uses: arduino/setup-protoc@master
       - name: Install protoc-gen-grpc-web protoc plugin
         run: |
-          sudo wget https://github.com/grpc/grpc-web/releases/download/1.1.0/protoc-gen-grpc-web-1.1.0-linux-x86_64 -O /usr/local/bin/protoc-gen-grpc-web
+          sudo wget https://github.com/grpc/grpc-web/releases/download/1.2.1/protoc-gen-grpc-web-1.2.1-linux-x86_64 -O /usr/local/bin/protoc-gen-grpc-web
           sudo chmod a+x /usr/local/bin/protoc-gen-grpc-web
       - name: Install dependencies
         run: npm ci

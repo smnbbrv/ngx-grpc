@@ -11,10 +11,20 @@ import { EnumMessageField } from './fields/enum-message-field';
 import { MapMessageField } from './fields/map-message-field';
 import { MessageMessageField } from './fields/message-message-field';
 import { NumberMessageField } from './fields/number-message-field';
-import { Number64MessageField as Number64MessageField } from './fields/number64-message-field';
 import { StringMessageField } from './fields/string-message-field';
 import { MessageField } from './message-field';
 import { OneOf } from './oneof';
+import { AnyWKT } from './well-known-types/any.wkt';
+import { ApiWKT, MethodWKT, MixinWKT } from './well-known-types/api.wkt';
+import { DurationWKT } from './well-known-types/duration.wkt';
+import { EmptyWKT } from './well-known-types/empty.wkt';
+import { FieldMaskWKT } from './well-known-types/field-mask.wkt';
+import { SourceContextWKT } from './well-known-types/source-context.wkt';
+import { ListValueWKT, StructWKT, ValueWKT } from './well-known-types/struct.wkt';
+import { TimestampWKT } from './well-known-types/timestamp.wkt';
+import { EnumValueWKT, EnumWKT, FieldWKT, OptionWKT, TypeWKT } from './well-known-types/type.wkt';
+import { BoolValueWKT, BytesValueWKT, DoubleValueWKT, FloatValueWKT, Int32ValueWKT, Int64ValueWKT, StringValueWKT, UInt32ValueWKT, UInt64ValueWKT } from './well-known-types/wrappers.wkt';
+import { WKT } from './wkt';
 
 export class Message {
 
@@ -22,10 +32,43 @@ export class Message {
 
   private oneOfs: OneOf[];
 
+  private wkt?: WKT;
+
   constructor(
     private proto: Proto,
     private message: ProtoMessage,
   ) {
+    if (this.proto.pb_package === 'google.protobuf') {
+      switch (this.message.name) {
+        case 'Any': this.wkt = new AnyWKT(); break;
+        case 'Api': this.wkt = new ApiWKT(); break;
+        case 'BoolValue': this.wkt = new BoolValueWKT(); break;
+        case 'BytesValue': this.wkt = new BytesValueWKT(); break;
+        case 'DoubleValue': this.wkt = new DoubleValueWKT(); break;
+        case 'Duration': this.wkt = new DurationWKT(); break;
+        case 'Empty': this.wkt = new EmptyWKT(); break;
+        case 'Enum': this.wkt = new EnumWKT(); break;
+        case 'EnumValue': this.wkt = new EnumValueWKT(); break;
+        case 'Field': this.wkt = new FieldWKT(); break;
+        case 'FieldMask': this.wkt = new FieldMaskWKT(); break;
+        case 'FloatValue': this.wkt = new FloatValueWKT(); break;
+        case 'Int32Value': this.wkt = new Int32ValueWKT(); break;
+        case 'Int64Value': this.wkt = new Int64ValueWKT(); break;
+        case 'ListValue': this.wkt = new ListValueWKT(); break;
+        case 'Method': this.wkt = new MethodWKT(); break;
+        case 'Mixin': this.wkt = new MixinWKT(); break;
+        case 'Option': this.wkt = new OptionWKT(); break;
+        case 'SourceContext': this.wkt = new SourceContextWKT(); break;
+        case 'StringValue': this.wkt = new StringValueWKT(); break;
+        case 'Struct': this.wkt = new StructWKT(); break;
+        case 'Timestamp': this.wkt = new TimestampWKT(); break;
+        case 'Type': this.wkt = new TypeWKT(); break;
+        case 'UInt32Value': this.wkt = new UInt32ValueWKT(); break;
+        case 'UInt64Value': this.wkt = new UInt64ValueWKT(); break;
+        case 'Value': this.wkt = new ValueWKT(); break;
+      }
+    }
+
     this.oneOfs = this.message.oneofDeclList.map(od => new OneOf(this.proto, this.message, od));
 
     this.messageFields = this.message.fieldList.map(field => {
@@ -52,13 +95,12 @@ export class Message {
           case ProtoMessageFieldType.sfixed32:
           case ProtoMessageFieldType.sint32:
           case ProtoMessageFieldType.uint32:
-            return new NumberMessageField(this.proto, this.message, field, oneOf);
           case ProtoMessageFieldType.fixed64:
           case ProtoMessageFieldType.int64:
           case ProtoMessageFieldType.sfixed64:
           case ProtoMessageFieldType.sint64:
           case ProtoMessageFieldType.uint64:
-            return new Number64MessageField(this.proto, this.message, field, oneOf);
+            return new NumberMessageField(this.proto, this.message, field, oneOf);
           default: throw new Error('Unknown data type ' + field.type);
         }
       }
@@ -75,12 +117,16 @@ export class Message {
     );
 
     const messageId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.message.name;
+    const wktUrl = 'https://developers.google.com/protocol-buffers/docs/reference/google.protobuf';
+    const constructorComment = this.wkt ? `Well known type, more at ${wktUrl}` : `Message implementation for ${messageId}`;
 
     printer.addLine(`
     /**
-     * Message implementation for ${messageId}
+     * ${constructorComment}
      */
     export class ${this.message.name} implements GrpcMessage {
+
+      static id = '${messageId}';
 
       /**
        * Deserialize binary data to message
@@ -93,10 +139,7 @@ export class Message {
       }
     `);
 
-    if (this.message.name === 'Timestamp' && this.proto.pb_package === 'google.protobuf') {
-      this.printTimestampStaticMethods(printer);
-    }
-
+    this.wkt?.printStaticMethods?.(printer);
     this.printStaticRefineValues(printer);
     printer.newLine();
 
@@ -138,18 +181,10 @@ export class Message {
     `);
 
     this.printToObject(printer);
+    this.printToJSON(printer);
+    this.printToProtobufJSON(printer);
 
-    printer.addLine(`
-      /**
-       * JSON serializer
-       * Only intended to be used by \`JSON.stringify\` function. If you want to cast message to standard JavaScript object, use \`toObject()\` instead
-       */
-      toJSON() { return this.toObject(); }
-    `);
-
-    if (this.message.name === 'Timestamp' && this.proto.pb_package === 'google.protobuf') {
-      this.printTimestampMemberMethods(printer);
-    }
+    this.wkt?.printMemberMethods?.(printer);
 
     printer.addLine('}');
 
@@ -272,53 +307,75 @@ export class Message {
     printer.addLine('}');
   }
 
+  private printAsJSONInterface(printer: Printer) {
+    printer.addLine(`
+      /**
+       * Protobuf JSON representation for ${this.message.name}
+       */`,
+    );
+    if (this.wkt?.printAsProtobufJSON) {
+      this.wkt.printAsProtobufJSON(printer);
+    } else {
+      printer.addLine(`export interface AsProtobufJSON {`);
+      this.messageFields.forEach(f => {
+        f.printAsJSONMapping(printer);
+        printer.newLine();
+      });
+      printer.addLine('}');
+    }
+  }
+
+  private printToJSON(printer: Printer) {
+    printer.addLine(`
+      /**
+       * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+       */
+      toJSON() { return this.toObject(); }
+    `);
+  }
+
+  private printToProtobufJSON(printer: Printer) {
+    printer.addDeps(
+      ExternalDependencies.ToProtobufJSONOptions,
+    );
+
+    printer.addLine(`
+      /**
+       * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+       * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+       * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+       */`,
+    );
+    printer.addLine(`toProtobufJSON(
+      // @ts-ignore
+      options?: ToProtobufJSONOptions
+    ): ${this.message.name}.AsProtobufJSON {`);
+
+    if (this.wkt?.printToProtobufJSON) {
+      this.wkt.printToProtobufJSON(printer);
+    } else {
+      printer.addLine('return {');
+      this.messageFields.forEach(f => {
+        f.printToProtobufJSONMapping(printer);
+        printer.newLine();
+      });
+      printer.addLine('};');
+    }
+
+    printer.addLine('}');
+  }
+
   private printSubTypes(printer: Printer) {
     printer.addLine(`export module ${this.message.name} {`);
 
     this.printAsObjectInterface(printer);
+    this.printAsJSONInterface(printer);
 
     this.oneOfs.forEach(oneof => oneof.printEnum(printer));
     this.message.enumTypeList.forEach(protoEnum => new Enum(this.proto, protoEnum).print(printer));
     this.message.nestedTypeList.forEach(protoMessage => new Message(this.proto, protoMessage).print(printer));
 
     printer.addLine('}');
-  }
-
-  private printTimestampStaticMethods(printer: Printer) {
-    printer.addLine(`
-      static fromDate(date: Date) {
-        var timestamp = new Timestamp();
-        timestamp.fromDate(date);
-        return timestamp;
-      }
-
-      static fromISOString(isoDate: string) {
-        var timestamp = new Timestamp();
-        timestamp.fromISOString(isoDate);
-        return timestamp;
-      }
-    `);
-  }
-
-  private printTimestampMemberMethods(printer: Printer) {
-    printer.addLine(`
-      fromDate(date: Date) {
-        this.seconds = ''+Math.floor(date.getTime() / 1e3);
-        this.nanos = date.getMilliseconds() * 1e6;
-      }
-
-      toDate() {
-        return new Date(parseInt(this.seconds || '0') * 1e3 + (this.nanos || 0) / 1e6);
-      }
-
-      fromISOString(isoDate: string) {
-        this.fromDate(new Date(isoDate));
-      }
-
-      toISOString() {
-        return this.toDate().toISOString();
-      }
-    `);
   }
 
 }

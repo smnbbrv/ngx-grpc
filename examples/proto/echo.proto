@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package echo;
 
 service EchoService {
@@ -10,6 +12,10 @@ service EchoService {
 message EchoRequest {
   string message = 1;
   bool shouldThrow = 2;
+  google.protobuf.Timestamp timestamp = 3;
 }
 
-message EchoResponse { string message = 1; }
+message EchoResponse {
+  string message = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}

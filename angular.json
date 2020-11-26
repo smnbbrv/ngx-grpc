@@ -10,7 +10,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "packages/core/tsconfig.lib.json",
             "project": "packages/core/ng-package.json"
@@ -50,7 +50,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "packages/worker/tsconfig.lib.json",
             "project": "packages/worker/ng-package.json"
@@ -90,7 +90,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "packages/common/tsconfig.lib.json",
             "project": "packages/common/ng-package.json"
@@ -130,7 +130,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "packages/worker-client/tsconfig.lib.json",
             "project": "packages/worker-client/ng-package.json"
@@ -187,7 +187,8 @@
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "examples/basic-example/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "examples/basic-example/tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -200,7 +201,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -261,7 +261,8 @@
             "tsConfig": [
               "examples/basic-example/tsconfig.app.json",
               "examples/basic-example/tsconfig.spec.json",
-              "examples/basic-example/e2e/tsconfig.json"
+              "examples/basic-example/e2e/tsconfig.json",
+              "examples/basic-example/tsconfig.worker.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -282,127 +283,6 @@
         }
       }
     },
-    "worker-example": {
-      "projectType": "application",
-      "schematics": {},
-      "root": "examples/worker-example",
-      "sourceRoot": "examples/worker-example/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/worker-example",
-            "index": "examples/worker-example/src/index.html",
-            "main": "examples/worker-example/src/main.ts",
-            "polyfills": "examples/worker-example/src/polyfills.ts",
-            "tsConfig": "examples/worker-example/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "examples/worker-example/src/favicon.ico",
-              "examples/worker-example/src/assets"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "examples/worker-example/src/styles.css"
-            ],
-            "scripts": [],
-            "webWorkerTsConfig": "examples/worker-example/tsconfig.worker.json"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "examples/worker-example/src/environments/environment.ts",
-                  "with": "examples/worker-example/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "worker-example:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "worker-example:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "worker-example:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "examples/worker-example/src/test.ts",
-            "polyfills": "examples/worker-example/src/polyfills.ts",
-            "tsConfig": "examples/worker-example/tsconfig.spec.json",
-            "karmaConfig": "examples/worker-example/karma.conf.js",
-            "assets": [
-              "examples/worker-example/src/favicon.ico",
-              "examples/worker-example/src/assets"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "examples/worker-example/src/styles.css"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "examples/worker-example/tsconfig.app.json",
-              "examples/worker-example/tsconfig.spec.json",
-              "examples/worker-example/e2e/tsconfig.json",
-              "examples/worker-example/tsconfig.worker.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "examples/worker-example/e2e/protractor.conf.js",
-            "devServerTarget": "worker-example:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "worker-example:serve:production"
-            }
-          }
-        }
-      }
-    },
     "grpc-web-client": {
       "projectType": "library",
       "root": "packages/grpc-web-client",
@@ -410,7 +290,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "packages/grpc-web-client/tsconfig.lib.json",
             "project": "packages/grpc-web-client/ng-package.json"
@@ -435,6 +315,86 @@
             "tsConfig": [
               "packages/grpc-web-client/tsconfig.lib.json",
               "packages/grpc-web-client/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "well-known-types": {
+      "projectType": "library",
+      "root": "packages/well-known-types",
+      "sourceRoot": "packages/well-known-types/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "packages/well-known-types/tsconfig.lib.json",
+            "project": "packages/well-known-types/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/well-known-types/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/well-known-types/src/test.ts",
+            "tsConfig": "packages/well-known-types/tsconfig.spec.json",
+            "karmaConfig": "packages/well-known-types/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/well-known-types/tsconfig.lib.json",
+              "packages/well-known-types/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "improbable-eng-grpc-web-client": {
+      "projectType": "library",
+      "root": "packages/improbable-eng-grpc-web-client",
+      "sourceRoot": "packages/improbable-eng-grpc-web-client/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.lib.json",
+            "project": "packages/improbable-eng-grpc-web-client/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/improbable-eng-grpc-web-client/src/test.ts",
+            "tsConfig": "packages/improbable-eng-grpc-web-client/tsconfig.spec.json",
+            "karmaConfig": "packages/improbable-eng-grpc-web-client/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/improbable-eng-grpc-web-client/tsconfig.lib.json",
+              "packages/improbable-eng-grpc-web-client/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

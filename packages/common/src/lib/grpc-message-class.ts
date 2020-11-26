@@ -7,6 +7,7 @@ import { RecursivePartial } from './recursive-partial';
  */
 export interface GrpcMessageClass<M extends GrpcMessage> {
   new(m?: RecursivePartial<M>): M;
+  id: string;
   deserializeBinary: (bytes: ByteSource) => M;
   deserializeBinaryFromReader: (message: M, reader: BinaryReader) => void;
   serializeBinaryToWriter: (message: M, writer: BinaryWriter) => void;

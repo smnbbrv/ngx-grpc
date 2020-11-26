@@ -2,8 +2,9 @@
   "name": "@ngx-grpc/grpc-web-client",
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",
+    "@ngx-grpc/core": ">=0.2.0",
     "@angular/core": ">=8.0.0",
-    "grpc-web": "^1.2.0"
+    "grpc-web": "^1.2.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"

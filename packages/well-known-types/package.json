@@ -1,0 +1,10 @@
+{
+  "name": "@ngx-grpc/well-known-types",
+  "peerDependencies": {
+    "google-protobuf": "^3.10.0",
+    "@ngx-grpc/common": ">=2.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

@@ -3,6 +3,7 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
+import { ExternalDependencies } from '../../misc/dependencies';
 import { getDataType } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
@@ -86,6 +87,20 @@ export class BytesMessageField implements MessageField {
 
   printAsObjectMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    printer.addDeps(ExternalDependencies.uint8ArrayToBase64);
+
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(b => b ? uint8ArrayToBase64(b) : ''),`);
+    } else {
+      printer.add(`${this.attributeName}: this.${this.attributeName} ? uint8ArrayToBase64(this.${this.attributeName}) : '',`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''};`);
   }
 
 }

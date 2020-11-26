@@ -3,7 +3,7 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality, ProtoMessageFieldType } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
-import { getDataType, isPacked } from '../../misc/helpers';
+import { getDataType, isNumberString, isPacked } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
@@ -15,20 +15,7 @@ export class NumberMessageField implements MessageField {
   private isPacked: boolean;
   private protoDataType: string; // used in reader and writer as part of the method call
   private isArray: boolean;
-
-  static isNumberField(field: ProtoMessageField) {
-    const numberTypes = [
-      ProtoMessageFieldType.double,
-      ProtoMessageFieldType.fixed32,
-      ProtoMessageFieldType.float,
-      ProtoMessageFieldType.int32,
-      ProtoMessageFieldType.sfixed32,
-      ProtoMessageFieldType.sint32,
-      ProtoMessageFieldType.uint32,
-    ];
-
-    return numberTypes.includes(field.type);
-  }
+  private isStringType: boolean;
 
   constructor(
     private proto: Proto,
@@ -40,6 +27,7 @@ export class NumberMessageField implements MessageField {
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.isPacked = isPacked(this.proto, this.messageField);
     this.dataType = getDataType(this.proto, this.messageField);
+    this.isStringType = isNumberString(this.messageField);
 
     switch (this.messageField.type) {
       case ProtoMessageFieldType.double: this.protoDataType = 'Double'; break;
@@ -49,6 +37,11 @@ export class NumberMessageField implements MessageField {
       case ProtoMessageFieldType.sfixed32: this.protoDataType = 'Sfixed32'; break;
       case ProtoMessageFieldType.sint32: this.protoDataType = 'Sint32'; break;
       case ProtoMessageFieldType.uint32: this.protoDataType = 'Uint32'; break;
+      case ProtoMessageFieldType.fixed64: this.protoDataType = 'Fixed64' + (this.isStringType ? 'String' : ''); break;
+      case ProtoMessageFieldType.int64: this.protoDataType = 'Int64' + (this.isStringType ? 'String' : ''); break;
+      case ProtoMessageFieldType.sfixed64: this.protoDataType = 'Sfixed64' + (this.isStringType ? 'String' : ''); break;
+      case ProtoMessageFieldType.sint64: this.protoDataType = 'Sint64' + (this.isStringType ? 'String' : ''); break;
+      case ProtoMessageFieldType.uint64: this.protoDataType = 'Uint64' + (this.isStringType ? 'String' : ''); break;
       default: throw new Error('Unknown number type ' + this.messageField.type);
     }
   }
@@ -103,7 +96,7 @@ export class NumberMessageField implements MessageField {
     } else if (this.isArray) {
       printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
     } else {
-      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || 0`);
+      printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || ${this.isStringType ? '\'0\'' : '0'}`);
     }
   }
 
@@ -128,6 +121,18 @@ export class NumberMessageField implements MessageField {
 
   printAsObjectMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
+    } else {
+      printer.add(`${this.attributeName}: this.${this.attributeName}${this.oneOf ? ' ?? null' : ''},`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType}${this.oneOf ? ' | null' : ''};`);
   }
 
 }

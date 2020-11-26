@@ -13,6 +13,7 @@ export class MessageMessageField implements MessageField {
   private attributeName: string;
   private dataType: string;
   private asObjectDataType: string;
+  private asJSONDataType: string;
   private messageClassName: string;
   private isArray: boolean;
 
@@ -26,7 +27,8 @@ export class MessageMessageField implements MessageField {
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.messageClassName = this.proto.getRelativeTypeName(this.messageField.typeName);
     this.dataType = getDataType(this.proto, this.messageField);
-    this.asObjectDataType = getDataType(this.proto, this.messageField, true);
+    this.asObjectDataType = getDataType(this.proto, this.messageField, { asObjectDataType: true });
+    this.asJSONDataType = getDataType(this.proto, this.messageField, { asProtobufJSONDataType: true });
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
@@ -101,6 +103,18 @@ export class MessageMessageField implements MessageField {
 
   printAsObjectMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.asObjectDataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(m => m.toProtobufJSON(options)),`);
+    } else {
+      printer.add(`${this.attributeName}: this.${this.attributeName} ? this.${this.attributeName}.toProtobufJSON(options) : null,`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.asJSONDataType} | null;`);
   }
 
 }

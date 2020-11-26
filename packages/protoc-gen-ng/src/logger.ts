@@ -1,12 +1,11 @@
 import * as winston from 'winston';
-import { Services } from './services';
 
 export class Logger {
 
   private logger?: winston.Logger;
 
-  constructor() {
-    if (Services.Config.debug) {
+  constructor(debug: boolean) {
+    if (debug) {
       this.logger = winston.createLogger({
         format: winston.format.combine(
           winston.format.timestamp({
@@ -16,7 +15,7 @@ export class Logger {
         ),
         level: 'debug',
         transports: [
-          new (winston.transports.File)({ filename: './debug/log.txt', options: { flags: 'w' } })
+          new (winston.transports.File)({ filename: './debug/log.txt', options: { flags: 'w' } }),
         ],
       });
     }

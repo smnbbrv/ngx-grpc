@@ -21,7 +21,6 @@ export class ServiceClient {
 
     printer.addDeps(
       ExternalDependencies.GrpcClient,
-      ExternalDependencies.GrpcClientSettings,
       ExternalDependencies.GrpcHandler,
       ExternalDependencies.Inject,
       ExternalDependencies.Injectable,
@@ -32,30 +31,52 @@ export class ServiceClient {
 
     const serviceId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.service.name;
 
+    const providedIn = Services.Config.files.pbsc.serviceClientProvidedIn;
+    const injectable = providedIn === 'none' ? '' : `{ providedIn: '${providedIn}' }`;
+
     printer.add(`
       /**
        * Service client implementation for ${serviceId}
        */
-      @Injectable({
-        providedIn: 'root',
-      })
+      @Injectable(${injectable})
       export class ${this.service.name}Client {
 
-        private client: GrpcClient;
+        private client: GrpcClient<any>;
+
+        /**
+         * Raw RPC implementation for each service client method.
+         * The raw methods provide more control on the incoming data and events. E.g. they can be useful to read status \`OK\` metadata.
+         * Attention: these methods do not throw errors when non-zero status codes are received.
+         */
+        $raw = {`,
+    );
+
+    this.service.methodList.forEach(method => {
+      const serviceClientMethod = new ServiceClientMethod(this.proto, this.service, method);
+
+      serviceClientMethod.printRawMethod(printer);
+
+      printer.add(',');
+      printer.newLine();
+      printer.newLine();
+    });
+
+    printer.add(`
+        };
 
         constructor(
-          @Optional() @Inject(${tokenName}) settings: GrpcClientSettings,
-          @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory,
+          @Optional() @Inject(${tokenName}) settings: any,
+          @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory<any>,
           private handler: GrpcHandler,
         ) {
           this.client = clientFactory.createClient('${serviceId}', settings);
         }
     `);
 
-    this.service.methodList.map(method => {
+    this.service.methodList.forEach(method => {
       const serviceClientMethod = new ServiceClientMethod(this.proto, this.service, method);
 
-      serviceClientMethod.print(printer);
+      serviceClientMethod.printMethod(printer);
 
       printer.newLine();
       printer.newLine();

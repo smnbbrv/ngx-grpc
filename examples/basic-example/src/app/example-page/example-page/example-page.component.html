@@ -1,0 +1,52 @@
+<div class="content" #content>
+  <mat-list>
+    <mat-list-item *ngFor="let event of events">
+      <div class="event">
+        <ng-container *ngIf="event.type === ExampleEventType.request">
+          <mat-icon color="primary">call_made</mat-icon>
+          {{ event.request.message }}
+        </ng-container>
+
+        <ng-container *ngIf="event.type === ExampleEventType.success">
+          <mat-icon color="primary">call_received</mat-icon>
+          {{ event.response.message }}
+        </ng-container>
+
+        <ng-container *ngIf="event.type === ExampleEventType.error">
+          <mat-icon color="warn">error_outline</mat-icon>
+          {{ event.error.statusCode }} - {{ event.error.statusMessage }}
+        </ng-container>
+
+        <ng-container *ngIf="event.type === ExampleEventType.status">
+          <mat-icon color="accent">check</mat-icon>
+          {{ event.status.statusCode }} - {{ event.status.statusMessage }}
+        </ng-container>
+
+        <ng-container *ngIf="event.type === ExampleEventType.complete">
+          <mat-icon color="primary">done</mat-icon>
+          Complete
+        </ng-container>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div class="footer">
+  <mat-slide-toggle [(ngModel)]="shouldThrow" color="accent" class="error-toggle">
+    Should fail
+  </mat-slide-toggle>
+
+  <mat-slide-toggle [(ngModel)]="receiveAllEvents" color="accent" class="error-toggle">
+    Use raw methods
+  </mat-slide-toggle>
+
+  <button type="button" mat-raised-button (click)="echo()">
+    <mat-icon>call_made</mat-icon>
+    Call
+  </button>
+
+  <button type="button" mat-raised-button (click)="streamOn()">
+    <mat-icon>trending_up</mat-icon>
+    Stream
+  </button>
+</div>

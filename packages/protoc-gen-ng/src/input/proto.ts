@@ -26,6 +26,7 @@ export class Proto {
   resolved: {
     dependencies: Proto[];
     publicDependencies: Proto[];
+    allDependencies: Proto[];
   } = {} as any;
 
   messageIndex = new Map<string, MessageIndexMeta>();
@@ -72,7 +73,26 @@ export class Proto {
 
   setupDependencies(protos: Proto[]) {
     this.resolved.dependencies = this.dependencyList.map(d => protos.find(pp => pp.name === d) as Proto);
-    this.resolved.publicDependencies = this.resolved.dependencies.filter((d, i) => this.publicDependencyList.includes(i));
+    this.resolved.publicDependencies = this.resolved.dependencies.filter((_, i) => this.publicDependencyList.includes(i));
+  }
+
+  resolveTransitiveDependencies() {
+    const getTransitiveDependencies = (protos: Proto[]) => {
+      return protos.reduce((res, proto) => {
+        return [
+          ...res,
+          ...proto.resolved.dependencies,
+          ...getTransitiveDependencies(proto.resolved.publicDependencies),
+        ];
+      }, [] as Proto[]);
+    };
+
+    this.resolved.allDependencies = [
+      ...new Set([
+        ...getTransitiveDependencies(this.resolved.dependencies),
+        ...this.resolved.dependencies,
+      ]),
+    ];
   }
 
   resolveTypeMetadata(pbType: string) {
@@ -84,7 +104,7 @@ export class Proto {
 
     meta = undefined;
 
-    this.resolved.dependencies.forEach(proto => {
+    this.resolved.allDependencies.forEach(proto => {
       if (!meta) {
         try {
           meta = proto.resolveTypeMetadata(pbType);
@@ -100,22 +120,9 @@ export class Proto {
     throw new Error('Error finding ' + pbType);
   }
 
-  private getDependencyCarrier(dependency: Proto): Proto {
-    const hasReexported = (p: Proto, d: Proto) => p.resolved.publicDependencies.includes(d) || p.resolved.publicDependencies.some(dd => hasReexported(dd, d));
-
-    const carrier = this.resolved.dependencies.find(p => p === dependency || hasReexported(p, dependency));
-
-    if (carrier) {
-      return carrier;
-    } else {
-      throw new Error(`Cannot find dependency ${dependency.name} from proto ${this.name}`);
-    }
-  }
-
   getDependencyPackageName(dependency: Proto) {
-    const carrier = this.getDependencyCarrier(dependency);
-    const name = carrier.pb_package ? carrier.pb_package.replace(/\.([a-z])/g, v => v.toUpperCase()).replace(/\./g, '') : 'noPackage';
-    const index = String(this.resolved.dependencies.indexOf(carrier)).padStart(3, '0'); // we always need index to avoid accidental collisions, see type.pb.ts
+    const name = dependency.pb_package ? dependency.pb_package.replace(/\.([a-z])/g, v => v.toUpperCase()).replace(/\./g, '') : 'noPackage';
+    const index = String(this.resolved.allDependencies.indexOf(dependency)).padStart(3, '0'); // we always need index to avoid accidental collisions, see type.pb.ts
 
     return name + index;
   }
@@ -133,16 +140,16 @@ export class Proto {
     return this.getDependencyPackageName(meta.proto) + '.' + typeName;
   }
 
-  getReexportedDependencies() {
-    const root = Array(this.name.split('/').length - 1).fill('..').join('/');
-
-    return this.resolved.publicDependencies.map(pp => `export * from '${root || '.'}/${pp.getGeneratedFileBaseName()}';`).join('\n');
-  }
-
   getImportedDependencies() {
     const root = Array(this.name.split('/').length - 1).fill('..').join('/');
 
-    return this.resolved.dependencies.map(pp => `import * as ${this.getDependencyPackageName(pp)} from '${root || '.'}/${pp.getGeneratedFileBaseName()}';`).join('\n');
+    return this.resolved.allDependencies.map(pp => {
+      const isWKT = pp.pb_package === 'google.protobuf';
+      const genwkt = Services.Config.embedWellKnownTypes;
+      const path = (genwkt || !genwkt && !isWKT) ? `${root || '.'}/${pp.getGeneratedFileBaseName()}` : '@ngx-grpc/well-known-types';
+
+      return `import * as ${this.getDependencyPackageName(pp)} from '${path}';`;
+    }).join('\n');
   }
 
   getGeneratedFileBaseName() {

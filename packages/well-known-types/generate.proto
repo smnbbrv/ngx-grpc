@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+// This file is VERY IMPORTANT because it triggers all wkt to be generated for the @ngx-grpc/well-known-types
+
+import "google/protobuf/any.proto";
+import "google/protobuf/api.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/source_context.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/type.proto";
+import "google/protobuf/wrappers.proto";
+
+message TestMessage {
+  google.protobuf.Any any = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Empty empty = 4;
+  google.protobuf.Struct struct = 5;
+  google.protobuf.Api api = 6;
+  google.protobuf.FieldMask fieldMask = 7;
+  google.protobuf.SourceContext sourceContext = 8;
+  google.protobuf.BoolValue boolValue = 9;
+  google.protobuf.Type type = 10;
+}

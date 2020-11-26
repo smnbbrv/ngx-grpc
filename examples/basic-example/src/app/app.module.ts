@@ -1,38 +1,46 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GrpcConsoleLoggerInterceptor, GRPC_CLIENT_FACTORY, GRPC_CONSOLE_LOGGER_ENABLED, GRPC_INTERCEPTORS } from '@ngx-grpc/core';
-import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
-import { environment } from '../environments/environment';
-import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from '../proto/echo.pbconf';
+import { RouterModule } from '@angular/router';
+import { GrpcMessage } from '@ngx-grpc/common';
+import { GrpcLoggerModule } from '@ngx-grpc/core';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    FormsModule,
-    MatButtonModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatIconModule,
+    MatTabsModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'grpc-web-client',
+      },
+      {
+        path: 'grpc-web-client',
+        loadChildren: () => import('./grpc-web-client-example/grpc-web-client-example.module').then(m => m.GrpcWebClientExampleModule),
+      },
+      {
+        path: 'grpc-worker-client',
+        loadChildren: () => import('./grpc-worker-client-example/grpc-worker-client-example.module').then(m => m.GrpcWorkerClientExampleModule),
+      },
+      {
+        path: 'improbable-eng-grpc-web-client',
+        loadChildren: () => import('./improbable-eng-grpc-web-client-example/improbable-eng-grpc-web-client-example.module').then(m => m.ImprobableEngGrpcWebClientExampleModule),
+      },
+    ]),
+    GrpcLoggerModule.forRoot({
+      settings: {
+        requestMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
+        responseMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
+      },
+    }),
   ],
-  providers: [
-    { provide: GRPC_CLIENT_FACTORY, useClass: GrpcWebClientFactory },
-    { provide: GRPC_ECHO_SERVICE_CLIENT_SETTINGS, useValue: { host: 'http://localhost:8080' } },
-    { provide: GRPC_CONSOLE_LOGGER_ENABLED, useFactory: () => localStorage.getItem('GRPC_CONSOLE_LOGGER_ENABLED') === 'true' || !environment.production },
-    { provide: GRPC_INTERCEPTORS, useClass: GrpcConsoleLoggerInterceptor, multi: true },
-  ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

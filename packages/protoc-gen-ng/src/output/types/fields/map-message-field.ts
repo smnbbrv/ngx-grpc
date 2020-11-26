@@ -3,11 +3,10 @@ import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldType } from '../../../input/types';
 import { camelizeSafe } from '../../../utils';
-import { getDataType, getMapKeyValueFields, isFieldMessage } from '../../misc/helpers';
+import { getDataType, getMapKeyValueFields, isFieldMessage, isNumberString } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
 import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
-import { Number64MessageField } from './number64-message-field';
 
 export class MapMessageField implements MessageField {
 
@@ -38,7 +37,7 @@ export class MapMessageField implements MessageField {
         _reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
         _instance.${this.attributeName} = _instance.${this.attributeName} || {};
         _instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
-        break;`
+        break;`,
     );
   }
 
@@ -46,7 +45,7 @@ export class MapMessageField implements MessageField {
     const varName = `_instance.${this.attributeName}`;
     const keysVarName = `keys_${this.messageField.number}`;
     const repeatedVarName = `repeated_${this.messageField.number}`;
-    const isStringKey = ProtoMessageFieldType.string || Number64MessageField.isNumber64Field(this.keyField);
+    const isStringKey = ProtoMessageFieldType.string || isNumberString(this.keyField);
     const castedKey = this.keyField.type === isStringKey ? 'key' : 'Number(key)';
 
     printer.add(`if (!!${varName}) {
@@ -70,7 +69,7 @@ export class MapMessageField implements MessageField {
     let cloneFn = `_value!.${this.attributeName}![k]`;
 
     if (isFieldMessage(this.valueField)) {
-      cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].toObject() : undefined,`;
+      cloneFn = `_value!.${this.attributeName}![k] ? new ${getDataType(this.proto, this.valueField)}(_value!.${this.attributeName}![k]) : undefined,`;
     } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
       cloneFn = `_value!.${this.attributeName}![k] ? _value!.${this.attributeName}![k].subarray(0) : undefined`;
     }
@@ -101,7 +100,7 @@ export class MapMessageField implements MessageField {
     let cloneFn = `this.${this.attributeName}![k]`;
 
     if (isFieldMessage(this.valueField)) {
-      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toObject() : undefined,`;
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toObject() : undefined`;
     } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
       cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].subarray(0) : undefined`;
     }
@@ -110,6 +109,22 @@ export class MapMessageField implements MessageField {
   }
 
   printAsObjectMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
+  printToProtobufJSONMapping(printer: Printer) {
+    let cloneFn = `this.${this.attributeName}![k]`;
+
+    if (isFieldMessage(this.valueField)) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].toJSON() : null`;
+    } else if (this.valueField.type === ProtoMessageFieldType.bytes) {
+      cloneFn = `this.${this.attributeName}![k] ? this.${this.attributeName}![k].subarray(0) : null`;
+    }
+
+    printer.add(`${this.attributeName}: this.${this.attributeName} ? Object.keys(this.${this.attributeName}).reduce((r, k) => ({ ...r, [k]: ${cloneFn} }), {}) : {},`);
+  }
+
+  printAsJSONMapping(printer: Printer) {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
   }
 

@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  height: calc(100% - 48px);
+  flex-direction: column;
+}
+
+.header {
+  flex: 0 0 auto;
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.event {
+  display: flex;
+  align-items: center;
+}
+
+.event mat-icon {
+  margin-right: .5em;
+}
+
+.footer {
+  background: #c2185b;
+  color: #fff;
+  flex: 0 0 auto;
+  padding: 12px;
+}
+
+.footer mat-slide-toggle {
+  margin-bottom: 1em;
+}
+
+.footer button {
+  margin-right: .5em;
+}
+
+.error-toggle {
+  display: block;
+  flex: 1 0 0;
+  font-size: 14px;
+  line-height: 1;
+}

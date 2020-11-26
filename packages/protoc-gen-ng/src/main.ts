@@ -15,68 +15,80 @@ import { Services } from './services';
 
 function main() {
   CodeGeneratorRequest()
-    .then(r => {
+    .then((r: any) => {
       const protocInput = r.toObject();
-      const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
       Services.Config = Config.fromParameter(protocInput.parameter);
-      Services.Logger = new Logger();
+      Services.Logger = new Logger(Services.Config.debug);
+
+      const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
       if (Services.Config.debug) {
         mkdirSync('debug', { recursive: true });
+        writeFileSync(join('debug', 'config.json'), JSON.stringify(Services.Config, null, 2), 'utf-8');
         writeFileSync(join('debug', 'protoc-input.json'), JSON.stringify(protocInput, null, 2), 'utf-8');
         writeFileSync(join('debug', 'parsed-protoc-gen-ng.json'), JSON.stringify(protos, null, 2), 'utf-8');
       }
 
       protos.forEach(p => p.setupDependencies(protos));
+      protos.forEach(p => p.resolveTransitiveDependencies());
 
-      return protos.reduce((res, proto) => {
-        Services.Logger.debug(`Start processing proto ${proto.name}`);
+      const genwkt = Services.Config.embedWellKnownTypes;
 
-        const basename = proto.getGeneratedFileBaseName();
-        const files: any[] = [];
+      return protos
+        .filter(p => genwkt || !genwkt && p.pb_package !== 'google.protobuf')
+        .reduce((res, proto) => {
+          Services.Logger.debug(`Start processing proto ${proto.name}`);
 
-        if (proto.serviceList.length) {
-          const configPrinter = new Printer();
-          const configFile = new PbConfFile(proto);
+          const basename = proto.getGeneratedFileBaseName();
+          const files: any[] = [];
 
-          configFile.print(configPrinter);
+          if (proto.serviceList.length) {
+            if (Services.Config.files.pbconf.generate) {
+              const configPrinter = new Printer();
+              const configFile = new PbConfFile(proto);
 
-          files.push({ name: basename + 'conf.ts', content: configPrinter.finalize() });
+              configFile.print(configPrinter);
 
-          const pbscPrinter = new Printer();
-          const pbscFile = new PbscFile(proto);
+              files.push({ name: basename + 'conf.ts', content: configPrinter.finalize() });
+            }
 
-          pbscFile.print(pbscPrinter);
+            if (Services.Config.files.pbsc.generate) {
+              const pbscPrinter = new Printer();
+              const pbscFile = new PbscFile(proto);
 
-          files.push({ name: basename + 'sc.ts', content: pbscPrinter.finalize() });
+              pbscFile.print(pbscPrinter);
 
-          if (Services.Config.worker) {
-            const pbwscPrinter = new Printer();
-            const pbwscFile = new PbwscFile(proto);
+              files.push({ name: basename + 'sc.ts', content: pbscPrinter.finalize() });
+            }
 
-            pbwscFile.print(pbwscPrinter);
+            if (Services.Config.files.pbwsc.generate) {
+              const pbwscPrinter = new Printer();
+              const pbwscFile = new PbwscFile(proto);
 
-            files.push({ name: basename + 'wsc.ts', content: pbwscPrinter.finalize() });
+              pbwscFile.print(pbwscPrinter);
+
+              files.push({ name: basename + 'wsc.ts', content: pbwscPrinter.finalize() });
+            }
           }
-        }
 
-        const pbPrinter = new Printer();
-        const pbFile = new PbFile(proto);
+          if (Services.Config.files.pb.generate) {
+            const pbPrinter = new Printer();
+            const pbFile = new PbFile(proto);
 
-        pbFile.print(pbPrinter);
+            pbFile.print(pbPrinter);
 
-        files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
+            files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
+          }
+          Services.Logger.debug(`End processing proto ${proto.name}`);
 
-        Services.Logger.debug(`End processing proto ${proto.name}`);
-
-        return [...res, ...files];
-      }, [] as any[]);
+          return [...res, ...files];
+        }, [] as any[]);
     })
     .then(CodeGeneratorResponse())
-    .catch(err => {
-      Services.Logger.debug(err);
-      Services.Logger.debug(err.stack);
+    .catch((err: any) => {
+      Services.Logger?.debug(err);
+      Services.Logger?.debug(err.stack);
       return CodeGeneratorResponseError()(err);
     });
 }

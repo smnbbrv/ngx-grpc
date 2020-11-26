@@ -1,5 +1,5 @@
-import { GrpcClientSettings } from '@ngx-grpc/common';
 import { Error, Metadata, Status } from 'grpc-web';
+import { GrpcWorkerClientSettings } from './client-settings';
 
 /* tslint:disable no-namespace */
 export namespace GrpcWorkerApi {
@@ -17,7 +17,7 @@ export namespace GrpcWorkerApi {
   export interface GrpcWorkerMessageServiceClientConfig extends GrpcWorkerMessage {
     type: GrpcWorkerMessageType.serviceClientConfig;
     serviceId: string;
-    settings: GrpcClientSettings;
+    settings: GrpcWorkerClientSettings;
   }
 
   export interface GrpcWorkerMessageRPCRequest<Q> extends GrpcWorkerMessage {

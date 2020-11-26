@@ -1,15 +1,15 @@
-import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GrpcEvent } from './grpc-event';
 import { GrpcMessage } from './grpc-message';
 import { GrpcMessageClass } from './grpc-message-class';
+import { GrpcMetadata } from './grpc-metadata';
 
 /**
  * This interface describes transport layer client factory, which is important in instantiating GrpcClient
  * because the GrpcClientFactory is bound to the dependency injection (use constructor to inject normal Angular services & config),
  * while GrpcClient has none
  */
-export interface GrpcClientFactory {
+export interface GrpcClientFactory<ST> {
 
   /**
    * Create a GrpcClient
@@ -17,7 +17,7 @@ export interface GrpcClientFactory {
    * @param settings settings for underlying grpc client implementation
    * @returns new GrpcClient
    */
-  createClient(serviceId: string, settings: GrpcClientSettings): GrpcClient;
+  createClient(serviceId: string, settings: ST): GrpcClient<ST>;
 
 }
 
@@ -25,7 +25,12 @@ export interface GrpcClientFactory {
  * A transport layer client implementation interface
  * Instance of GrpcClient is created for every gRPC service client by corresponding GrpcClientFactory
  */
-export interface GrpcClient {
+export interface GrpcClient<ST> {
+
+  /**
+   * Returns a copy of current client settings
+   */
+  getSettings(): ST;
 
   /**
    * Handle unary RPC
@@ -38,7 +43,7 @@ export interface GrpcClient {
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
@@ -54,20 +59,11 @@ export interface GrpcClient {
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
-    resclss: GrpcMessageClass<S>
+    resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
 
-}
-
-/**
- * Settings for the chosen implementation of GrpcClient
- */
-export interface GrpcClientSettings {
-  host: string;
-  format?: string;
-  suppressCorsPreflight?: boolean;
 }
 
 /**
@@ -83,10 +79,10 @@ export enum GrpcCallType {
  */
 export interface GrpcRequest<Q extends GrpcMessage, S extends GrpcMessage> {
   path: string;
-  client: GrpcClient;
+  client: GrpcClient<any>;
   type: GrpcCallType;
   requestData: Q;
-  requestMetadata: Metadata;
+  requestMetadata: GrpcMetadata;
   requestClass: GrpcMessageClass<Q>;
   responseClass: GrpcMessageClass<S>;
 }

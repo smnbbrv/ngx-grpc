@@ -104,4 +104,16 @@ export class BooleanMessageField implements MessageField {
     printer.add(`${this.attributeName}?: ${this.dataType};`);
   }
 
+  printToProtobufJSONMapping(printer: Printer) {
+    if (this.isArray) {
+      printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
+    } else {
+      printer.add(`${this.attributeName}: this.${this.attributeName},`);
+    }
+  }
+
+  printAsJSONMapping(printer: Printer) {
+    printer.add(`${this.attributeName}?: ${this.dataType};`);
+  }
+
 }
