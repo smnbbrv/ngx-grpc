@@ -14,12 +14,12 @@
 
         <ng-container *ngIf="event.type === ExampleEventType.error">
           <mat-icon color="warn">error_outline</mat-icon>
-          {{ event.error.code }} - {{ event.error.details }}
+          {{ event.error.statusCode }} - {{ event.error.statusMessage }}
         </ng-container>
 
         <ng-container *ngIf="event.type === ExampleEventType.status">
           <mat-icon color="accent">check</mat-icon>
-          {{ event.status.code }} - {{ event.status.details }}
+          {{ event.status.statusCode }} - {{ event.status.statusMessage }}
         </ng-container>
 
         <ng-container *ngIf="event.type === ExampleEventType.complete">
@@ -37,7 +37,7 @@
   </mat-slide-toggle>
 
   <mat-slide-toggle [(ngModel)]="receiveAllEvents" color="accent" class="error-toggle">
-    Handle events manually ($eventStream)
+    Use raw methods
   </mat-slide-toggle>
 
   <button type="button" mat-raised-button (click)="echo()">

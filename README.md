@@ -182,17 +182,22 @@ It's also handy to move configuration of all the services to a different module'
 
 ### Service client methods
 
-Each RPC has two corresponding methods, the first emits messages, the second - events. E.g. for `rpc Echo(...)` there would be the following:
+Each RPC has two corresponding methods.
+
+- the first, that emits messages, is a direct method of the service client.
+- the second, that emits events, is scoped into service client property `$raw`. 
+
+E.g. for `rpc Echo(...)` there would be the following:
 
 - `echo(...)` - returns `Observable` of messages and throws errors in case of non-zero status codes. This is the most common use-case
-- `echo$eventStream(...)` - returns `Observable` of `GrpcEvent`s. Events could be of two kinds: `GrpcDataEvent` containing the message inside and `GrpcStatusEvent` containing gRPC status response. Apart from the returned data type there is important difference in the behaviour. There are no errors thrown in this stream (by design). All errors are considered to be normal `GrpcStatusEvent`s. Furthermore, this method is the only one where it is anyhow possible to read the gRPC status code `0` (`OK`) metadata. This method is not that comfortable to use in every place, but it can do things that are not achievable with the method above.
+- `.$raw.echo(...)` - returns `Observable` of `GrpcEvent`s. Events could be of two kinds: `GrpcDataEvent` containing the message inside and `GrpcStatusEvent` containing gRPC status response. Apart from the returned data type there is important difference in the behaviour. There are no errors thrown in this stream (by design). All errors are considered to be normal `GrpcStatusEvent`s. Furthermore, this method is the only one where it is anyhow possible to read the gRPC status code `0` (`OK`) metadata. This method is not that comfortable to use in every place, but it can do things that are not achievable with the method above.
 
 There are two custom RxJS operators that could be used on the stream to make it easier:
 
 - `throwStatusErrors` - searches for the non-zero status codes and throws them as errors
 - `takeMessages` - searches for the messages
 
-For usage example look at any of your generated `.pbsc.ts` file. In fact, those two operators turn `echo$eventStream()` into `echo()` from example above.
+For usage example look at any of your generated `.pbsc.ts` file. In fact, those two operators turn the raw method into a 'normal' one.
 
 ### Messages
 

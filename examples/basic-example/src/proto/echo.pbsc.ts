@@ -28,6 +28,56 @@ import { GRPC_ECHO_SERVICE_CLIENT_SETTINGS } from './echo.pbconf';
 export class EchoServiceClient {
   private client: GrpcClient<any>;
 
+  /**
+   * Here is the raw RPC implementation for each service client method.
+   * The raw methods provide more control on the incoming data and events. E.g. they can be useful to read status `OK` metadata.
+   * Attention: these methods do not throw errors when non-zero status codes are received.
+   */
+  $raw = {
+    /**
+     * Unary RPC for /echo.EchoService/EchoOnce
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
+     */
+    echoOnce: (
+      requestData: thisProto.EchoRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.EchoResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/echo.EchoService/EchoOnce',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.EchoRequest,
+        responseClass: thisProto.EchoResponse,
+      });
+    },
+    /**
+     * Server streaming RPC for /echo.EchoService/EchoStream
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
+     */
+    echoStream: (
+      requestData: thisProto.EchoRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.EchoResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.serverStream,
+        client: this.client,
+        path: '/echo.EchoService/EchoStream',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.EchoRequest,
+        responseClass: thisProto.EchoResponse,
+      });
+    },
+  };
+
   constructor(
     @Optional() @Inject(GRPC_ECHO_SERVICE_CLIENT_SETTINGS) settings: any,
     @Inject(GRPC_CLIENT_FACTORY) clientFactory: GrpcClientFactory<any>,
@@ -47,32 +97,9 @@ export class EchoServiceClient {
     requestData: thisProto.EchoRequest,
     requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.EchoResponse> {
-    return this.echoOnce$eventStream(requestData, requestMetadata).pipe(
-      throwStatusErrors(),
-      takeMessages()
-    );
-  }
-
-  /**
-   * Unary RPC for /echo.EchoService/EchoOnce
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
-   */
-  echoOnce$eventStream(
-    requestData: thisProto.EchoRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<GrpcEvent<thisProto.EchoResponse>> {
-    return this.handler.handle({
-      type: GrpcCallType.unary,
-      client: this.client,
-      path: '/echo.EchoService/EchoOnce',
-      requestData,
-      requestMetadata,
-      requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse,
-    });
+    return this.$raw
+      .echoOnce(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
   }
 
   /**
@@ -86,31 +113,8 @@ export class EchoServiceClient {
     requestData: thisProto.EchoRequest,
     requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.EchoResponse> {
-    return this.echoStream$eventStream(requestData, requestMetadata).pipe(
-      throwStatusErrors(),
-      takeMessages()
-    );
-  }
-
-  /**
-   * Server streaming RPC for /echo.EchoService/EchoStream
-   *
-   * @param requestMessage Request message
-   * @param requestMetadata Request metadata
-   * @returns Observable<GrpcEvent<thisProto.EchoResponse>>
-   */
-  echoStream$eventStream(
-    requestData: thisProto.EchoRequest,
-    requestMetadata = new GrpcMetadata()
-  ): Observable<GrpcEvent<thisProto.EchoResponse>> {
-    return this.handler.handle({
-      type: GrpcCallType.serverStream,
-      client: this.client,
-      path: '/echo.EchoService/EchoStream',
-      requestData,
-      requestMetadata,
-      requestClass: thisProto.EchoRequest,
-      responseClass: thisProto.EchoResponse,
-    });
+    return this.$raw
+      .echoStream(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
   }
 }

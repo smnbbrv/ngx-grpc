@@ -58,7 +58,7 @@ export class ExamplePageComponent {
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
       );
     } else {
-      this.sub = this.echoClient.echoOnce$eventStream(request).subscribe(
+      this.sub = this.echoClient.$raw.echoOnce(request).subscribe(
         event => this.displayGrpcEvent(event),
         () => null, // no errors expected in this mode
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
@@ -80,7 +80,7 @@ export class ExamplePageComponent {
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
       );
     } else {
-      this.sub = this.echoClient.echoStream$eventStream(request).subscribe(
+      this.sub = this.echoClient.$raw.echoStream(request).subscribe(
         event => this.displayGrpcEvent(event),
         () => null, // no errors expected in this mode
         () => this.displayExampleEvent({ type: ExampleEventType.complete }),
