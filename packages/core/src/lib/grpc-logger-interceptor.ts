@@ -92,41 +92,42 @@ export class GrpcLoggerInterceptor implements GrpcInterceptor {
 
       return next.handle(request).pipe(
         tap(event => {
-          const style = event instanceof GrpcDataEvent ? this.dataStyle : event.code !== 0 ? this.errorStyle : this.statusOkStyle;
+          const style = event instanceof GrpcDataEvent ? this.dataStyle : event.statusCode !== 0 ? this.errorStyle : this.statusOkStyle;
+          const openGroup = () => console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
+          const printSettings = () => {
+            if (this.settings.logClientSettings) {
+              console.log('%csc', style, request.client.getSettings());
+            }
+          };
+          const printMetadata = () => {
+            if (this.settings.logMetadata) {
+              console.log('%c**', style, request.requestMetadata.toObject());
+            }
+          };
+          const printRequest = () => console.log('%c>>', style, this.settings.requestMapper(request.requestData));
+          const closeGroup = () => console.groupEnd();
 
           if (event instanceof GrpcDataEvent) {
-            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
-            if (this.settings.logClientSettings) {
-              console.log('%csc', style, request.client.getSettings());
-            }
-            console.log('%c>>', style, this.settings.requestMapper(request.requestData));
-            if (this.settings.logMetadata) {
-              console.log('%c**', style, request.requestMetadata);
-            }
+            openGroup();
+            printSettings();
+            printRequest();
+            printMetadata();
             console.log('%c<<', style, this.settings.responseMapper(event.data));
-            console.groupEnd();
-          } else if (event.code !== 0) {
-            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
-            if (this.settings.logClientSettings) {
-              console.log('%csc', style, request.client.getSettings());
-            }
-            console.log('%c>>', style, this.settings.requestMapper(request.requestData));
-            if (this.settings.logMetadata) {
-              console.log('%c**', style, request.requestMetadata);
-            }
-            console.error('%c<<', style, event);
-            console.groupEnd();
-          } else if (event.code === 0 && this.settings.logStatusCodeOk) {
-            console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
-            if (this.settings.logClientSettings) {
-              console.log('%csc', style, request.client.getSettings());
-            }
-            console.log('%c>>', style, this.settings.requestMapper(request.requestData));
-            if (this.settings.logMetadata) {
-              console.log('%c**', style, request.requestMetadata);
-            }
-            console.error('%c<<', style, event);
-            console.groupEnd();
+            closeGroup();
+          } else if (event.statusCode !== 0) {
+            openGroup();
+            printSettings();
+            printRequest();
+            printMetadata();
+            console.log('%c<<', style, event);
+            closeGroup();
+          } else if (event.statusCode === 0 && this.settings.logStatusCodeOk) {
+            openGroup();
+            printSettings();
+            printRequest();
+            printMetadata();
+            console.log('%c<<', style, event);
+            closeGroup();
           }
         }),
       );

@@ -33,7 +33,7 @@
     "examples:backend": "docker-compose -f examples/backend/docker-compose.yaml down && docker-compose -f examples/backend/docker-compose.yaml up --remove-orphans --build",
     "examples:backend:no-proxy": "cd examples/backend && npm start",
     "examples:proto:generate": "run-s examples:proto:generate-backend examples:proto:generate-basic",
-    "examples:proto:generate-basic": "mkdir -p examples/basic-example/src/proto && rm -rf examples/basic-example/src/proto/* && protoc --plugin=protoc-gen-ng=$(pwd)/dist/protoc-gen-ng/main.js --ng_out=config=examples/worker-example/ngx-grpc.conf.js:examples/basic-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
+    "examples:proto:generate-basic": "mkdir -p examples/basic-example/src/proto && rm -rf examples/basic-example/src/proto/* && protoc --plugin=protoc-gen-ng=$(pwd)/dist/protoc-gen-ng/main.js --ng_out=config=examples/basic-example/ngx-grpc.conf.js:examples/basic-example/src/proto -I examples/proto $(find examples/proto -iname \"*.proto\")",
     "examples:proto:generate-backend": "cd examples/backend && npm run proto:generate"
   },
   "dependencies": {

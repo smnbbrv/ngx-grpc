@@ -9,7 +9,6 @@
   },
   "peerDependencies": {
     "google-protobuf": "^3.10.0",
-    "grpc-web": "^1.0.0",
     "rxjs": "^6.0.0"
   },
   "dependencies": {

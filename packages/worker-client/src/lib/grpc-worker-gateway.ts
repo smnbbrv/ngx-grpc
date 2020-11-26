@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 import { GrpcWorkerApi } from '@ngx-grpc/worker';
 import { Metadata } from 'grpc-web';
 import { Observable, Observer } from 'rxjs';
@@ -29,7 +29,7 @@ export class GrpcWorkerGateway {
             this.connections.delete(data.id);
             break;
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.status:
-            connection.next(new GrpcStatusEvent(data.status.code, data.status.details, data.status.metadata));
+            connection.next(new GrpcStatusEvent(data.status.code, data.status.details, new GrpcMetadata(data.status.metadata)));
             break;
           case GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.data:
             connection.next(new GrpcDataEvent(data.response));

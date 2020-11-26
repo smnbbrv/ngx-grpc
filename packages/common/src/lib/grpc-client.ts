@@ -1,8 +1,8 @@
-import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GrpcEvent } from './grpc-event';
 import { GrpcMessage } from './grpc-message';
 import { GrpcMessageClass } from './grpc-message-class';
+import { GrpcMetadata } from './grpc-metadata';
 
 /**
  * This interface describes transport layer client factory, which is important in instantiating GrpcClient
@@ -43,7 +43,7 @@ export interface GrpcClient<ST> {
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
@@ -59,7 +59,7 @@ export interface GrpcClient<ST> {
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
@@ -82,7 +82,7 @@ export interface GrpcRequest<Q extends GrpcMessage, S extends GrpcMessage> {
   client: GrpcClient<any>;
   type: GrpcCallType;
   requestData: Q;
-  requestMetadata: Metadata;
+  requestMetadata: GrpcMetadata;
   requestClass: GrpcMessageClass<Q>;
   responseClass: GrpcMessageClass<S>;
 }

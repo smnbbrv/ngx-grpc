@@ -20,7 +20,7 @@ export class ServiceClientMethod {
     printer.addDeps(
       ExternalDependencies.GrpcCallType,
       ExternalDependencies.GrpcEvent,
-      ExternalDependencies.Metadata,
+      ExternalDependencies.GrpcMetadata,
       ExternalDependencies.Observable,
       ExternalDependencies.takeMessages,
       ExternalDependencies.throwStatusErrors,
@@ -39,7 +39,7 @@ export class ServiceClientMethod {
        * @param requestMetadata Request metadata
        * @returns Observable<${outputType}>
        */
-      ${camelizeSafe(this.serviceMethod.name)}(requestData: ${inputType}, requestMetadata: Metadata = {}): Observable<${outputType}> {
+      ${camelizeSafe(this.serviceMethod.name)}(requestData: ${inputType}, requestMetadata = new GrpcMetadata()): Observable<${outputType}> {
         return this.${camelizeSafe(this.serviceMethod.name)}$eventStream(requestData, requestMetadata).pipe(throwStatusErrors(), takeMessages());
       }
 
@@ -50,7 +50,7 @@ export class ServiceClientMethod {
        * @param requestMetadata Request metadata
        * @returns Observable<GrpcEvent<${outputType}>>
        */
-      ${camelizeSafe(this.serviceMethod.name)}$eventStream(requestData: ${inputType}, requestMetadata: Metadata = {}): Observable<GrpcEvent<${outputType}>> {
+      ${camelizeSafe(this.serviceMethod.name)}$eventStream(requestData: ${inputType}, requestMetadata = new GrpcMetadata()): Observable<GrpcEvent<${outputType}>> {
         return this.handler.handle({
           type: GrpcCallType.${this.serviceMethod.serverStreaming ? 'serverStream' : 'unary'},
           client: this.client,

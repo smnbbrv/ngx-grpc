@@ -1,6 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass } from '@ngx-grpc/common';
-import { Metadata } from 'grpc-web';
+import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcMetadata } from '@ngx-grpc/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { GrpcWorkerGateway } from './grpc-worker-gateway';
@@ -63,12 +62,12 @@ export class GrpcWorkerClient implements GrpcClient<GrpcWorkerClientSettings> {
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
     return this.gateway
-      .callUnaryFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
+      .callUnaryFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata?.toObject() ?? {})
       .pipe(
         tap(res => {
           if (res instanceof GrpcDataEvent) {
@@ -81,12 +80,12 @@ export class GrpcWorkerClient implements GrpcClient<GrpcWorkerClientSettings> {
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
     return this.gateway
-      .callServerStreamFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata)
+      .callServerStreamFromWorker<Q, S>(this.serviceId, path, req.toObject(), metadata?.toObject() ?? {})
       .pipe(
         tap(res => {
           if (res instanceof GrpcDataEvent) {

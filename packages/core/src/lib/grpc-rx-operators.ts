@@ -9,7 +9,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
  */
 export function throwStatusErrors<T extends GrpcMessage>() {
   return (source$: Observable<GrpcEvent<T>>) => source$.pipe(
-    switchMap(event => event instanceof GrpcStatusEvent && event.code ? throwError(event) : of(event)),
+    switchMap(event => event instanceof GrpcStatusEvent && event.statusCode ? throwError(event) : of(event)),
   );
 }
 

@@ -19,6 +19,7 @@ const ngxGrpcCommon = {
   GrpcClient: new Dependency('@ngx-grpc/common', 'GrpcClient'),
   GrpcClientFactory: new Dependency('@ngx-grpc/common', 'GrpcClientFactory'),
   GrpcMessage: new Dependency('@ngx-grpc/common', 'GrpcMessage'),
+  GrpcMetadata: new Dependency('@ngx-grpc/common', 'GrpcMetadata'),
   RecursivePartial: new Dependency('@ngx-grpc/common', 'RecursivePartial'),
   GrpcEvent: new Dependency('@ngx-grpc/common', 'GrpcEvent'),
   uint8ArrayToBase64: new Dependency('@ngx-grpc/common', 'uint8ArrayToBase64'),
@@ -44,12 +45,6 @@ const googleProtobuf = {
   ByteSource: new Dependency('google-protobuf', 'ByteSource'),
 };
 
-const grpcWeb = {
-  Metadata: new Dependency('grpc-web', 'Metadata'),
-  Status: new Dependency('grpc-web', 'Status'),
-  GrpcWebClientBase: new Dependency('grpc-web', 'GrpcWebClientBase'),
-};
-
 const rxjs = {
   Observable: new Dependency('rxjs', 'Observable'),
 };
@@ -57,7 +52,6 @@ const rxjs = {
 export const ExternalDependencies = {
   ...angularCore,
   ...googleProtobuf,
-  ...grpcWeb,
   ...ngxGrpcCore,
   ...ngxGrpcCommon,
   ...ngxGrpcWorker,

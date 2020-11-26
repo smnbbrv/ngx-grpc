@@ -1,7 +1,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { grpc } from '@improbable-eng/grpc-web';
+import { Metadata } from '@improbable-eng/grpc-web/dist/typings/metadata';
 import { TransportFactory } from '@improbable-eng/grpc-web/dist/typings/transports/Transport';
-import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
 import { Observable } from 'rxjs';
 import { IMPROBABLE_ENG_GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
@@ -62,7 +63,7 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     request: Q,
-    metadata: any, // TODO: create unified metadata
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
@@ -81,14 +82,11 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
       const client = grpc.unary(methodDescriptor as any, {
         request,
         host: this.settings.host,
-        metadata,
+        metadata: new grpc.Metadata(metadata?.toObject() ?? {}),
         transport: this.settings.transport,
         debug: this.settings.debug,
         onEnd: (response) => {
-          // TODO: response.trailers as metadata
-          const responseMetadata = {};
-
-          obs.next(new GrpcStatusEvent(response.status, response.statusMessage, responseMetadata));
+          obs.next(new GrpcStatusEvent(response.status, response.statusMessage, this.castResponseMetadata(response.trailers)));
 
           if (response.status !== grpc.Code.OK) {
             obs.complete();
@@ -107,7 +105,7 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: any, // TODO: create unified metadata
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
@@ -126,23 +124,24 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
       const client = grpc.invoke(methodDescriptor, {
         request: req,
         host: this.settings.host,
-        metadata,
+        metadata: new grpc.Metadata(metadata?.toObject() ?? {}),
         transport: this.settings.transport,
         debug: this.settings.debug,
         onMessage: (data) => {
           obs.next(new GrpcDataEvent(data as any));
         },
         onEnd: (status, statusMessage, trailers) => {
-          // TODO: response.trailers as metadata
-          const responseMetadata = {};
-
-          obs.next(new GrpcStatusEvent(status, statusMessage, responseMetadata));
+          obs.next(new GrpcStatusEvent(status, statusMessage, this.castResponseMetadata(trailers)));
           obs.complete();
         },
       });
 
       return () => client.close();
     });
+  }
+
+  private castResponseMetadata({ headersMap }: Metadata) {
+    return new GrpcMetadata(Object.keys(headersMap).reduce((r, k) => ({ ...r, [k]: headersMap[k][0] }), {}));
   }
 
 }

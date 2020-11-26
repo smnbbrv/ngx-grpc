@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { resolve } from 'path';
 
 /*
@@ -136,7 +137,11 @@ export class Config {
       config: string;
     };
 
-    return new Config(params.config ? require(resolve(params.config)) : undefined);
+    if (params.config && !existsSync(params.config)) {
+      throw new Error(`The config file "${params.config}" cannot be found`);
+    }
+
+    return new Config(params.config ? require(resolve(params.config)) : {});
   }
 
   constructor(config: Partial<Config> = {}) {

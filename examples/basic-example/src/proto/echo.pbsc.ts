@@ -9,6 +9,7 @@ import {
   GrpcClient,
   GrpcClientFactory,
   GrpcEvent,
+  GrpcMetadata,
 } from '@ngx-grpc/common';
 import {
   GRPC_CLIENT_FACTORY,
@@ -16,7 +17,6 @@ import {
   takeMessages,
   throwStatusErrors,
 } from '@ngx-grpc/core';
-import { Metadata } from 'grpc-web';
 import { Observable } from 'rxjs';
 import * as thisProto from './echo.pb';
 import * as googleProtobuf000 from '@ngx-grpc/well-known-types';
@@ -45,7 +45,7 @@ export class EchoServiceClient {
    */
   echoOnce(
     requestData: thisProto.EchoRequest,
-    requestMetadata: Metadata = {}
+    requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.EchoResponse> {
     return this.echoOnce$eventStream(requestData, requestMetadata).pipe(
       throwStatusErrors(),
@@ -62,7 +62,7 @@ export class EchoServiceClient {
    */
   echoOnce$eventStream(
     requestData: thisProto.EchoRequest,
-    requestMetadata: Metadata = {}
+    requestMetadata = new GrpcMetadata()
   ): Observable<GrpcEvent<thisProto.EchoResponse>> {
     return this.handler.handle({
       type: GrpcCallType.unary,
@@ -84,7 +84,7 @@ export class EchoServiceClient {
    */
   echoStream(
     requestData: thisProto.EchoRequest,
-    requestMetadata: Metadata = {}
+    requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.EchoResponse> {
     return this.echoStream$eventStream(requestData, requestMetadata).pipe(
       throwStatusErrors(),
@@ -101,7 +101,7 @@ export class EchoServiceClient {
    */
   echoStream$eventStream(
     requestData: thisProto.EchoRequest,
-    requestMetadata: Metadata = {}
+    requestMetadata = new GrpcMetadata()
   ): Observable<GrpcEvent<thisProto.EchoResponse>> {
     return this.handler.handle({
       type: GrpcCallType.serverStream,

@@ -17,10 +17,11 @@ function main() {
   CodeGeneratorRequest()
     .then((r: any) => {
       const protocInput = r.toObject();
-      const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
       Services.Config = Config.fromParameter(protocInput.parameter);
-      Services.Logger = new Logger();
+      Services.Logger = new Logger(Services.Config.debug);
+
+      const protos: Proto[] = protocInput.protoFileList.map(proto => new Proto(proto));
 
       if (Services.Config.debug) {
         mkdirSync('debug', { recursive: true });
@@ -86,8 +87,8 @@ function main() {
     })
     .then(CodeGeneratorResponse())
     .catch((err: any) => {
-      Services.Logger.debug(err);
-      Services.Logger.debug(err.stack);
+      Services.Logger?.debug(err);
+      Services.Logger?.debug(err.stack);
       return CodeGeneratorResponseError()(err);
     });
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcStatusEvent } from '@ngx-grpc/common';
-import { GrpcWebClientBase, Metadata, MethodDescriptor } from 'grpc-web';
+import { GrpcClient, GrpcClientFactory, GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcMessageClass, GrpcMetadata, GrpcStatusEvent } from '@ngx-grpc/common';
+import { GrpcWebClientBase, MethodDescriptor } from 'grpc-web';
 import { Observable } from 'rxjs';
 import { GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
 
@@ -56,7 +56,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
   unary<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
@@ -73,7 +73,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
       const stream = this.client.rpcCall(
         this.settings.host + path,
         req,
-        metadata || {},
+        metadata?.toObject() ?? {},
         descriptor,
         (error, data) => {
           if (error) {
@@ -86,7 +86,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
       );
 
       // take only status 0 because unary error already includes non-zero statuses
-      stream.on('status', status => status.code === 0 ? obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)) : null);
+      stream.on('status', status => status.code === 0 ? obs.next(new GrpcStatusEvent(status.code, status.details, new GrpcMetadata(status.metadata))) : null);
       stream.on('end', () => obs.complete());
 
       return () => stream.cancel();
@@ -96,7 +96,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
     req: Q,
-    metadata: Metadata,
+    metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>> {
@@ -113,11 +113,11 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
       const stream = this.client.serverStreaming(
         this.settings.host + path,
         req,
-        metadata || {},
+        metadata?.toObject() ?? {},
         descriptor,
       );
 
-      stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, status.metadata)));
+      stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, new GrpcMetadata(status.metadata))));
       stream.on('error', error => {
         obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
         obs.complete();
