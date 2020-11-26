@@ -1,3 +1,44 @@
+# [2.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.4...v2.0.0) (2020-11-26)
+
+
+### Bug Fixes
+
+* **core:** add missing request metadata for logger errors ([32ea435](https://github.com/ngx-grpc/ngx-grpc/commit/32ea4351a9dcbc9929f760805760df06e60b38d9))
+* **grpc-web-client:** use MethodDescriptor instead of deprecated MethodInfo ([3ef868e](https://github.com/ngx-grpc/ngx-grpc/commit/3ef868edbad405121d732c409ecff73426f083a5))
+* **grpc-worker:** use MethodDescriptor instead of deprecated MethodInfo ([a4d5444](https://github.com/ngx-grpc/ngx-grpc/commit/a4d5444ccf91e09c403434e30a6ca07c64be8469))
+* **protoc-gen-ng:** do not re-export js modules and care of duplicate dependencies ([99c592b](https://github.com/ngx-grpc/ngx-grpc/commit/99c592bd54a2382c742d353ef7903777ead21ff9))
+* **protoc-gen-ng:** properly initialize and cast to object the maps with message as value, close [#29](https://github.com/ngx-grpc/ngx-grpc/issues/29) ([a6d4568](https://github.com/ngx-grpc/ngx-grpc/commit/a6d4568a30bcf0be7040e8ff861e72aabf8f3823))
+
+
+### Features
+
+* **common:** add withCredentials flag to GrpcClientSettings, close [#30](https://github.com/ngx-grpc/ngx-grpc/issues/30) ([e4645f8](https://github.com/ngx-grpc/ngx-grpc/commit/e4645f818e89e1b3fc3fce13ccba509df5c5eacd))
+* **core:** add advanced logger settings, shortening the logger service and its corresponding types names; the logger is enabled by default ([7bbf215](https://github.com/ngx-grpc/ngx-grpc/commit/7bbf215ff6b1034705e1cbd547ab639a89190ca2))
+* **core:** add client settings to the logger output, close [#21](https://github.com/ngx-grpc/ngx-grpc/issues/21) ([dfe019a](https://github.com/ngx-grpc/ngx-grpc/commit/dfe019ae1188efafdfa4f9ddedb17c243a72b790))
+* **protoc-gen-ng:** add configuration file support ([7d753b8](https://github.com/ngx-grpc/ngx-grpc/commit/7d753b87d2a7b7bad3ae4de1f6fa6a19674b6aef))
+* **protoc-gen-ng:** add support for jstype field option ([dae4e6a](https://github.com/ngx-grpc/ngx-grpc/commit/dae4e6aa455d2802339d3149db4a04acdc6fe20d))
+* add @improbable-eng/grpc-web client implementation ([4d0a2ff](https://github.com/ngx-grpc/ngx-grpc/commit/4d0a2ffffab209ec0b35beb88326857805796f17))
+* add child / lazy / feature modules support, close [#18](https://github.com/ngx-grpc/ngx-grpc/issues/18) ([ec2e7aa](https://github.com/ngx-grpc/ngx-grpc/commit/ec2e7aa047627285e4bfe2d3739c16754c5c0c1c))
+* add method `getSettings` to each client's implementation ([ec1995d](https://github.com/ngx-grpc/ngx-grpc/commit/ec1995d3f5fd46fd7e9227f6809ac0b96ec489e9))
+* add protobuf JSON mapping implementation and full support of google.protobuf.Any ([718edf6](https://github.com/ngx-grpc/ngx-grpc/commit/718edf6a95be5dba61a8985adfdbc1b66a9c05ed))
+* move all well-known types to a separate package @ngx-grpc/well-known-types, close [#15](https://github.com/ngx-grpc/ngx-grpc/issues/15) ([c8360ea](https://github.com/ngx-grpc/ngx-grpc/commit/c8360eab9c5f752385cd20189ab9d4be07101e63))
+* reduce service client clutter by moving all raw (former $eventStream) methods under a $raw property ([f16d58c](https://github.com/ngx-grpc/ngx-grpc/commit/f16d58c0050ea806577901375afefc661f3ef066))
+* remove GrpcClientSettings in favour of having the settings defined by each client implementation ([259e658](https://github.com/ngx-grpc/ngx-grpc/commit/259e6581e6cf318a513cd7945026566c3dd42f55))
+* update all dependencies ([cdf7d82](https://github.com/ngx-grpc/ngx-grpc/commit/cdf7d824155697f6142a816b61192f34ee0a224e))
+* use class GrpcMetadata instead of metadata hashmap ([d081377](https://github.com/ngx-grpc/ngx-grpc/commit/d08137714df58d383085f14a7f414c2cb5e67d76))
+
+
+### BREAKING CHANGES
+
+* $eventStream methods are moved to $raw property
+* metadata is not a hashmap anymore, use GrpcMetadata instead. GrpcStatusEvent properties code and details are renamed to statusCode and statusMessage correspondingly
+* The way to configure the project has been changed. Use corresponding modules for core, logger and client implementations. All services are injected with `providedIn: 'any'` instead of 'root'. If you want to change this behaviour use corresponding generator setting
+* **protoc-gen-ng:** `worker=true` compiler argument is removed; the same configuration can be achieved within the config file
+* GrpcClientSettings is removed, use the specific client settings instead; e.g. GrpcWebClientSettings or GrpcWorkerClientSettings for corresponding clients
+* **core:** GRPC_CONSOLE_LOGGER_ENABLED is removed in favour of more general GRPC_LOGGER_SETTINGS. The logger is renamed to GrpcLoggerInterceptor. By default, the logger is enabled (before by default ut was disabled).
+* all well-known types are served with separate package that needs to be installed with `npm i @ngx-grpc/well-known-types`. If you want to keep the old behaviour, use generateWellKnownTypes plugin option
+* **protoc-gen-ng:** messages re-exports are no longer available, use direct imports instead
+
 ## [1.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.3...v1.0.4) (2020-10-09)
 
 
