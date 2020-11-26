@@ -8,16 +8,15 @@ Angular gRPC framework.
 
 ## Features
 
-- two-way-binding-friendly thanks to custom protobuf messages implementation (instead of Java-like setters / getters in original google-protobuf)
+- two-way-binding-friendly protobuf messages implementation (instead of Java-like setters / getters in original google-protobuf)
 - client services are wired to Angular's dependency injection
-- rxjs first-class support
 - typescript first-class support
+- rxjs first-class support
 - interceptors
-- simple console logger
+- logger
 - support for well-known types, including `Any`
 - support for [JSON mappings](https://developers.google.com/protocol-buffers/docs/proto3#json)
-- @improbable-eng/grpc-web client implementation (experimental)
-- web worker (experimental)
+- 3 different client implementations: grpc-web, @improbable-eng/grpc-web and web worker
 - easy to install, update and support thanks to npm packages
 
 ## Example
@@ -38,7 +37,7 @@ Now open your browser at [http://localhost:4200/](http://localhost:4200/). The s
 
 First ensure that you
 
-- installed `protoc`: [guide](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
+- installed `protoc` [as a binary](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) or as a part of `grpc-tools` npm package
 - configured your backend / grpc-web proxy according to [grpc-web documentation](https://github.com/grpc/grpc-web).
 
 Then in your Angular project's root directory run
@@ -63,6 +62,8 @@ Also you can choose between alternative client implementations:
 - @ngx-grpc/grpc-web-client - based on [grpc-web](https://github.com/grpc/grpc-web)
 - @ngx-grpc/improbable-eng-grpc-web-client - alternative client implementation based on [@improbable-eng/grpc-web](https://github.com/improbable-eng/grpc-web)
 - @ngx-grpc/worker-client - similar to @ngx-grpc/grpc-web-client but running in worker
+
+The documentation uses @ngx-grpc/grpc-web-client by default, however is applicable to any client you choose.
 
 ## Generate the code
 
@@ -265,15 +266,14 @@ Optionally, you can provide provide the more detailed configuration as `GRPC_LOG
 
 ```ts
 GrpcLoggerModule.forRoot({ 
-  provide: GRPC_LOGGER_SETTINGS, 
-  useValue: { 
+  settings: { 
      // enables logger in dev mode and still lets you see them in production when running `localStorage.setItem('logger', 'true') in the console`
-    enabled: localStorage.getItem('logger') === 'true' || !environment.prod,
+    enabled: localStorage.getItem('logger') === 'true' || !environment.production,
      // protobuf json is more human-readable than the default toObject() mapping
      // please beware: if you use google.protobuf.Any you must pass the proper `messagePool` argument
     requestMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
     responseMapper: (msg: GrpcMessage) => msg.toProtobufJSON(),
-  } as GrpcLoggerSettings
+  },
 }),
 ```
 
@@ -372,7 +372,9 @@ That's it. All your requests are served by worker.
 
 ## Not implemented (yet)
 
-[Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
+- [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
+- Client streaming
+- Bidirectional streaming
 
 ## License
 
