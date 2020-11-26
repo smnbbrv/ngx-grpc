@@ -35,7 +35,7 @@
 * The way to configure the project has been changed. Use corresponding modules for core, logger and client implementations. All services are injected with `providedIn: 'any'` instead of 'root'. If you want to change this behaviour use corresponding generator setting
 * **protoc-gen-ng:** `worker=true` compiler argument is removed; the same configuration can be achieved within the config file
 * GrpcClientSettings is removed, use the specific client settings instead; e.g. GrpcWebClientSettings or GrpcWorkerClientSettings for corresponding clients
-* **core:** GRPC_CONSOLE_LOGGER_ENABLED is removed in favour of more general GRPC_LOGGER_SETTINGS. The logger is renamed to GrpcLoggerInterceptor. By default, the logger is enabled (before by default ut was disabled).
+* **core:** GRPC_CONSOLE_LOGGER_ENABLED is removed in favour of more general GRPC_LOGGER_SETTINGS. The logger is renamed to GrpcLoggerInterceptor. By default, the logger is enabled (before it was disabled by default).
 * all well-known types are served with separate package that needs to be installed with `npm i @ngx-grpc/well-known-types`. If you want to keep the old behaviour, use generateWellKnownTypes plugin option
 * **protoc-gen-ng:** messages re-exports are no longer available, use direct imports instead
 
