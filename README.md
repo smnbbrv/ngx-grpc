@@ -179,8 +179,6 @@ To set grpcweb / binary proto format use
 
 From now on this particular service is set.
 
-It's also handy to move configuration of all the services to a different module's `providers` section and import this module into the `AppModule`.
-
 ### Service client methods
 
 Each RPC has two corresponding methods.
@@ -211,7 +209,7 @@ To create a new message just pass its initial values to the constructor: `new Me
 
 ### Well-known types
 
-The well-known types are served as a separate package. If you want to generate the well-known types together with your proto definitions (like older versions did) just pass `generateWellKnownTypes=true` as the protoc plugin options.
+The well-known types are served as a separate package. You can also configure generation of the well-known types together with your proto definitions (like older versions did).
 
 Some types have additional functionality, see below.
 
@@ -277,7 +275,7 @@ GrpcLoggerModule.forRoot({
 }),
 ```
 
-## Alternative client / @improbable-eng/grpc-web-client
+## Alternative client: @improbable-eng/grpc-web
 
 The alternative grpc-web implementation from [Improbable Engineering](https://github.com/improbable-eng) provides way more features than standard grpc-web from Google. It supports [various transports](https://github.com/improbable-eng/grpc-web/blob/master/client/grpc-web/docs/transport.md) including WebSocket-based and even Node (can be useful e.g. for SSR).
 
