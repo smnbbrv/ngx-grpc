@@ -1,5 +1,5 @@
 {
-  "name": "improbable-eng-grpc-web-client",
+  "name": "@ngx-grpc/improbable-eng-grpc-web-client",
   "version": "0.0.1",
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",

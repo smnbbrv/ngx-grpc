@@ -77,7 +77,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
         descriptor,
         (error, data) => {
           if (error) {
-            obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
+            obs.next(new GrpcStatusEvent(error.code, error.message, new GrpcMetadata((error as any).metadata)));
             obs.complete();
           } else {
             obs.next(new GrpcDataEvent(data as any));
@@ -119,7 +119,7 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
 
       stream.on('status', status => obs.next(new GrpcStatusEvent(status.code, status.details, new GrpcMetadata(status.metadata))));
       stream.on('error', error => {
-        obs.next(new GrpcStatusEvent(error.code, error.message, (error as any).metadata));
+        obs.next(new GrpcStatusEvent(error.code, error.message, new GrpcMetadata((error as any).metadata)));
         obs.complete();
       });
       stream.on('data', data => obs.next(new GrpcDataEvent(data as any)));
