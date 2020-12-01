@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.0...v2.0.1) (2020-12-01)
+
+
+### Bug Fixes
+
+* **grpc-web-client:** properly create errors metadata ([462a5e4](https://github.com/ngx-grpc/ngx-grpc/commit/462a5e439c0644545568db71a929192a27568534))
+* **improbable-eng-grpc-web-client:** use proper name to publish the package ([29f2af4](https://github.com/ngx-grpc/ngx-grpc/commit/29f2af46ee16853af504d58357adb4266dded753))
+
 # [2.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v1.0.4...v2.0.0) (2020-11-26)
 
 
