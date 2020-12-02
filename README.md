@@ -35,10 +35,12 @@ Now open your browser at [http://localhost:4200/](http://localhost:4200/). The s
 
 ## Installation
 
+> The documentation uses @ngx-grpc/grpc-web-client by default, however is applicable to any client you choose.
+
 First ensure that you
 
 - installed `protoc` [as a binary](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) or as a part of `grpc-tools` npm package
-- configured your backend / grpc-web proxy according to [grpc-web documentation](https://github.com/grpc/grpc-web).
+- configured your backend / grpc-web proxy according to [grpc-web documentation](https://github.com/grpc/grpc-web) or follow documentation of the alternative client if you use one
 
 Then in your Angular project's root directory run
 
@@ -62,8 +64,6 @@ Also you can choose between alternative client implementations:
 - @ngx-grpc/grpc-web-client - based on [grpc-web](https://github.com/grpc/grpc-web)
 - @ngx-grpc/improbable-eng-grpc-web-client - alternative client implementation based on [@improbable-eng/grpc-web](https://github.com/improbable-eng/grpc-web)
 - @ngx-grpc/worker-client - similar to @ngx-grpc/grpc-web-client but running in worker
-
-The documentation uses @ngx-grpc/grpc-web-client by default, however is applicable to any client you choose.
 
 ## Generate the code
 
@@ -260,7 +260,7 @@ GrpcLoggerModule.forRoot(),
 
 Then open the browser console and you should see all the requests and responses in a readable format.
 
-Optionally, you can provide provide the more detailed configuration as `GRPC_LOGGER_SETTINGS`. Example:
+Optionally, you can provide a more detailed configuration. Example:
 
 ```ts
 GrpcLoggerModule.forRoot({ 
