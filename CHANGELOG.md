@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.1...v2.0.2) (2020-12-07)
+
+
+### Bug Fixes
+
+* **common:** fix uint8ArrayToBase64 implementation ([a36104d](https://github.com/ngx-grpc/ngx-grpc/commit/a36104d3c97daf768290d0c7476241dfaf757160))
+* **protoc-gen-ng:** use `AsObject` type as constructor argument instead of a message type, closes [#37](https://github.com/ngx-grpc/ngx-grpc/issues/37) ([834811f](https://github.com/ngx-grpc/ngx-grpc/commit/834811f326a027a2ef4e7fdbfce50bec20a7b0f7))
+* `oneof` binary types which are strings are now handled as expected. ([f4d5401](https://github.com/ngx-grpc/ngx-grpc/commit/f4d5401979905d3862341ba538a09a54cbff4b92))
+
 ## [2.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.0...v2.0.1) (2020-12-01)
 
 
