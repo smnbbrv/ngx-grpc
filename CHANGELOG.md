@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.2...v2.0.3) (2020-12-07)
+
+
+### Bug Fixes
+
+* fix GrpcMessageClass constructor ([ad0c695](https://github.com/ngx-grpc/ngx-grpc/commit/ad0c695eadc5f4acceea8f5aab8c024acc7e01e7))
+
 ## [2.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.1...v2.0.2) (2020-12-07)
 
 
