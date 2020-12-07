@@ -264,7 +264,7 @@ export class Message {
        * Message constructor. Initializes the properties and applies default Protobuf values if necessary
        * @param _value initial values object or instance of ${this.message.name} to deeply clone from
        */
-      constructor(_value?: RecursivePartial<${this.message.name}>) {
+      constructor(_value?: RecursivePartial<${this.message.name}.AsObject>) {
     `);
     printer.addLine('_value = _value || {};');
 
