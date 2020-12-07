@@ -248,7 +248,7 @@ You can add global interceptors to all gRPC calls like Angular's built-in `HttpC
 
 The important difference is that unlike `HttpClient` interceptors `GrpcInterceptor`s need to work with event streams; there are no errors thrown. Instead you should listen to the `GrpcStatusEvent` and decide whether it is an error or not. Please keep this in mind.
 
-As an example see `GrpcLoggerInterceptor` [in the core package](packages/core/src/lib/grpc-console-logger-interceptor.ts).
+As an example see `GrpcLoggerInterceptor` [in the core package](packages/core/src/lib/grpc-logger-interceptor.ts).
 
 ### Logger
 
