@@ -24,6 +24,7 @@ describe('data-types.proto', () => {
 
     expect(msg.oneOf).toBe(oneOf.OneofTest.OneOfCase.testString);
     expect(msg.testString).toBe('123');
+    expect(msg.testInt).toBeUndefined();
     expect(msg.testMessage).toBeUndefined();
 
     const message = new oneOf.OneofTestSub();
@@ -35,4 +36,11 @@ describe('data-types.proto', () => {
     expect(msg.testMessage).toBe(message);
   });
 
+  it('should handle int64 correctly', () => {
+    const msg = new oneOf.OneofTest({ testInt: '0' });
+    expect(msg.oneOf).toBe(oneOf.OneofTest.OneOfCase.testInt);
+    expect(msg.testInt).toBe('0');
+    expect(msg.testString).toBeUndefined();
+    expect(msg.testMessage).toBeUndefined();
+  });
 });

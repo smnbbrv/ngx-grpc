@@ -68,7 +68,7 @@ export class NumberMessageField implements MessageField {
         _writer.writeRepeated${this.protoDataType}(${this.messageField.number}, _instance.${this.attributeName});
       }`);
     } else if (this.oneOf) {
-      printer.add(`if (_instance.${this.attributeName} || _instance.${this.attributeName} === 0) {
+      printer.add(`if (_instance.${this.attributeName} || _instance.${this.attributeName} === ${this.isStringType ? '\'0\'' : '0'}) {
         _writer.write${this.protoDataType}(${this.messageField.number}, _instance.${this.attributeName});
       }`);
     } else {
