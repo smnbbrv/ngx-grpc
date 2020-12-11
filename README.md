@@ -21,7 +21,7 @@ Angular gRPC framework.
 
 ## Example
 
-> The example requires protoc, docker & docker-compose to be installed
+> The example requires docker & docker-compose to be installed
 
 Clone this repository and run
 
