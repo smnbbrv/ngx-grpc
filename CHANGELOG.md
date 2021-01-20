@@ -1,3 +1,11 @@
+## [2.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.3...v2.0.4) (2021-01-20)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** fix test of map with int64 key ([eb3310b](https://github.com/ngx-grpc/ngx-grpc/commit/eb3310b496d69e3265a33808edd95a1ebf57312e))
+* **protoc-gen-ng:** handle map int64/uin64 key as string ([53b3616](https://github.com/ngx-grpc/ngx-grpc/commit/53b36162d0f141ebe601792e8a814c065654f365))
+
 ## [2.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.2...v2.0.3) (2020-12-07)
 
 
