@@ -45,8 +45,8 @@ export class MapMessageField implements MessageField {
     const varName = `_instance.${this.attributeName}`;
     const keysVarName = `keys_${this.messageField.number}`;
     const repeatedVarName = `repeated_${this.messageField.number}`;
-    const isStringKey = ProtoMessageFieldType.string || isNumberString(this.keyField);
-    const castedKey = this.keyField.type === isStringKey ? 'key' : 'Number(key)';
+    const isStringKey = this.keyField.type === ProtoMessageFieldType.string || isNumberString(this.keyField);
+    const castedKey = isStringKey ? 'key' : 'Number(key)';
 
     printer.add(`if (!!${varName}) {
       const ${keysVarName} = Object.keys(${varName} as any);

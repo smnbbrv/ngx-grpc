@@ -172,7 +172,7 @@ describe('data-types.proto', () => {
     expect(
       msgWebGrpc
         .getMapInt64SubMap()
-        .get(0)
+        .get(64)
         ?.getString(),
     ).toEqual('someSubString');
     expect(msgWebGrpc.getMapBoolStringMap().get(true)).toEqual('true');

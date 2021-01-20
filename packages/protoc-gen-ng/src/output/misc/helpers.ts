@@ -37,7 +37,7 @@ export function getDataType(proto: Proto, field: ProtoMessageField, options: Get
   if (isFieldMap(proto, field)) {
     const [key, value] = getMapKeyValueFields(proto, field);
 
-    return `{ [prop: ${key.type === ProtoMessageFieldType.string ? 'string' : 'number'}]: ${getDataType(proto, value)}; }`;
+    return `{ [prop: ${key.type === ProtoMessageFieldType.string || isNumberString(key) ? 'string' : 'number'}]: ${getDataType(proto, value)}; }`;
   }
 
   const suffix = !options.ignoreRepeating && field.label === ProtoMessageFieldCardinality.repeated ? '[]' : '';
