@@ -357,7 +357,7 @@ Finally use the following imports:
   imports: [
     GrpcCoreModule.forRoot(),
     GrpcWorkerClientModule.forRoot({
-      worker: () => new Worker('./grpc.worker', { type: 'module' }),
+      worker: new Worker('./grpc.worker', { type: 'module' }),
       settings: { host: 'http://localhost:8080' },
     }),
   ],
