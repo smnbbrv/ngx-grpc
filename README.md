@@ -282,7 +282,7 @@ The alternative grpc-web implementation from [Improbable Engineering](https://gi
 Installation:
 
 ```sh
-npm i -S @ngx-grpc/improbable-eng-grpc-web @improbable-eng/grpc-web
+npm i -S @ngx-grpc/improbable-eng-grpc-web-client @improbable-eng/grpc-web
 ```
 
 Then configuration is similar to the other clients:
