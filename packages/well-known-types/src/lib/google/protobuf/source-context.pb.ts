@@ -81,7 +81,7 @@ export class SourceContext implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of SourceContext to deeply clone from
    */
-  constructor(_value?: RecursivePartial<SourceContext>) {
+  constructor(_value?: RecursivePartial<SourceContext.AsObject>) {
     _value = _value || {};
     this.fileName = _value.fileName;
     SourceContext.refineValues(this);

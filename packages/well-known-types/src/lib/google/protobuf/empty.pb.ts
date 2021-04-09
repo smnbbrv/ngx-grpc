@@ -61,7 +61,7 @@ export class Empty implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Empty to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Empty>) {
+  constructor(_value?: RecursivePartial<Empty.AsObject>) {
     _value = _value || {};
     Empty.refineValues(this);
   }

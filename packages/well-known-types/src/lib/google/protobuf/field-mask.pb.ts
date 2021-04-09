@@ -75,7 +75,7 @@ export class FieldMask implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of FieldMask to deeply clone from
    */
-  constructor(_value?: RecursivePartial<FieldMask>) {
+  constructor(_value?: RecursivePartial<FieldMask.AsObject>) {
     _value = _value || {};
     this.paths = (_value.paths || []).slice();
     FieldMask.refineValues(this);

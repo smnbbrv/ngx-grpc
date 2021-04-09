@@ -79,7 +79,7 @@ export class DoubleValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of DoubleValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<DoubleValue>) {
+  constructor(_value?: RecursivePartial<DoubleValue.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     DoubleValue.refineValues(this);
@@ -208,7 +208,7 @@ export class FloatValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of FloatValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<FloatValue>) {
+  constructor(_value?: RecursivePartial<FloatValue.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     FloatValue.refineValues(this);
@@ -337,7 +337,7 @@ export class Int64Value implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Int64Value to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Int64Value>) {
+  constructor(_value?: RecursivePartial<Int64Value.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     Int64Value.refineValues(this);
@@ -469,7 +469,7 @@ export class UInt64Value implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of UInt64Value to deeply clone from
    */
-  constructor(_value?: RecursivePartial<UInt64Value>) {
+  constructor(_value?: RecursivePartial<UInt64Value.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     UInt64Value.refineValues(this);
@@ -598,7 +598,7 @@ export class Int32Value implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Int32Value to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Int32Value>) {
+  constructor(_value?: RecursivePartial<Int32Value.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     Int32Value.refineValues(this);
@@ -730,7 +730,7 @@ export class UInt32Value implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of UInt32Value to deeply clone from
    */
-  constructor(_value?: RecursivePartial<UInt32Value>) {
+  constructor(_value?: RecursivePartial<UInt32Value.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     UInt32Value.refineValues(this);
@@ -859,7 +859,7 @@ export class BoolValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of BoolValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<BoolValue>) {
+  constructor(_value?: RecursivePartial<BoolValue.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     BoolValue.refineValues(this);
@@ -991,7 +991,7 @@ export class StringValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of StringValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<StringValue>) {
+  constructor(_value?: RecursivePartial<StringValue.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     StringValue.refineValues(this);
@@ -1120,7 +1120,7 @@ export class BytesValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of BytesValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<BytesValue>) {
+  constructor(_value?: RecursivePartial<BytesValue.AsObject>) {
     _value = _value || {};
     this.value = _value.value;
     BytesValue.refineValues(this);
