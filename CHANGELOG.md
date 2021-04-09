@@ -10,6 +10,18 @@
 
 * **protoc-gen-ng:** use google-protobuf plugin data source instead of third-party proto-plugin package ([7b327b8](https://github.com/ngx-grpc/ngx-grpc/commit/7b327b8224469c685175cc6aecb39ff11f66b40f))
 
+# [2.1.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.4...v2.1.0) (2021-04-09)
+
+
+### Bug Fixes
+
+* **well-known-types:** fix constructor parameter type ([75f1155](https://github.com/ngx-grpc/ngx-grpc/commit/75f1155b3e4ae0977050ebe73170a6f68faf3de8))
+
+
+### Features
+
+* **protoc-gen-ng:** use google-protobuf plugin data source instead of third-party proto-plugin package ([7b327b8](https://github.com/ngx-grpc/ngx-grpc/commit/7b327b8224469c685175cc6aecb39ff11f66b40f))
+
 ## [2.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.3...v2.0.4) (2021-01-20)
 
 
