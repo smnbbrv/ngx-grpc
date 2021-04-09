@@ -1,3 +1,4 @@
+import { FileDescriptorProto } from 'google-protobuf/google/protobuf/descriptor_pb';
 import { Services } from '../services';
 import { dasherize } from '../utils';
 import { ProtoEnum } from './proto-enum';
@@ -16,7 +17,7 @@ export class Proto {
   pb_package: string; // tslint:disable-line
   dependencyList: string[];
   publicDependencyList: number[];
-  weakDependencyList: [];
+  weakDependencyList: number[];
   messageTypeList: ProtoMessage[];
   enumTypeList: ProtoEnum[];
   serviceList: ProtoService[];
@@ -31,17 +32,17 @@ export class Proto {
 
   messageIndex = new Map<string, MessageIndexMeta>();
 
-  constructor(value: Proto) {
-    this.name = value.name;
-    this.pb_package = value.pb_package; // eslint-disable-line @typescript-eslint/camelcase
+  constructor(value: FileDescriptorProto.AsObject) {
+    this.name = value.name ?? '';
+    this.pb_package = value.pb_package ?? ''; // eslint-disable-line @typescript-eslint/camelcase
     this.dependencyList = value.dependencyList || [];
     this.publicDependencyList = value.publicDependencyList;
     this.weakDependencyList = value.weakDependencyList;
-    this.messageTypeList = (value.messageTypeList || []).map(e => new ProtoMessage(e));
-    this.enumTypeList = value.enumTypeList.map(e => new ProtoEnum(e));
-    this.serviceList = value.serviceList.map(e => new ProtoService(e));
+    this.messageTypeList = (value.messageTypeList || []).map(e => new ProtoMessage(e as any));
+    this.enumTypeList = value.enumTypeList.map(e => new ProtoEnum(e as any));
+    this.serviceList = value.serviceList.map(e => new ProtoService(e as any));
     this.extensionList = value.extensionList;
-    this.syntax = value.syntax;
+    this.syntax = value.syntax ?? '';
 
     this.index();
   }
