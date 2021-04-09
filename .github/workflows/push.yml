@@ -16,6 +16,8 @@ jobs:
         uses: actions/checkout@v1
       - name: Install node
         uses: actions/setup-node@v1
+        with:
+          node-version: "14"
       - name: Install protoc
         uses: arduino/setup-protoc@master
       - name: Install protoc-gen-grpc-web protoc plugin
