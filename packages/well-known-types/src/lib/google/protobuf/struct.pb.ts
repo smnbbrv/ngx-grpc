@@ -92,7 +92,7 @@ export class Struct implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Struct to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Struct>) {
+  constructor(_value?: RecursivePartial<Struct.AsObject>) {
     _value = _value || {};
     (this.fields = _value!.fields
       ? Object.keys(_value!.fields).reduce(
@@ -266,7 +266,7 @@ export module Struct {
      * Message constructor. Initializes the properties and applies default Protobuf values if necessary
      * @param _value initial values object or instance of FieldsEntry to deeply clone from
      */
-    constructor(_value?: RecursivePartial<FieldsEntry>) {
+    constructor(_value?: RecursivePartial<FieldsEntry.AsObject>) {
       _value = _value || {};
       this.key = _value.key;
       this.value = _value.value ? new Value(_value.value) : undefined;
@@ -459,7 +459,7 @@ export class Value implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Value to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Value>) {
+  constructor(_value?: RecursivePartial<Value.AsObject>) {
     _value = _value || {};
     this.nullValue = _value.nullValue;
     this.numberValue = _value.numberValue;
@@ -705,7 +705,7 @@ export class ListValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of ListValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<ListValue>) {
+  constructor(_value?: RecursivePartial<ListValue.AsObject>) {
     _value = _value || {};
     this.values = (_value.values || []).map((m) => new Value(m));
     ListValue.refineValues(this);

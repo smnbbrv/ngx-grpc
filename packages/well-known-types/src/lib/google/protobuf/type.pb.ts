@@ -147,7 +147,7 @@ export class Type implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Type to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Type>) {
+  constructor(_value?: RecursivePartial<Type.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.fields = (_value.fields || []).map((m) => new Field(m));
@@ -421,7 +421,7 @@ export class Field implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Field to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Field>) {
+  constructor(_value?: RecursivePartial<Field.AsObject>) {
     _value = _value || {};
     this.kind = _value.kind;
     this.cardinality = _value.cardinality;
@@ -739,7 +739,7 @@ export class Enum implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Enum to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Enum>) {
+  constructor(_value?: RecursivePartial<Enum.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.enumvalue = (_value.enumvalue || []).map((m) => new EnumValue(m));
@@ -949,7 +949,7 @@ export class EnumValue implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of EnumValue to deeply clone from
    */
-  constructor(_value?: RecursivePartial<EnumValue>) {
+  constructor(_value?: RecursivePartial<EnumValue.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.number = _value.number;
@@ -1117,7 +1117,7 @@ export class Option implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Option to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Option>) {
+  constructor(_value?: RecursivePartial<Option.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.value = _value.value

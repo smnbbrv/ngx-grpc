@@ -161,7 +161,7 @@ export class Api implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Api to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Api>) {
+  constructor(_value?: RecursivePartial<Api.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.methods = (_value.methods || []).map((m) => new Method(m));
@@ -424,7 +424,7 @@ export class Method implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Method to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Method>) {
+  constructor(_value?: RecursivePartial<Method.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.requestTypeUrl = _value.requestTypeUrl;
@@ -630,7 +630,7 @@ export class Mixin implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Mixin to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Mixin>) {
+  constructor(_value?: RecursivePartial<Mixin.AsObject>) {
     _value = _value || {};
     this.name = _value.name;
     this.root = _value.root;

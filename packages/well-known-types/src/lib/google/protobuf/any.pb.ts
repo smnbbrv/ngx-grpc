@@ -95,7 +95,7 @@ export class Any implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of Any to deeply clone from
    */
-  constructor(_value?: RecursivePartial<Any>) {
+  constructor(_value?: RecursivePartial<Any.AsObject>) {
     _value = _value || {};
     this.typeUrl = _value.typeUrl;
     this.value = _value.value;
