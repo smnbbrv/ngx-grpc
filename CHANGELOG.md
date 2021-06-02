@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.1.0...v2.2.0) (2021-06-02)
+
+
+### Features
+
+* **protoc-gen-ng:** add support for proto3 optional primitives ([6184c5a](https://github.com/ngx-grpc/ngx-grpc/commit/6184c5ab8e5dccfdd568ced21d7a3b4de4041844))
+
 # [2.1.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.0.4...v2.1.0) (2021-04-09)
 
 
