@@ -54,6 +54,10 @@ export class EnumMessageField implements MessageField {
       printer.add(`if (_instance.${this.attributeName} || _instance.${this.attributeName} === 0) {
         _writer.writeEnum(${this.messageField.number}, _instance.${this.attributeName});
       }`);
+    } else if (this.messageField.proto3Optional) {
+      printer.add(`if (_instance.${this.attributeName} !== undefined && _instance.${this.attributeName} !== null) {
+        _writer.writeEnum(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
     } else {
       printer.add(`if (_instance.${this.attributeName}) {
         _writer.writeEnum(${this.messageField.number}, _instance.${this.attributeName});
@@ -74,7 +78,7 @@ export class EnumMessageField implements MessageField {
   }
 
   printDefaultValueSetter(printer: Printer) {
-    if (this.oneOf) {
+    if (this.oneOf || this.messageField.proto3Optional) {
       return;
     } else if (this.isArray) {
       printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
@@ -110,12 +114,12 @@ export class EnumMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(v => ${this.notRepeatedDataType}[v]),`);
     } else {
-      printer.add(`${this.attributeName}: ${this.oneOf ? `this.${this.attributeName} === undefined ? null : ` : ''}${this.notRepeatedDataType}[this.${this.attributeName} ?? 0],`);
+      printer.add(`${this.attributeName}: ${this.oneOf || this.messageField.proto3Optional ? `this.${this.attributeName} === undefined ? null : ` : ''}${this.notRepeatedDataType}[this.${this.attributeName} ?? 0],`);
     }
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''}${this.oneOf ? ' | null' : ''};`);
+    printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''}${this.oneOf || this.messageField.proto3Optional ? ' | null' : ''};`);
   }
 
 }

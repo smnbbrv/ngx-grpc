@@ -58,6 +58,16 @@ describe('data-types.proto', () => {
     expect(msg.fixed64).toBe('0');
     expect(msg.uint32).toBe(0);
     expect(msg.uint64).toBe('0');
+    expect(msg.optionalBool).toBeUndefined();
+    expect(msg.optionalEnum).toBeUndefined();
+    expect(msg.optionalFixed32).toBeUndefined();
+    expect(msg.optionalFixed64).toBeUndefined();
+    expect(msg.optionalInt32).toBeUndefined();
+    expect(msg.optionalInt64).toBeUndefined();
+    expect(msg.optionalUint32).toBeUndefined();
+    expect(msg.optionalUint64).toBeUndefined();
+    expect(msg.optionalFloat).toBeUndefined();
+    expect(msg.optionalDouble).toBeUndefined();
     expect(msg.mapStringString).toEqual({});
     expect(msg.mapInt64Sub).toEqual({});
     expect(msg.mapBoolString).toEqual({});
@@ -101,6 +111,16 @@ describe('data-types.proto', () => {
       fixed64: '0',
       uint32: 0,
       uint64: '0',
+      optionalBool: undefined,
+      optionalEnum: undefined,
+      optionalFixed32: undefined,
+      optionalFixed64: undefined,
+      optionalInt32: undefined,
+      optionalInt64: undefined,
+      optionalUint32: undefined,
+      optionalUint64: undefined,
+      optionalFloat: undefined,
+      optionalDouble: undefined,
       mapStringString: {},
       mapInt64Sub: {},
       mapBoolString: {},
@@ -140,6 +160,16 @@ describe('data-types.proto', () => {
       fixed64: '64',
       uint32: 32,
       uint64: '64',
+      optionalBool: false,
+      optionalEnum: dataTypes.TestEnum.value0,
+      optionalInt32: 0,
+      optionalInt64: '0',
+      optionalFixed32: 0,
+      optionalFixed64: '0',
+      optionalUint32: 0,
+      optionalUint64: '0',
+      optionalFloat: 0,
+      optionalDouble: 0,
       mapStringString: {
         stringKey: 'stringValue',
       },
@@ -165,6 +195,14 @@ describe('data-types.proto', () => {
     expect(msgWebGrpc.getEnum()).toEqual(dataTypesWebGrpc.TestEnum.VALUE1);
     expect(msgWebGrpc.getFixed32()).toEqual(32);
     expect(msgWebGrpc.getFixed64()).toEqual(64);
+    expect(msgWebGrpc.getOptionalBool()).toEqual(false);
+    expect(msgWebGrpc.getOptionalEnum()).toEqual(dataTypesWebGrpc.TestEnum.VALUE0);
+    expect(msgWebGrpc.getOptionalDouble()).toBeCloseTo(0, 2);
+    expect(msgWebGrpc.getOptionalFloat()).toBeCloseTo(0, 2);
+    expect(msgWebGrpc.getOptionalInt32()).toEqual(0);
+    expect(msgWebGrpc.getOptionalInt64()).toEqual(0);
+    expect(msgWebGrpc.getOptionalFixed32()).toEqual(0);
+    expect(msgWebGrpc.getOptionalFixed64()).toEqual(0);
     expect(msgWebGrpc.getMapStringStringMap().get('stringKey')).toEqual(
       'stringValue',
     );
@@ -204,6 +242,16 @@ describe('data-types.proto', () => {
       fixed64: '12',
       int32: 12,
       int64: '12',
+      optionalBool: false,
+      optionalEnum: dataTypes.TestEnum.value0,
+      optionalInt32: 0,
+      optionalInt64: '0',
+      optionalFixed32: 0,
+      optionalFixed64: '0',
+      optionalUint32: 0,
+      optionalUint64: '0',
+      optionalFloat: 0,
+      optionalDouble: 0,
       string: 'abc12',
       oneofstring: 'abc12',
       mapBoolString: {
@@ -232,6 +280,16 @@ describe('data-types.proto', () => {
       fixed64: '12',
       int32: 12,
       int64: '12',
+      optionalBool: false,
+      optionalEnum: `value0`,
+      optionalInt32: 0,
+      optionalInt64: '0',
+      optionalFixed32: 0,
+      optionalFixed64: '0',
+      optionalUint32: 0,
+      optionalUint64: '0',
+      optionalFloat: 0,
+      optionalDouble: 0,
       string: 'abc12',
       oneofstring: 'abc12',
       oneofenum: null,
@@ -265,6 +323,16 @@ describe('data-types.proto', () => {
       fixed64: '0',
       int32: 0,
       int64: '0',
+      optionalBool: null,
+      optionalEnum: null,
+      optionalInt32: null,
+      optionalInt64: null,
+      optionalFixed32: null,
+      optionalFixed64: null,
+      optionalUint32: null,
+      optionalUint64: null,
+      optionalFloat: null,
+      optionalDouble: null,
       string: '',
       mapBoolString: {},
       mapInt64Sub: {},
@@ -311,5 +379,52 @@ describe('data-types.proto', () => {
     });
   });
 
+  it('should correctly serialize and deserialize the same object', () => {
+    const notNullValues = new dataTypes.TestMessage({
+      bool: true,
+      bytes: new Uint8Array(),
+      double: 12.3,
+      float: 12.5,
+      enum: dataTypes.TestEnum.value1,
+      fixed32: 12,
+      fixed64: '12',
+      int32: 12,
+      int64: '12',
+      optionalBool: false,
+      optionalEnum: dataTypes.TestEnum.value0,
+      optionalInt32: 0,
+      optionalInt64: '0',
+      optionalFixed32: 0,
+      optionalFixed64: '0',
+      optionalUint32: 0,
+      optionalUint64: '0',
+      optionalFloat: 0,
+      optionalDouble: 0,
+      string: 'abc12',
+      oneofstring: 'abc12',
+      mapBoolString: {
+        [1]: 'true',
+      },
+      mapInt64Sub: {
+        [2]: new dataTypes.TestSubMessage({ string: 'str' }),
+      },
+      mapStringString: {
+        ['key']: 'value',
+      },
+      uint32: 12,
+      uint64: '12',
+      subMessage: new dataTypes.TestSubMessage({
+        string: 'test',
+      }),
+    });
+    const deserializedNotNullValues = dataTypes.TestMessage.deserializeBinary(notNullValues.serializeBinary());
+
+    expect(deserializedNotNullValues.toProtobufJSON()).toEqual(notNullValues.toProtobufJSON());
+
+    const nullValues = new dataTypes.TestMessage();
+    const deserializedNullValues = dataTypes.TestMessage.deserializeBinary(nullValues.serializeBinary());
+
+    expect(deserializedNullValues.toProtobufJSON()).toEqual(nullValues.toProtobufJSON());
+  });
 
 });

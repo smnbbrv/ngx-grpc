@@ -30,6 +30,7 @@ async function main() {
   try {
     const request = CodeGeneratorRequest.deserializeBinary(inputBuff);
     const response = new CodeGeneratorResponse();
+    response.setSupportedFeatures(CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL);
 
     const parameter = request.getParameter();
 
@@ -100,7 +101,7 @@ async function main() {
         files.forEach(f => response.addFile(new CodeGeneratorResponse.File().setName(f.name).setContent(f.content)));
       });
 
-    process.stdout.write(Buffer.from(response.serializeBinary()));
+    process.stdout.write(Buffer.from(response.serializeBinary().buffer));
   } catch (err) {
     Services.Logger?.debug(err);
     Services.Logger?.debug(err.stack);

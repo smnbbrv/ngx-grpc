@@ -33,13 +33,23 @@ message TestMessage {
   fixed64 fixed64 = 12;
   uint32 uint32 = 13;
   uint64 uint64 = 14;
-  map<string, string> map_string_string = 15;
-  map<int64, TestSubMessage> map_int64_sub = 16;
-  map<bool, string> map_bool_string = 17;
+  optional int32 optional_int32 = 15;
+  optional bool optional_bool = 16;
+  optional double optional_double = 17;
+  optional float optional_float = 18;
+  optional int64 optional_int64 = 19;
+  optional TestEnum optional_enum = 20;
+  optional fixed32 optional_fixed32 = 21;
+  optional fixed64 optional_fixed64 = 22;
+  optional uint32 optional_uint32 = 23;
+  optional uint64 optional_uint64 = 24;
+  map<string, string> map_string_string = 25;
+  map<int64, TestSubMessage> map_int64_sub = 26;
+  map<bool, string> map_bool_string = 27;
 
   oneof oneof {
-    string oneofstring = 18;
-    TestSubEnum oneofenum = 19;
+    string oneofstring = 28;
+    TestSubEnum oneofenum = 29;
   }
 }
 

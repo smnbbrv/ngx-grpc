@@ -18,6 +18,7 @@ export class ProtoMessageField {
     weak: boolean;
     packed: boolean;
   };
+  proto3Optional: boolean;
 
   constructor(value: ProtoMessageField) {
     this.name = value.name;
@@ -28,6 +29,7 @@ export class ProtoMessageField {
     this.jsonName = value.jsonName;
     this.oneofIndex = value.oneofIndex;
     this.options = value.options || {};
+    this.proto3Optional = value.proto3Optional;
   }
 
 }

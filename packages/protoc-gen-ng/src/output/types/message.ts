@@ -69,10 +69,13 @@ export class Message {
       }
     }
 
-    this.oneOfs = this.message.oneofDeclList.map(od => new OneOf(this.proto, this.message, od));
+    const allOneOfs = this.message.oneofDeclList.map(od => new OneOf(this.proto, this.message, od));
+    this.oneOfs = allOneOfs.filter(oneOf => !oneOf.isSyntheticOneOf());
 
     this.messageFields = this.message.fieldList.map(field => {
-      const oneOf = typeof field.oneofIndex === 'number' ? this.oneOfs[field.oneofIndex] : undefined;
+      const oneOf = typeof field.oneofIndex === 'number' && !field.proto3Optional
+        ? allOneOfs[field.oneofIndex]
+        : undefined;
 
       if (isFieldMap(this.proto, field)) {
         return new MapMessageField(this.proto, this.message, field, oneOf);
