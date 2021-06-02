@@ -30,13 +30,15 @@ export class MapMessageField implements MessageField {
 
   printDeserializeBinaryFromReader(printer: Printer) {
     const msgVarName = `msg_${this.messageField.number}`;
+    const isStringKey = this.keyField.type === ProtoMessageFieldType.string || isNumberString(this.keyField);
+    const castedKey = isStringKey ? `${msgVarName}.key` : `Number(${msgVarName}.key)`;
 
     printer.add(
       `case ${this.messageField.number}:
         const ${msgVarName} = {} as any;
         _reader.readMessage(${msgVarName}, ${this.mapMessageClassName}.deserializeBinaryFromReader);
         _instance.${this.attributeName} = _instance.${this.attributeName} || {};
-        _instance.${this.attributeName}[${msgVarName}.key] = ${msgVarName}.value;
+        _instance.${this.attributeName}[${castedKey}] = ${msgVarName}.value;
         break;`,
     );
   }

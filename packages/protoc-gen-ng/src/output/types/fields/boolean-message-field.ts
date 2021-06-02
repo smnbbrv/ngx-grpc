@@ -52,6 +52,10 @@ export class BooleanMessageField implements MessageField {
       printer.add(`if (_instance.${this.attributeName} || _instance.${this.attributeName} === false) {
         _writer.writeBool(${this.messageField.number}, _instance.${this.attributeName});
       }`);
+    } else if (this.messageField.proto3Optional) {
+      printer.add(`if (_instance.${this.attributeName} !== undefined && _instance.${this.attributeName} !== null) {
+        _writer.writeBool(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
     } else {
       printer.add(`if (_instance.${this.attributeName}) {
         _writer.writeBool(${this.messageField.number}, _instance.${this.attributeName});
@@ -72,7 +76,7 @@ export class BooleanMessageField implements MessageField {
   }
 
   printDefaultValueSetter(printer: Printer) {
-    if (this.oneOf) {
+    if (this.oneOf || this.messageField.proto3Optional) {
       return;
     } else if (this.isArray) {
       printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
@@ -107,13 +111,15 @@ export class BooleanMessageField implements MessageField {
   printToProtobufJSONMapping(printer: Printer) {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
+    } else if (this.messageField.proto3Optional) {
+      printer.add(`${this.attributeName}: this.${this.attributeName} === undefined ? null : this.${this.attributeName},`);
     } else {
       printer.add(`${this.attributeName}: this.${this.attributeName},`);
     }
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.dataType};`);
+    printer.add(`${this.attributeName}?: ${this.dataType}${this.messageField.proto3Optional ? ' | null' : ''};`);
   }
 
 }

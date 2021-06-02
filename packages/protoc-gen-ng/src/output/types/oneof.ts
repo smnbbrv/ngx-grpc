@@ -13,6 +13,7 @@ export class OneOf {
   private enumName: string;
   private index: number;
   private fields: ProtoMessageField[];
+  private synthetic: boolean;
 
   constructor(
     private proto: Proto,
@@ -22,7 +23,12 @@ export class OneOf {
     this.attributeName = camelizeSafe(this.oneof.name);
     this.enumName = classify(this.oneof.name) + 'Case';
     this.index = message.oneofDeclList.indexOf(this.oneof);
-    this.fields = this.message.fieldList.filter(f => f.oneofIndex === this.index);
+    this.fields = message.fieldList.filter(f => f.oneofIndex === this.index);
+    this.synthetic = this.fields.every(field => field.proto3Optional);
+  }
+
+  isSyntheticOneOf() {
+    return this.synthetic;
   }
 
   printEnum(printer: Printer) {
