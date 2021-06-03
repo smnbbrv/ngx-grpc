@@ -102,7 +102,7 @@ export class EchoRequest implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of EchoRequest to deeply clone from
    */
-  constructor(_value?: RecursivePartial<EchoRequest>) {
+  constructor(_value?: RecursivePartial<EchoRequest.AsObject>) {
     _value = _value || {};
     this.message = _value.message;
     this.shouldThrow = _value.shouldThrow;
@@ -278,7 +278,7 @@ export class EchoResponse implements GrpcMessage {
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
    * @param _value initial values object or instance of EchoResponse to deeply clone from
    */
-  constructor(_value?: RecursivePartial<EchoResponse>) {
+  constructor(_value?: RecursivePartial<EchoResponse.AsObject>) {
     _value = _value || {};
     this.message = _value.message;
     this.timestamp = _value.timestamp
