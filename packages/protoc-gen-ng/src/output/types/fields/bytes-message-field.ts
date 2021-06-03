@@ -39,9 +39,15 @@ export class BytesMessageField implements MessageField {
   }
 
   printSerializeBinaryToWriter(printer: Printer) {
-    printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
+   if (this.messageField.proto3Optional) {
+      printer.add(`if (_instance.${this.attributeName} !== undefined && _instance.${this.attributeName} !== null) {
+        _writer.writeBytes(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
+    } else {
+     printer.add(`if (_instance.${this.attributeName} && _instance.${this.attributeName}.length) {
       _writer.write${this.isArray ? 'Repeated' : ''}Bytes(${this.messageField.number}, _instance.${this.attributeName});
     }`);
+   }
   }
 
   printPrivateAttribute(printer: Printer) {
@@ -57,7 +63,7 @@ export class BytesMessageField implements MessageField {
   }
 
   printDefaultValueSetter(printer: Printer) {
-    if (this.oneOf) {
+    if (this.oneOf || this.messageField.proto3Optional) {
       return;
     } else if (this.isArray) {
       printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
@@ -81,7 +87,7 @@ export class BytesMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(b => b ? b.subarray(0) : new Uint8Array()),`);
     } else {
-      printer.add(`${this.attributeName}: this.${this.attributeName} ? this.${this.attributeName}.subarray(0) : new Uint8Array(),`);
+      printer.add(`${this.attributeName}: this.${this.attributeName} ? this.${this.attributeName}.subarray(0) : ${this.messageField.proto3Optional ? 'undefined' : 'new Uint8Array()'},`);
     }
   }
 
@@ -95,12 +101,16 @@ export class BytesMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(b => b ? uint8ArrayToBase64(b) : ''),`);
     } else {
-      printer.add(`${this.attributeName}: this.${this.attributeName} ? uint8ArrayToBase64(this.${this.attributeName}) : '',`);
+      printer.add(`${this.attributeName}: this.${this.attributeName} ? uint8ArrayToBase64(this.${this.attributeName}) : ${this.messageField.proto3Optional ? 'null' : '\'\''},`);
     }
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''};`);
+    if (this.messageField.proto3Optional) {
+      printer.add(`${this.attributeName}?: string | null;`);
+    } else {
+      printer.add(`${this.attributeName}?: string${this.isArray ? '[]' : ''};`);
+    }
   }
 
 }

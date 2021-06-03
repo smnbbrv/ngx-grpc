@@ -58,6 +58,8 @@ describe('data-types.proto', () => {
     expect(msg.fixed64).toBe('0');
     expect(msg.uint32).toBe(0);
     expect(msg.uint64).toBe('0');
+    expect(msg.optionalBytes).toBeUndefined();
+    expect(msg.optionalString).toBeUndefined();
     expect(msg.optionalBool).toBeUndefined();
     expect(msg.optionalEnum).toBeUndefined();
     expect(msg.optionalFixed32).toBeUndefined();
@@ -111,6 +113,8 @@ describe('data-types.proto', () => {
       fixed64: '0',
       uint32: 0,
       uint64: '0',
+      optionalBytes: undefined,
+      optionalString: undefined,
       optionalBool: undefined,
       optionalEnum: undefined,
       optionalFixed32: undefined,
@@ -160,6 +164,8 @@ describe('data-types.proto', () => {
       fixed64: '64',
       uint32: 32,
       uint64: '64',
+      optionalBytes: new Uint8Array(),
+      optionalString: '',
       optionalBool: false,
       optionalEnum: dataTypes.TestEnum.value0,
       optionalInt32: 0,
@@ -195,6 +201,8 @@ describe('data-types.proto', () => {
     expect(msgWebGrpc.getEnum()).toEqual(dataTypesWebGrpc.TestEnum.VALUE1);
     expect(msgWebGrpc.getFixed32()).toEqual(32);
     expect(msgWebGrpc.getFixed64()).toEqual(64);
+    expect(msgWebGrpc.getOptionalBytes()).toEqual(new Uint8Array());
+    expect(msgWebGrpc.getOptionalString()).toEqual('');
     expect(msgWebGrpc.getOptionalBool()).toEqual(false);
     expect(msgWebGrpc.getOptionalEnum()).toEqual(dataTypesWebGrpc.TestEnum.VALUE0);
     expect(msgWebGrpc.getOptionalDouble()).toBeCloseTo(0, 2);
@@ -242,6 +250,8 @@ describe('data-types.proto', () => {
       fixed64: '12',
       int32: 12,
       int64: '12',
+      optionalBytes: new Uint8Array(),
+      optionalString: '',
       optionalBool: false,
       optionalEnum: dataTypes.TestEnum.value0,
       optionalInt32: 0,
@@ -280,6 +290,8 @@ describe('data-types.proto', () => {
       fixed64: '12',
       int32: 12,
       int64: '12',
+      optionalBytes: '',
+      optionalString: '',
       optionalBool: false,
       optionalEnum: `value0`,
       optionalInt32: 0,
@@ -323,6 +335,8 @@ describe('data-types.proto', () => {
       fixed64: '0',
       int32: 0,
       int64: '0',
+      optionalBytes: null,
+      optionalString: null,
       optionalBool: null,
       optionalEnum: null,
       optionalInt32: null,
@@ -390,6 +404,8 @@ describe('data-types.proto', () => {
       fixed64: '12',
       int32: 12,
       int64: '12',
+      optionalBytes: new Uint8Array(),
+      optionalString: '',
       optionalBool: false,
       optionalEnum: dataTypes.TestEnum.value0,
       optionalInt32: 0,
