@@ -29,7 +29,7 @@ export class EchoServiceClient {
   private client: GrpcClient<any>;
 
   /**
-   * Here is the raw RPC implementation for each service client method.
+   * Raw RPC implementation for each service client method.
    * The raw methods provide more control on the incoming data and events. E.g. they can be useful to read status `OK` metadata.
    * Attention: these methods do not throw errors when non-zero status codes are received.
    */

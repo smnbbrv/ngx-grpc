@@ -46,6 +46,10 @@ export class StringMessageField implements MessageField {
       printer.add(`if (_instance.${this.attributeName} || _instance.${this.attributeName} === '') {
         _writer.writeString(${this.messageField.number}, _instance.${this.attributeName});
       }`);
+    } else if (this.messageField.proto3Optional) {
+      printer.add(`if (_instance.${this.attributeName} !== undefined && _instance.${this.attributeName} !== null) {
+        _writer.writeString(${this.messageField.number}, _instance.${this.attributeName});
+      }`);
     } else {
       printer.add(`if (_instance.${this.attributeName}) {
         _writer.writeString(${this.messageField.number}, _instance.${this.attributeName});
@@ -66,7 +70,7 @@ export class StringMessageField implements MessageField {
   }
 
   printDefaultValueSetter(printer: Printer) {
-    if (this.oneOf) {
+    if (this.oneOf || this.messageField.proto3Optional) {
       return;
     } else if (this.isArray) {
       printer.add(`_instance.${this.attributeName} = _instance.${this.attributeName} || []`);
@@ -102,12 +106,12 @@ export class StringMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
     } else {
-      printer.add(`${this.attributeName}: this.${this.attributeName}${this.oneOf ? ' ?? null' : ''},`);
+      printer.add(`${this.attributeName}: this.${this.attributeName}${this.oneOf || this.messageField.proto3Optional ? ' ?? null' : ''},`);
     }
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.dataType}${this.oneOf ? ' | null' : ''};`);
+    printer.add(`${this.attributeName}?: ${this.dataType}${this.oneOf || this.messageField.proto3Optional ? ' | null' : ''};`);
   }
 
 }
