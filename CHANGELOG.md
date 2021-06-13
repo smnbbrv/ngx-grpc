@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.2.0...v2.3.0) (2021-06-13)
+
+
+### Features
+
+* **protoc-gen-ng:** add support for proto3 optional bytes and string ([d2367a6](https://github.com/ngx-grpc/ngx-grpc/commit/d2367a64d1e1ca98fc2362dfbca97273acab593d))
+
 # [2.2.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.1.0...v2.2.0) (2021-06-02)
 
 
