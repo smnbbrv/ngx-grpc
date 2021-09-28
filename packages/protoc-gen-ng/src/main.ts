@@ -52,7 +52,8 @@ async function main() {
     const genwkt = Services.Config.embedWellKnownTypes;
 
     protos
-      .filter(p => genwkt || !genwkt && p.pb_package !== 'google.protobuf')
+      .filter(p => genwkt || !genwkt && (p.pb_package !== 'google.protobuf' &&
+        (!Services.Config.customWellKnownTypes || !Services.Config.customWellKnownTypes[p.pb_package])))
       .forEach(proto => {
         Services.Logger.debug(`Start processing proto ${proto.name}`);
 
