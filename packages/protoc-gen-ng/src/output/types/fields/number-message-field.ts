@@ -131,7 +131,11 @@ export class NumberMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
     } else {
-      printer.add(`${this.attributeName}: this.${this.attributeName}${this.oneOf || this.messageField.proto3Optional ? ' ?? null' : ''},`);
+      if (this.oneOf || this.messageField.proto3Optional){
+        printer.add(`${this.attributeName}: this.${this.attributeName} === null || this.${this.attributeName} === undefined ? null : this.${this.attributeName},`);
+      } else {
+        printer.add(`${this.attributeName}: this.${this.attributeName},`);
+      }
     }
   }
 
