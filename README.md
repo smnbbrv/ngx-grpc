@@ -242,6 +242,25 @@ try {
 
 The `google.protobuf.Timestamp` has additional methods to cast from / to `Date` and ISO string date representation.
 
+### Custom well-known types
+
+For well-known types that are not part of the `google.protobuf` package, you can override the imports to use for specific packages.  
+
+This is especially useful if you are using a protobuf schema registry like [Buf](https://buf.build/) for sharing some common messages through different projects.
+
+
+Example of a custom well-known type configuration:
+```js
+module.exports = {
+  customWellKnownTypes: {
+    "company.internal.commons": "@company-internal/grpc-commons"
+  }
+}
+```
+This will change all import statements that reference a message of the package `company.internal.commons` to use `@company-internal/grpc-commons`, instead of the relative file path.
+
+If the `embedWellKnownTypes` configuration is enabled, the `customWellKnownTypes` configuration will be ignored and the messages will be generated as usual.
+
 ### Interceptors
 
 You can add global interceptors to all gRPC calls like Angular's built-in `HttpClient` interceptors.

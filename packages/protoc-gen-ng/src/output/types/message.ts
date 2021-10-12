@@ -25,6 +25,7 @@ import { TimestampWKT } from './well-known-types/timestamp.wkt';
 import { EnumValueWKT, EnumWKT, FieldWKT, OptionWKT, TypeWKT } from './well-known-types/type.wkt';
 import { BoolValueWKT, BytesValueWKT, DoubleValueWKT, FloatValueWKT, Int32ValueWKT, Int64ValueWKT, StringValueWKT, UInt32ValueWKT, UInt64ValueWKT } from './well-known-types/wrappers.wkt';
 import { WKT } from './wkt';
+import { Services } from '../../services';
 
 export class Message {
 
@@ -33,12 +34,15 @@ export class Message {
   private oneOfs: OneOf[];
 
   private wkt?: WKT;
+  private isWkt = false;
 
   constructor(
     private proto: Proto,
     private message: ProtoMessage,
   ) {
-    if (this.proto.pb_package === 'google.protobuf') {
+    if (this.proto.pb_package === 'google.protobuf' ||
+      (!!Services.Config.customWellKnownTypes && !!Services.Config.customWellKnownTypes[this.proto.pb_package])) {
+      this.isWkt = true;
       switch (this.message.name) {
         case 'Any': this.wkt = new AnyWKT(); break;
         case 'Api': this.wkt = new ApiWKT(); break;
@@ -120,8 +124,16 @@ export class Message {
     );
 
     const messageId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.message.name;
-    const wktUrl = 'https://developers.google.com/protocol-buffers/docs/reference/google.protobuf';
-    const constructorComment = this.wkt ? `Well known type, more at ${wktUrl}` : `Message implementation for ${messageId}`;
+    let constructorComment = `Message implementation for ${messageId}`;
+    if (this.isWkt){
+      if (this.proto.pb_package  === 'google.protobuf') {
+        constructorComment = `Well known type, more at https://developers.google.com/protocol-buffers/docs/reference/google.protobuf`;
+      } else{
+
+        constructorComment = `Custom well known type`;
+      }
+    }
+
 
     printer.addLine(`
     /**
