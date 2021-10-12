@@ -14,7 +14,7 @@ export interface MessageIndexMeta {
 export class Proto {
 
   name: string;
-  pb_package: string; // tslint:disable-line
+  pb_package: string; // eslint-disable-line
   dependencyList: string[];
   publicDependencyList: number[];
   weakDependencyList: number[];
@@ -34,7 +34,7 @@ export class Proto {
 
   constructor(value: FileDescriptorProto.AsObject) {
     this.name = value.name ?? '';
-    this.pb_package = value.pb_package ?? ''; // eslint-disable-line @typescript-eslint/camelcase
+    this.pb_package = value.pb_package ?? ''; // eslint-disable-line
     this.dependencyList = value.dependencyList || [];
     this.publicDependencyList = value.publicDependencyList;
     this.weakDependencyList = value.weakDependencyList;
@@ -78,15 +78,11 @@ export class Proto {
   }
 
   resolveTransitiveDependencies() {
-    const getTransitiveDependencies = (protos: Proto[]) => {
-      return protos.reduce((res, proto) => {
-        return [
-          ...res,
-          ...proto.resolved.dependencies,
-          ...getTransitiveDependencies(proto.resolved.publicDependencies),
-        ];
-      }, [] as Proto[]);
-    };
+    const getTransitiveDependencies = (protos: Proto[]) => protos.reduce((res, proto) => [
+      ...res,
+      ...proto.resolved.dependencies,
+      ...getTransitiveDependencies(proto.resolved.publicDependencies),
+    ], [] as Proto[]);
 
     this.resolved.allDependencies = [
       ...new Set([

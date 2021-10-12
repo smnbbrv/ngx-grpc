@@ -319,7 +319,7 @@ export class Message {
     if (this.wkt?.printAsProtobufJSON) {
       this.wkt.printAsProtobufJSON(printer);
     } else {
-      printer.addLine(`export interface AsProtobufJSON {`);
+      printer.addLine('export interface AsProtobufJSON {');
       this.messageFields.forEach(f => {
         f.printAsJSONMapping(printer);
         printer.newLine();

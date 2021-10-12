@@ -4,11 +4,11 @@ import { WKT } from '../wkt';
 export class StructWKT implements WKT {
 
   printToProtobufJSON(printer: Printer) {
-    printer.addLine(`return this.fields ? Object.keys(this.fields).reduce((r, k) => ({ ...r, [k]: this.fields![k] ? this.fields![k].toProtobufJSON(options) : {} }), {}) : {};`);
+    printer.addLine('return this.fields ? Object.keys(this.fields).reduce((r, k) => ({ ...r, [k]: this.fields![k] ? this.fields![k].toProtobufJSON(options) : {} }), {}) : {};');
   }
 
   printAsProtobufJSON(printer: Printer) {
-    printer.addLine(`export type AsProtobufJSON = { [prop: string]: Value.AsProtobufJSON; };`);
+    printer.addLine('export type AsProtobufJSON = { [prop: string]: Value.AsProtobufJSON; };');
   }
 
 }
@@ -30,7 +30,7 @@ export class ValueWKT implements WKT {
   }
 
   printAsProtobufJSON(printer: Printer) {
-    printer.addLine(`export type AsProtobufJSON = null | string | number | boolean | Struct.AsProtobufJSON | Value.AsProtobufJSON[];`);
+    printer.addLine('export type AsProtobufJSON = null | string | number | boolean | Struct.AsProtobufJSON | Value.AsProtobufJSON[];');
   }
 
 }
@@ -38,11 +38,11 @@ export class ValueWKT implements WKT {
 export class ListValueWKT implements WKT {
 
   printToProtobufJSON(printer: Printer) {
-    printer.addLine(`return (this.values || []).map(v => v ? v.toProtobufJSON(options) : null);`);
+    printer.addLine('return (this.values || []).map(v => v ? v.toProtobufJSON(options) : null);');
   }
 
   printAsProtobufJSON(printer: Printer) {
-    printer.addLine(`export type AsProtobufJSON = Value.AsProtobufJSON[];`);
+    printer.addLine('export type AsProtobufJSON = Value.AsProtobufJSON[];');
   }
 
 }

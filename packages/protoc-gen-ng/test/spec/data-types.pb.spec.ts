@@ -293,7 +293,7 @@ describe('data-types.proto', () => {
       optionalBytes: '',
       optionalString: '',
       optionalBool: false,
-      optionalEnum: `value0`,
+      optionalEnum: 'value0',
       optionalInt32: 0,
       optionalInt64: '0',
       optionalFixed32: 0,

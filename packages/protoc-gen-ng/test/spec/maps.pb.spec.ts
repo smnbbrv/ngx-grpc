@@ -6,7 +6,7 @@ describe('maps.proto', () => {
     const msg = new maps.MessageWithMap({
       mapStringMsg: {
         key2: new maps.MapSubMessage(),
-      }
+      },
     });
 
     expect(msg.toObject()).toEqual({

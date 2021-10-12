@@ -4,11 +4,11 @@ import { WKT } from '../wkt';
 export class FieldMaskWKT implements WKT {
 
   printToProtobufJSON(printer: Printer) {
-    printer.addLine(`return this.paths.join(',');`);
+    printer.addLine('return this.paths.join(\',\');');
   }
 
   printAsProtobufJSON(printer: Printer) {
-    printer.addLine(`export type AsProtobufJSON = string;`);
+    printer.addLine('export type AsProtobufJSON = string;');
   }
 
 }

@@ -22,9 +22,7 @@ export function camelize(str: string) {
   }
 
   return str
-    .replace(STRING_CAMELIZE_REGEXP, (match, separator, chr) => {
-      return chr ? chr.toUpperCase() : '';
-    }).replace(/^([A-Z])/, (match) => match.toLowerCase());
+    .replace(STRING_CAMELIZE_REGEXP, (match, separator, chr) => chr ? chr.toUpperCase() : '').replace(/^([A-Z])/, (match) => match.toLowerCase());
 }
 
 export function classify(str: string) {

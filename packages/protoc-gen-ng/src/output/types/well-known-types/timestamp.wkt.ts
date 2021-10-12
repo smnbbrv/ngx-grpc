@@ -45,11 +45,11 @@ export class TimestampWKT implements WKT {
   }
 
   printToProtobufJSON(printer: Printer) {
-    printer.addLine(`return this.toISOString();`);
+    printer.addLine('return this.toISOString();');
   }
 
   printAsProtobufJSON(printer: Printer) {
-    printer.addLine(`export type AsProtobufJSON = string;`);
+    printer.addLine('export type AsProtobufJSON = string;');
   }
 
 }
