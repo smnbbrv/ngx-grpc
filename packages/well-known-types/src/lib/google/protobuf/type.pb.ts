@@ -246,7 +246,10 @@ export class Type implements GrpcMessage {
       sourceContext: this.sourceContext
         ? this.sourceContext.toProtobufJSON(options)
         : null,
-      syntax: Syntax[this.syntax ?? 0],
+      syntax:
+        Syntax[
+          this.syntax === null || this.syntax === undefined ? 0 : this.syntax
+        ],
     };
   }
 }
@@ -541,8 +544,15 @@ export class Field implements GrpcMessage {
     options?: ToProtobufJSONOptions
   ): Field.AsProtobufJSON {
     return {
-      kind: Field.Kind[this.kind ?? 0],
-      cardinality: Field.Cardinality[this.cardinality ?? 0],
+      kind: Field.Kind[
+        this.kind === null || this.kind === undefined ? 0 : this.kind
+      ],
+      cardinality:
+        Field.Cardinality[
+          this.cardinality === null || this.cardinality === undefined
+            ? 0
+            : this.cardinality
+        ],
       number: this.number,
       name: this.name,
       typeUrl: this.typeUrl,
@@ -829,7 +839,10 @@ export class Enum implements GrpcMessage {
       sourceContext: this.sourceContext
         ? this.sourceContext.toProtobufJSON(options)
         : null,
-      syntax: Syntax[this.syntax ?? 0],
+      syntax:
+        Syntax[
+          this.syntax === null || this.syntax === undefined ? 0 : this.syntax
+        ],
     };
   }
 }

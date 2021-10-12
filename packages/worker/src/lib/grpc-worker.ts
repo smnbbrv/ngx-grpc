@@ -39,6 +39,7 @@ export class GrpcWorker {
   /**
    * Register one or more service clients.
    * Add here only the services you use, otherwise the worker size can explode.
+   *
    * @param defs generated service client definitions to register
    */
   register(...defs: GrpcWorkerServiceClientDef[]) {

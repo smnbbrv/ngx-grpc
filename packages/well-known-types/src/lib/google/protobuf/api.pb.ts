@@ -271,7 +271,10 @@ export class Api implements GrpcMessage {
         ? this.sourceContext.toProtobufJSON(options)
         : null,
       mixins: (this.mixins || []).map((m) => m.toProtobufJSON(options)),
-      syntax: googleProtobuf002.Syntax[this.syntax ?? 0],
+      syntax:
+        googleProtobuf002.Syntax[
+          this.syntax === null || this.syntax === undefined ? 0 : this.syntax
+        ],
     };
   }
 }
@@ -528,7 +531,10 @@ export class Method implements GrpcMessage {
       responseTypeUrl: this.responseTypeUrl,
       responseStreaming: this.responseStreaming,
       options: (this.options || []).map((m) => m.toProtobufJSON(options)),
-      syntax: googleProtobuf002.Syntax[this.syntax ?? 0],
+      syntax:
+        googleProtobuf002.Syntax[
+          this.syntax === null || this.syntax === undefined ? 0 : this.syntax
+        ],
     };
   }
 }

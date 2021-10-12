@@ -478,7 +478,12 @@ export class Value implements GrpcMessage {
   }
   set nullValue(value: NullValue | undefined) {
     if (value !== undefined && value !== null) {
-      this._numberValue = this._stringValue = this._boolValue = this._structValue = this._listValue = undefined;
+      this._numberValue =
+        this._stringValue =
+        this._boolValue =
+        this._structValue =
+        this._listValue =
+          undefined;
       this._kind = Value.KindCase.nullValue;
     }
     this._nullValue = value;
@@ -488,7 +493,12 @@ export class Value implements GrpcMessage {
   }
   set numberValue(value: number | undefined) {
     if (value !== undefined && value !== null) {
-      this._nullValue = this._stringValue = this._boolValue = this._structValue = this._listValue = undefined;
+      this._nullValue =
+        this._stringValue =
+        this._boolValue =
+        this._structValue =
+        this._listValue =
+          undefined;
       this._kind = Value.KindCase.numberValue;
     }
     this._numberValue = value;
@@ -498,7 +508,12 @@ export class Value implements GrpcMessage {
   }
   set stringValue(value: string | undefined) {
     if (value !== undefined && value !== null) {
-      this._nullValue = this._numberValue = this._boolValue = this._structValue = this._listValue = undefined;
+      this._nullValue =
+        this._numberValue =
+        this._boolValue =
+        this._structValue =
+        this._listValue =
+          undefined;
       this._kind = Value.KindCase.stringValue;
     }
     this._stringValue = value;
@@ -508,7 +523,12 @@ export class Value implements GrpcMessage {
   }
   set boolValue(value: boolean | undefined) {
     if (value !== undefined && value !== null) {
-      this._nullValue = this._numberValue = this._stringValue = this._structValue = this._listValue = undefined;
+      this._nullValue =
+        this._numberValue =
+        this._stringValue =
+        this._structValue =
+        this._listValue =
+          undefined;
       this._kind = Value.KindCase.boolValue;
     }
     this._boolValue = value;
@@ -518,7 +538,12 @@ export class Value implements GrpcMessage {
   }
   set structValue(value: Struct | undefined) {
     if (value !== undefined && value !== null) {
-      this._nullValue = this._numberValue = this._stringValue = this._boolValue = this._listValue = undefined;
+      this._nullValue =
+        this._numberValue =
+        this._stringValue =
+        this._boolValue =
+        this._listValue =
+          undefined;
       this._kind = Value.KindCase.structValue;
     }
     this._structValue = value;
@@ -528,7 +553,12 @@ export class Value implements GrpcMessage {
   }
   set listValue(value: ListValue | undefined) {
     if (value !== undefined && value !== null) {
-      this._nullValue = this._numberValue = this._stringValue = this._boolValue = this._structValue = undefined;
+      this._nullValue =
+        this._numberValue =
+        this._stringValue =
+        this._boolValue =
+        this._structValue =
+          undefined;
       this._kind = Value.KindCase.listValue;
     }
     this._listValue = value;

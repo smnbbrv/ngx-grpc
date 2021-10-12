@@ -13,6 +13,7 @@ export interface GrpcClientFactory<ST> {
 
   /**
    * Create a GrpcClient
+   *
    * @param serviceId a service type in proto (passed in by generated service client), e.g.
    * @param settings settings for underlying grpc client implementation
    * @returns new GrpcClient
@@ -34,6 +35,7 @@ export interface GrpcClient<ST> {
 
   /**
    * Handle unary RPC
+   *
    * @param path gRPC method path (rpc path)
    * @param req request data
    * @param metadata request metadata
@@ -50,6 +52,7 @@ export interface GrpcClient<ST> {
 
   /**
    * Handle server stream RPC
+   *
    * @param path gRPC method path (rpc path)
    * @param req request data
    * @param metadata request metadata

@@ -5,6 +5,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 /**
  * RxJS operator
  * When applied to gRPC events emits error for status events with a non-zero code (includes throwStatusErrors)
+ *
  * @return Observable of gRPC events
  */
 export function throwStatusErrors<T extends GrpcMessage>() {
@@ -16,6 +17,7 @@ export function throwStatusErrors<T extends GrpcMessage>() {
 /**
  * RxJS operator
  * When applied to gRPC events stream extracts and returns only messages
+ *
  * @return Observable of messages
  */
 export function takeMessages<T extends GrpcMessage>() {

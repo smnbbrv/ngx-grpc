@@ -2,7 +2,7 @@ export class GrpcMetadata {
 
   private map: Map<string, string>;
 
-  constructor(initial?: { [prop: string]: string; }) {
+  constructor(initial?: { [prop: string]: string }) {
     initial = initial || {};
 
     this.map = Object.keys(initial).reduce((m, k) => m.set(k, initial[k]), new Map());

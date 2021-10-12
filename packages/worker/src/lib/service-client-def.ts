@@ -14,5 +14,5 @@ export interface GrpcWorkerRPCDef {
  */
 export interface GrpcWorkerServiceClientDef {
   serviceId: string;
-  methods: { [path: string]: GrpcWorkerRPCDef; };
+  methods: { [path: string]: GrpcWorkerRPCDef };
 }

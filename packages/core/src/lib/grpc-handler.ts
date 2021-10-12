@@ -23,6 +23,7 @@ export class GrpcHandler {
   /**
    * Handles the gRPC request passing it through the interceptors array
    * Recursively calls all interceptors with a new instance of the GrpcHandler
+   *
    * @param request a GrpcRequest to execute
    * @returns Observable of events returned by the GrpcClient implementation
    */
