@@ -10,7 +10,6 @@
     ],
     "rootDir": ".",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "strict": true,
     "noUnusedParameters": true,
     "noImplicitAny": false,

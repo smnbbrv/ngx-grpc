@@ -13,7 +13,7 @@ import { GrpcWorkerClientExampleComponent } from './grpc-worker-client-example.c
     RouterModule.forChild([{ path: '', component: ExamplePageComponent }]),
     GrpcCoreModule.forChild(),
     GrpcWorkerClientModule.forChild({
-      worker: new Worker('./grpc.worker', { type: 'module' }),
+      worker: new Worker(new URL('./grpc.worker', import.meta.url), { type: 'module' }),
       settings: { host: 'http://localhost:8080' },
     }),
   ],

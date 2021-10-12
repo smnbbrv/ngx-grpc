@@ -178,7 +178,6 @@
             "main": "examples/basic-example/src/main.ts",
             "polyfills": "examples/basic-example/src/polyfills.ts",
             "tsConfig": "examples/basic-example/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "examples/basic-example/src/favicon.ico",
               "examples/basic-example/src/assets"
@@ -188,7 +187,13 @@
               "examples/basic-example/src/styles.css"
             ],
             "scripts": [],
-            "webWorkerTsConfig": "examples/basic-example/tsconfig.worker.json"
+            "webWorkerTsConfig": "examples/basic-example/tsconfig.worker.json",
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -218,7 +223,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
