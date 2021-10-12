@@ -145,12 +145,23 @@ export class Proto {
     const root = Array(this.name.split('/').length - 1).fill('..').join('/');
 
     return this.resolved.allDependencies.map(pp => {
-      const isWKT = pp.pb_package === 'google.protobuf';
+      const wktDependency = this.getWktDependency(pp.pb_package);
+      const isWKT = wktDependency != null;
       const genwkt = Services.Config.embedWellKnownTypes;
-      const path = (genwkt || !genwkt && !isWKT) ? `${root || '.'}/${pp.getGeneratedFileBaseName()}` : '@ngx-grpc/well-known-types';
+      const path = (genwkt || !genwkt && !isWKT) ? `${root || '.'}/${pp.getGeneratedFileBaseName()}` : wktDependency;
 
       return `import * as ${this.getDependencyPackageName(pp)} from '${path}';`;
     }).join('\n');
+  }
+
+  getWktDependency(pbPackage: string) {
+    if (pbPackage === 'google.protobuf') {
+      return '@ngx-grpc/well-known-types';
+    }
+    if (!!Services.Config.customWellKnownTypes && !!Services.Config.customWellKnownTypes[pbPackage]) {
+      return Services.Config.customWellKnownTypes[pbPackage];
+    }
+    return null;
   }
 
   getGeneratedFileBaseName() {

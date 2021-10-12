@@ -128,6 +128,10 @@ export class Config {
    */
   public embedWellKnownTypes: boolean;
   /**
+   * Custom well-known type package names
+   */
+  public customWellKnownTypes: {[key: string]: string};
+  /**
    * Per-generated-file-type config
    */
   public files: ConfigFiles;
@@ -147,6 +151,7 @@ export class Config {
   constructor(config: Partial<Config> = {}) {
     this.debug = config.debug ?? false;
     this.embedWellKnownTypes = config.embedWellKnownTypes ?? false;
+    this.customWellKnownTypes = config.customWellKnownTypes ?? {};
     this.files = new ConfigFiles(config.files ?? {});
   }
 
