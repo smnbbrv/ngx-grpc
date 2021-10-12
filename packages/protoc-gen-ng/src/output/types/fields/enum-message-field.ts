@@ -114,7 +114,7 @@ export class EnumMessageField implements MessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(v => ${this.notRepeatedDataType}[v]),`);
     } else {
-      printer.add(`${this.attributeName}: ${this.oneOf || this.messageField.proto3Optional ? `this.${this.attributeName} === undefined ? null : ` : ''}${this.notRepeatedDataType}[this.${this.attributeName} ?? 0],`);
+      printer.add(`${this.attributeName}: ${this.oneOf || this.messageField.proto3Optional ? `this.${this.attributeName} === undefined ? null : ` : ''}${this.notRepeatedDataType}[this.${this.attributeName} === null || this.${this.attributeName} === undefined ? 0 : this.${this.attributeName}],`);
     }
   }
 
