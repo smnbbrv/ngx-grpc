@@ -78,7 +78,7 @@
     "@types/prettier": "^2.1.5",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
-    "cpy-cli": "^1.0.1",
+    "cpy-cli": "^3.1.1",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
