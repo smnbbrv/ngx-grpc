@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.3.0...v2.4.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** old typescript compability ([cd288cf](https://github.com/ngx-grpc/ngx-grpc/commit/cd288cfb91d7fad17be8027c55edc61dd9933e6d))
+
+
+### Features
+
+* **protoc-gen-ng:** add support for custom WKT ([8a64bde](https://github.com/ngx-grpc/ngx-grpc/commit/8a64bde5b0c5d6932784db36552618ec76edb523))
+
 # [2.3.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.2.0...v2.3.0) (2021-06-13)
 
 
