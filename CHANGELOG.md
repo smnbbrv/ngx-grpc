@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/ngx-grpc/ngx-grpc/compare/v2.4.0...v2.4.1) (2021-11-10)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** add a [@ts-nocheck](https://github.com/ts-nocheck) comment to the generated files ([55ead7b](https://github.com/ngx-grpc/ngx-grpc/commit/55ead7b097b753b66f7003657c8e8cf67ceb38d9))
+
 # [2.4.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.3.0...v2.4.0) (2021-10-12)
 
 
