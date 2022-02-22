@@ -31,6 +31,8 @@ npm run build
 npm run examples
 ```
 
+On m1 chips replace `npm ci` with `npm ci --target_arch=x64 --no-optional`.
+
 Now open your browser at [http://localhost:4200/](http://localhost:4200/). The source code could be found at [examples](examples) directory.
 
 ## Installation
@@ -392,6 +394,10 @@ That's it. All your requests are served by worker.
 - [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
 - Client streaming
 - Bidirectional streaming
+
+## Contributing
+
+- to run tests on Apple m1 chips use `npm ci --target_arch=x64 --no-optional` and `brew install protoc-gen-grpc-web`
 
 ## License
 
