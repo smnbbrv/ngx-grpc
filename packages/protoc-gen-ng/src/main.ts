@@ -104,10 +104,14 @@ async function main() {
 
     process.stdout.write(Buffer.from(response.serializeBinary().buffer));
   } catch (err) {
-    Services.Logger?.debug(err);
-    Services.Logger?.debug(err.stack);
+    if (err instanceof Error) {
+      Services.Logger?.debug(err.name);
+      Services.Logger?.debug(err.message);
+      Services.Logger?.debug(err.stack || '');
 
-    console.error('protoc-gen-ng error: ' + err.stack + '\n');
+      console.error('protoc-gen-ng error: ' + (err.stack || '') + '\n');
+    }
+
     process.exit(1);
   }
 }

@@ -1,8 +1,8 @@
-import { GrpcHandler } from '@ngx-grpc/core';
-import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
+// import { GrpcHandler } from '@ngx-grpc/core';
+// import { GrpcWebClientFactory } from '@ngx-grpc/grpc-web-client';
 import 'jest';
 import * as deprecatedpb from '../out/deprecated.pb';
-import * as deprecatedpbsc from '../out/deprecated.pbsc';
+// import * as deprecatedpbsc from '../out/deprecated.pbsc';
 
 describe('no-package.proto', () => {
 
@@ -12,10 +12,10 @@ describe('no-package.proto', () => {
     expect(new deprecatedpb.TestMessage().message).toBe('');
   });
 
-  it('should produce TestServiceClient', () => {
-    expect(deprecatedpbsc.TestServiceClient).toBeTruthy();
-    expect(new deprecatedpbsc.TestServiceClient({ host: 'test' }, new GrpcWebClientFactory({ host: 'localhost' }), new GrpcHandler([]))).toBeTruthy();
-    expect(new deprecatedpbsc.TestServiceClient({ host: 'test' }, new GrpcWebClientFactory({ host: 'localhost' }), new GrpcHandler([])).test).toBeTruthy();
-  });
+  // it('should produce TestServiceClient', () => {
+  //   expect(deprecatedpbsc.TestServiceClient).toBeTruthy();
+  //   expect(new deprecatedpbsc.TestServiceClient({ host: 'test' }, new GrpcWebClientFactory({ host: 'localhost' }), new GrpcHandler([]))).toBeTruthy();
+  //   expect(new deprecatedpbsc.TestServiceClient({ host: 'test' }, new GrpcWebClientFactory({ host: 'localhost' }), new GrpcHandler([])).test).toBeTruthy();
+  // });
 
 });

@@ -1,0 +1,25 @@
+// angular build does not emit es5 since v13
+// that's why it needs to be compiled on top :(
+{
+  "compilerOptions": {
+    "outDir": "./packages",
+    "target": "es5",
+    "sourceMap": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": false,
+    "experimentalDecorators": true,
+    // "paths": {
+    //   "@ngx-grpc/common": [
+    //     "../../../dist/common"
+    //   ],
+    // }
+  },
+  "include": [
+    "../../common/src/public-api.ts",
+    // "../../core/src/public-api.ts",
+  ],
+}

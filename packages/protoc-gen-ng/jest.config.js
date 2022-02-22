@@ -6,7 +6,7 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    '@ngx-grpc/(.*)': '<rootDir>/../../dist/$1',
+    '@ngx-grpc/(.*)': '<rootDir>/test/packages/$1/src/public-api.js',
   },
   testEnvironment: './jest.env.js',
   roots: [
