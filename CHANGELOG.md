@@ -1,3 +1,22 @@
+# [3.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.4.1...v3.0.0) (2022-03-01)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly generate AsObject and asProtobufJSON for messages nested into maps ([c1a86a6](https://github.com/ngx-grpc/ngx-grpc/commit/c1a86a6eebeae3e28da1cde30527ee7488ee5d2c))
+* **worker:** use grpc-web RpcError instead of Error ([88c0e01](https://github.com/ngx-grpc/ngx-grpc/commit/88c0e01427b93cf0dba26320ed6685aa24e1db15))
+
+
+### Features
+
+* support client streaming ([4840401](https://github.com/ngx-grpc/ngx-grpc/commit/48404019e51099794224d188aed47b6acdc71330))
+* update to angular 13 ([e472c15](https://github.com/ngx-grpc/ngx-grpc/commit/e472c155c5ede0af96043e4b7c69a50ee0e94f56))
+
+
+### BREAKING CHANGES
+
+* the library requires at least angular@12. For earlier versions please use the previous major version
+
 ## [2.4.1](https://github.com/ngx-grpc/ngx-grpc/compare/v2.4.0...v2.4.1) (2021-11-10)
 
 
