@@ -67,6 +67,40 @@ export interface GrpcClient<ST> {
     resclss: GrpcMessageClass<S>,
   ): Observable<GrpcEvent<S>>;
 
+  /**
+   * Handle client stream RPC
+   *
+   * @param path gRPC method path (rpc path)
+   * @param inputStream streamed request data
+   * @param metadata request metadata
+   * @param reqclss request message class
+   * @param resclss response message class
+   */
+  clientStream<Q extends GrpcMessage, S extends GrpcMessage>(
+    path: string,
+    inputStream: Observable<Q>,
+    metadata: GrpcMetadata,
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>,
+  ): Observable<GrpcEvent<S>>;
+
+  /**
+   * Handle bidirectional stream RPC
+   *
+   * @param path gRPC method path (rpc path)
+   * @param inputStream streamed request data
+   * @param metadata request metadata
+   * @param reqclss request message class
+   * @param resclss response message class
+   */
+  bidiStream<Q extends GrpcMessage, S extends GrpcMessage>(
+    path: string,
+    inputStream: Observable<Q>,
+    metadata: GrpcMetadata,
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>,
+  ): Observable<GrpcEvent<S>>;
+
 }
 
 /**
@@ -75,6 +109,8 @@ export interface GrpcClient<ST> {
 export enum GrpcCallType {
   unary,
   serverStream,
+  clientStream,
+  bidiStream,
 }
 
 /**
@@ -84,7 +120,7 @@ export interface GrpcRequest<Q extends GrpcMessage, S extends GrpcMessage> {
   path: string;
   client: GrpcClient<any>;
   type: GrpcCallType;
-  requestData: Q;
+  requestData: Q | Observable<Q>;
   requestMetadata: GrpcMetadata;
   requestClass: GrpcMessageClass<Q>;
   responseClass: GrpcMessageClass<S>;

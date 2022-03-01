@@ -34,15 +34,32 @@ export class ServiceClientMethod {
       ExternalDependencies.throwStatusErrors,
     );
 
+    const deprecationNote = !!this.serviceMethod.options && this.serviceMethod.options.deprecated ? '@deprecated' : '';
+
+    const requestDataType = this.serviceMethod.clientStreaming ? `Observable<${this.inputType}>` : this.inputType;
+    const responseDataType = `Observable<${this.outputType}>`;
+
+    let description = '';
+
+    if (!this.serviceMethod.serverStreaming && !this.serviceMethod.clientStreaming) {
+      description = 'Unary call';
+    } if (this.serviceMethod.serverStreaming && !this.serviceMethod.clientStreaming) {
+      description = 'Server streaming';
+    } if (!this.serviceMethod.serverStreaming && this.serviceMethod.clientStreaming) {
+      description = 'Client streaming';
+    } if (this.serviceMethod.serverStreaming && this.serviceMethod.clientStreaming) {
+      description = 'Bidirectional streaming';
+    }
+
     printer.add(`
       /**
-       * ${this.serviceMethod.serverStreaming ? 'Server streaming' : 'Unary'} RPC for ${this.rpcPath}
-       * ${!!this.serviceMethod.options && this.serviceMethod.options.deprecated ? '@deprecated' : ''}
+       * ${description} @${this.rpcPath}
+       * ${deprecationNote}
        * @param requestMessage Request message
        * @param requestMetadata Request metadata
        * @returns Observable<${this.outputType}>
        */
-      ${camelizeSafe(this.serviceMethod.name)}(requestData: ${this.inputType}, requestMetadata = new GrpcMetadata()): Observable<${this.outputType}> {
+      ${camelizeSafe(this.serviceMethod.name)}(requestData: ${requestDataType}, requestMetadata = new GrpcMetadata()): ${responseDataType} {
         return this.$raw.${camelizeSafe(this.serviceMethod.name)}(requestData, requestMetadata).pipe(throwStatusErrors(), takeMessages());
       }
     `);
@@ -60,17 +77,39 @@ export class ServiceClientMethod {
       ExternalDependencies.Observable,
     );
 
+    const deprecationNote = !!this.serviceMethod.options && this.serviceMethod.options.deprecated ? '@deprecated' : '';
+
+    const requestDataType = this.serviceMethod.clientStreaming ? `Observable<${this.inputType}>` : this.inputType;
+    const responseDataType = `Observable<GrpcEvent<${this.outputType}>>`;
+
+    let description = '';
+    let type = '';
+
+    if (!this.serviceMethod.serverStreaming && !this.serviceMethod.clientStreaming) {
+      description = 'Unary call';
+      type = 'unary';
+    } if (this.serviceMethod.serverStreaming && !this.serviceMethod.clientStreaming) {
+      description = 'Server streaming';
+      type = 'serverStream';
+    } if (!this.serviceMethod.serverStreaming && this.serviceMethod.clientStreaming) {
+      description = 'Client streaming';
+      type = 'clientStream';
+    } if (this.serviceMethod.serverStreaming && this.serviceMethod.clientStreaming) {
+      description = 'Bidirectional streaming';
+      type = 'bidiStream';
+    }
+
     printer.add(`
       /**
-       * ${this.serviceMethod.serverStreaming ? 'Server streaming' : 'Unary'} RPC for ${this.rpcPath}
-       * ${!!this.serviceMethod.options && this.serviceMethod.options.deprecated ? '@deprecated' : ''}
+       * ${description}: ${this.rpcPath}
+       * ${deprecationNote}
        * @param requestMessage Request message
        * @param requestMetadata Request metadata
        * @returns Observable<GrpcEvent<${this.outputType}>>
        */
-      ${camelizeSafe(this.serviceMethod.name)}: (requestData: ${this.inputType}, requestMetadata = new GrpcMetadata()): Observable<GrpcEvent<${this.outputType}>> => {
+      ${camelizeSafe(this.serviceMethod.name)}: (requestData: ${requestDataType}, requestMetadata = new GrpcMetadata()): ${responseDataType} => {
         return this.handler.handle({
-          type: GrpcCallType.${this.serviceMethod.serverStreaming ? 'serverStream' : 'unary'},
+          type: GrpcCallType.${type},
           client: this.client,
           path: '${this.rpcPath}',
           requestData,

@@ -8,10 +8,11 @@ Angular gRPC framework.
 
 ## Features
 
-- two-way-binding-friendly protobuf messages implementation (instead of Java-like setters / getters in original google-protobuf)
+- two-way-binding-friendly protobuf messages implementation (instead of Java-like setters / getters / builder pattern in original google-protobuf)
 - client services are wired to Angular's dependency injection
 - typescript first-class support
 - rxjs first-class support
+- client & bidirectional streaming (only possible with @improbable-eng/grpc-web)
 - interceptors
 - logger
 - support for well-known types, including `Any`
@@ -183,6 +184,54 @@ From now on this particular service is set.
 
 ### Service client methods
 
+#### Concept
+
+Every client call accepts a message to be sent and returns an `Observable` of response message(s). However, the request is not being executed until the `Observable` gets subscribed, so it can be safely used at any place.
+
+To cancel the request / close the connection simply unsubscribe from that `Subscription`. Of course, if connection is closed by the server or the error happens, the `Observable` gets terminated.
+
+```ts
+class MyService {
+
+  constructor(private client: EchoClient) {}
+
+  sendOne() {
+    this.client.echo(new EchoRequest({ message: 'text' })).subscribe(res => console.log(res));
+    
+    // or if you want to terminate it, e.g. it is a server stream or you navigate away and do not need to wait
+    const sub = this.client.echo(new EchoRequest({ message: 'text' })).subscribe(res => console.log(res));
+
+    setTimeout(() => sub.unsubscribe(), 1000); // this closes connection
+  }
+
+}
+```
+
+The behaviour above is possible due to the `Observable`'s natural laziness and ability to be terminated.
+
+**The server streaming** so it has the same signature as **the unary requests**, just the returned `Observable` can emit more than one message and the connection is potentially infinite.
+
+**The client streaming** is differrent, because it accepts an `Observable` (and its derivatives, such as `Subject`, `BehaviourSubject`, etc.) of messages 
+
+
+```ts
+class MyService {
+
+  constructor(private client: EchoClient) {}
+
+  sendMany() {
+    const stream = from(['message 1', 'message 2', 'message 3']);
+
+    this.client.echoMany(stream).subscribe(res => console.log(res));
+  }
+
+}
+```
+
+**The bidirectional streaming** has the same signature as the client's one and is a combination of server and client streaming.
+
+#### Implementation details
+
 Each RPC has two corresponding methods.
 
 - the first, that emits messages, is a direct method of the service client.
@@ -267,7 +316,10 @@ If the `embedWellKnownTypes` configuration is enabled, the `customWellKnownTypes
 
 You can add global interceptors to all gRPC calls like Angular's built-in `HttpClient` interceptors.
 
-The important difference is that unlike `HttpClient` interceptors `GrpcInterceptor`s need to work with event streams; there are no errors thrown. Instead you should listen to the `GrpcStatusEvent` and decide whether it is an error or not. Please keep this in mind.
+The important differences
+
+- unlike `HttpClient` interceptors `GrpcInterceptor`s need to work with event streams; there are no errors thrown. Instead you should listen to the `GrpcStatusEvent` and decide whether it is an error or not. Please keep this in mind
+- the incoming data can be a message or a stream of messages (in case of client streaming)
 
 As an example see `GrpcLoggerInterceptor` [in the core package](packages/core/src/lib/grpc-logger-interceptor.ts).
 
@@ -300,34 +352,44 @@ GrpcLoggerModule.forRoot({
 
 The alternative grpc-web implementation from [Improbable Engineering](https://github.com/improbable-eng) provides way more features than standard grpc-web from Google. It supports [various transports](https://github.com/improbable-eng/grpc-web/blob/master/client/grpc-web/docs/transport.md) including WebSocket-based and even Node (can be useful e.g. for SSR).
 
+**The only** client that supports client / bidirectional streaming. This however also requires the server to be able to handle websocket transport. For this purpose improbable-eng team introduced [grpc-web-proxy](https://github.com/improbable-eng/grpc-web/blob/master/go/grpcwebproxy/README.md) - a special facade for the normal grpc server that acts like envoy, but has also the ability to handle websocket transport.
+
 Installation:
 
 ```sh
 npm i -S @ngx-grpc/improbable-eng-grpc-web-client @improbable-eng/grpc-web
 ```
 
-Then configuration is similar to the other clients:
+Then configuration is similar to the other clients, however there is a transport to configure:
 
 ```ts
 import { grpc } from '@improbable-eng/grpc-web';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { ImprobableEngGrpcWebClientModule } from '@ngx-grpc/improbable-eng-grpc-web-client';
 
+const xhr = grpc.CrossBrowserHttpTransport({});
+const ws = grpc.WebsocketTransport();
+
 @NgModule({
   imports: [
     GrpcCoreModule.forRoot(),
-    ImprobableEngGrpcWebClientModule.forRoot({
+    ImprobableEngGrpcWebClientModule.forChild({
       settings: {
         host: 'http://localhost:8080',
-        transport: grpc.CrossBrowserHttpTransport({}),
+        transport: {
+          unary: xhr,
+          serverStream: xhr,
+          clientStream: ws,
+          bidiStream: ws,
+        },
+        // or simply e.g.
+        // transport: ws, // to configure all methods to use websockets
       },
     }),
   ],
 })
 export class AppModule {}
 ```
-
-Choose your transport and provide it as a part of the settings. Now you are set.
 
 ## Web worker
 
@@ -392,8 +454,6 @@ That's it. All your requests are served by worker.
 ## Not implemented (yet)
 
 - [Proto 2 Extensions](https://developers.google.com/protocol-buffers/docs/proto#extensions)
-- Client streaming
-- Bidirectional streaming
 
 ## Contributing
 
@@ -401,4 +461,4 @@ That's it. All your requests are served by worker.
 
 ## License
 
-MIT
+[MIT](LICENSE)

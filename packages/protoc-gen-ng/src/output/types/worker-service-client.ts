@@ -20,11 +20,22 @@ export class WorkerServiceClient {
     const serviceId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.service.name;
 
     const methods = this.service.methodList.map(method => {
-      const callType = method.serverStreaming ? 'serverStream' : 'unary';
       const inputType = this.proto.getRelativeTypeName(method.inputType, 'thisProto');
       const outputType = this.proto.getRelativeTypeName(method.outputType, 'thisProto');
 
-      return `'/${serviceName}/${method.name}': { type: GrpcCallType.${callType}, reqclss: ${inputType}, resclss: ${outputType} }`;
+      let type = '';
+
+      if (!method.serverStreaming && !method.clientStreaming) {
+        type = 'unary';
+      } if (method.serverStreaming && !method.clientStreaming) {
+        type = 'serverStream';
+      } if (!method.serverStreaming && method.clientStreaming) {
+        type = 'clientStream';
+      } if (method.serverStreaming && method.clientStreaming) {
+        type = 'bidiStream';
+      }
+
+      return `'/${serviceName}/${method.name}': { type: GrpcCallType.${type}, reqclss: ${inputType}, resclss: ${outputType} }`;
     });
 
     printer.add(`

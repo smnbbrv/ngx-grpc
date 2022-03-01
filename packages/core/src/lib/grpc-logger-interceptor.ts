@@ -1,7 +1,7 @@
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { GrpcDataEvent, GrpcEvent, GrpcMessage, GrpcRequest } from '@ngx-grpc/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { isObservable, Observable, of } from 'rxjs';
+import { share, tap } from 'rxjs/operators';
 import { GrpcHandler } from './grpc-handler';
 import { GrpcInterceptor } from './grpc-interceptor';
 
@@ -69,8 +69,11 @@ export interface GrpcLoggerSettings {
 @Injectable()
 export class GrpcLoggerInterceptor implements GrpcInterceptor {
 
+  private static requestId = 0;
+
+  private clientDataStyle = 'color: #eb0edc;';
   private dataStyle = 'color: #5c7ced;';
-  private errorStyle = 'color: red;';
+  private errorStyle = 'color: #f00505;';
   private statusOkStyle = 'color: #0ffcf5;';
 
   private settings: GrpcLoggerSettings;
@@ -88,23 +91,41 @@ export class GrpcLoggerInterceptor implements GrpcInterceptor {
 
   intercept<Q extends GrpcMessage, S extends GrpcMessage>(request: GrpcRequest<Q, S>, next: GrpcHandler): Observable<GrpcEvent<S>> {
     if (this.settings.enabled) {
+      const id = ++GrpcLoggerInterceptor.requestId;
       const start = Date.now();
 
+      // check if client streaming, then push each value separately
+      if (isObservable(request.requestData)) {
+        request.requestData = request.requestData.pipe(
+          tap(msg => {
+            console.groupCollapsed(`%c#${id}: ${Date.now() - start}ms -> ${request.path}`, this.clientDataStyle);
+            console.log('%c>>', this.clientDataStyle, this.settings.requestMapper(msg));
+            console.groupEnd();
+          }),
+        );
+      }
+
+      // handle unary calls and server streaming in the same manner
       return next.handle(request).pipe(
         tap(event => {
           const style = event instanceof GrpcDataEvent ? this.dataStyle : event.statusCode !== 0 ? this.errorStyle : this.statusOkStyle;
-          const openGroup = () => console.groupCollapsed(`%c${Date.now() - start}ms -> ${request.path}`, style);
+
+          const openGroup = () => console.groupCollapsed(`%c#${id}: ${Date.now() - start}ms -> ${request.path}`, style);
+
           const printSettings = () => {
             if (this.settings.logClientSettings) {
               console.log('%csc', style, request.client.getSettings());
             }
           };
+
           const printMetadata = () => {
             if (this.settings.logMetadata) {
               console.log('%c**', style, request.requestMetadata.toObject());
             }
           };
-          const printRequest = () => console.log('%c>>', style, this.settings.requestMapper(request.requestData));
+
+          const printRequest = () => console.log('%c>>', style, isObservable(request.requestData) ? '<see above>' : this.settings.requestMapper(request.requestData));
+
           const closeGroup = () => console.groupEnd();
 
           if (event instanceof GrpcDataEvent) {

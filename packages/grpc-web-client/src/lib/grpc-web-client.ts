@@ -129,4 +129,12 @@ export class GrpcWebClient implements GrpcClient<GrpcWebClientSettings> {
     });
   }
 
+  clientStream = () => {
+    throw new Error('Client streaming not supported');
+  };
+
+  bidiStream = () => {
+    throw new Error('Bidirectional streaming not supported');
+  };
+
 }

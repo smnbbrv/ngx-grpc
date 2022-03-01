@@ -7,6 +7,9 @@ import { ExamplePageModule } from '../example-page/example-page.module';
 import { ExamplePageComponent } from '../example-page/example-page/example-page.component';
 import { ImprobableEngGrpcWebClientExampleComponent } from './improbable-eng-grpc-web-client-example.component';
 
+const xhr = grpc.CrossBrowserHttpTransport({});
+const ws = grpc.WebsocketTransport();
+
 @NgModule({
   declarations: [ImprobableEngGrpcWebClientExampleComponent],
   imports: [
@@ -16,7 +19,12 @@ import { ImprobableEngGrpcWebClientExampleComponent } from './improbable-eng-grp
     ImprobableEngGrpcWebClientModule.forChild({
       settings: {
         host: 'http://localhost:8080',
-        transport: grpc.CrossBrowserHttpTransport({}),
+        transport: {
+          unary: xhr,
+          serverStream: xhr,
+          clientStream: ws,
+          bidiStream: ws,
+        },
       },
     }),
   ],

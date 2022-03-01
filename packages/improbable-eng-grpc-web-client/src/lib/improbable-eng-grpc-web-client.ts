@@ -11,8 +11,18 @@ import { IMPROBABLE_ENG_GRPC_WEB_CLIENT_DEFAULT_SETTINGS } from './tokens';
  */
 export interface ImprobableEngGrpcWebClientSettings {
   host: string;
-  transport: TransportFactory;
+  transport: TransportFactory | ImprobableEngGrpcWebClientTransports;
   debug?: boolean;
+}
+
+/**
+ * Settings for the transport implementation for each request
+ */
+export interface ImprobableEngGrpcWebClientTransports {
+  unary: TransportFactory;
+  serverStream: TransportFactory;
+  clientStream: TransportFactory;
+  bidiStream: TransportFactory;
 }
 
 /**
@@ -83,7 +93,7 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
         request,
         host: this.settings.host,
         metadata: new grpc.Metadata(metadata?.toObject() ?? {}),
-        transport: this.settings.transport,
+        transport: this.getTransport('unary'),
         debug: this.settings.debug,
         onEnd: (response) => {
           obs.next(new GrpcStatusEvent(response.status, response.statusMessage, this.castResponseMetadata(response.trailers)));
@@ -104,7 +114,7 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
 
   serverStream<Q extends GrpcMessage, S extends GrpcMessage>(
     path: string,
-    req: Q,
+    request: Q,
     metadata: GrpcMetadata,
     reqclss: GrpcMessageClass<Q>,
     resclss: GrpcMessageClass<S>,
@@ -122,10 +132,10 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
 
     return new Observable(obs => {
       const client = grpc.invoke(methodDescriptor, {
-        request: req,
+        request,
         host: this.settings.host,
         metadata: new grpc.Metadata(metadata?.toObject() ?? {}),
-        transport: this.settings.transport,
+        transport: this.getTransport('serverStream'),
         debug: this.settings.debug,
         onMessage: (data) => {
           obs.next(new GrpcDataEvent(data as any));
@@ -140,8 +150,120 @@ export class ImprobableEngGrpcWebClient implements GrpcClient<ImprobableEngGrpcW
     });
   }
 
+  clientStream<Q extends GrpcMessage, S extends GrpcMessage>(
+    path: string,
+    inputStream: Observable<Q>,
+    metadata: GrpcMetadata,
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>,
+  ): Observable<GrpcEvent<S>> {
+    const methodName = path.split('/')[2];
+
+    const methodDescriptor = {
+      methodName,
+      service: this.client,
+      requestStream: true,
+      responseStream: false,
+      requestType: reqclss,
+      responseType: resclss,
+    };
+
+    return new Observable(obs => {
+      const client = grpc.client(methodDescriptor, {
+        host: this.settings.host,
+        transport: this.getTransport('clientStream'),
+        debug: this.settings.debug,
+      });
+
+      client.start(new grpc.Metadata(metadata?.toObject() ?? {}));
+
+      const inputStreamSub = inputStream.subscribe(
+        message => {
+          client.send(message);
+        },
+        () => {
+          client.close();
+        },
+        () => {
+          client.finishSend();
+        },
+      );
+
+      client.onMessage(data => obs.next(new GrpcDataEvent(data as any)));
+
+      client.onEnd((status, statusMessage, trailers) => {
+        obs.next(new GrpcStatusEvent(status, statusMessage, this.castResponseMetadata(trailers)));
+        obs.complete();
+      });
+
+      return () => {
+        inputStreamSub.unsubscribe();
+        client.close();
+      };
+    });
+  }
+
+  bidiStream<Q extends GrpcMessage, S extends GrpcMessage>(
+    path: string,
+    inputStream: Observable<Q>,
+    metadata: GrpcMetadata,
+    reqclss: GrpcMessageClass<Q>,
+    resclss: GrpcMessageClass<S>,
+  ): Observable<GrpcEvent<S>> {
+    const methodName = path.split('/')[2];
+
+    const methodDescriptor = {
+      methodName,
+      service: this.client,
+      requestStream: true,
+      responseStream: false,
+      requestType: reqclss,
+      responseType: resclss,
+    };
+
+    return new Observable(obs => {
+      const client = grpc.client(methodDescriptor, {
+        host: this.settings.host,
+        transport: this.getTransport('bidiStream'),
+        debug: this.settings.debug,
+      });
+
+      client.start(new grpc.Metadata(metadata?.toObject() ?? {}));
+
+      const inputStreamSub = inputStream.subscribe(
+        message => {
+          client.send(message);
+        },
+        () => {
+          client.close();
+        },
+        () => {
+          client.finishSend();
+        },
+      );
+
+      client.onMessage(data => obs.next(new GrpcDataEvent(data as any)));
+
+      client.onEnd((status, statusMessage, trailers) => {
+        obs.next(new GrpcStatusEvent(status, statusMessage, this.castResponseMetadata(trailers)));
+        obs.complete();
+      });
+
+      return () => {
+        inputStreamSub.unsubscribe();
+        client.close();
+      };
+    });
+  }
+
   private castResponseMetadata({ headersMap }: Metadata) {
     return new GrpcMetadata(Object.keys(headersMap).reduce((r, k) => ({ ...r, [k]: headersMap[k][0] }), {}));
+  }
+
+  private getTransport(key: keyof ImprobableEngGrpcWebClientTransports) {
+    const { transport } = this.settings;
+
+    return typeof transport === 'function' ? transport : transport[key];
   }
 
 }

@@ -121,7 +121,7 @@ export class GrpcWorker {
       });
 
       this.requestCancelHandlers.set(message.id, () => stream.cancel());
-    } else {
+    } else if (type === GrpcCallType.serverStream) {
       const stream = service.client.serverStreaming(url, request, metadata, descriptor);
 
       stream.on('error', (error: Error) => {
@@ -139,6 +139,8 @@ export class GrpcWorker {
       });
 
       this.requestCancelHandlers.set(message.id, () => stream.cancel());
+    } else {
+      throw new Error('Client / Bidi stream is not supported');
     }
   }
 
