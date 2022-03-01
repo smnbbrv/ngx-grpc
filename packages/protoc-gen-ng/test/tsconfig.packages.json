@@ -12,14 +12,14 @@
     "skipLibCheck": true,
     "strict": false,
     "experimentalDecorators": true,
-    // "paths": {
-    //   "@ngx-grpc/common": [
-    //     "../../../dist/common"
-    //   ],
-    // }
+    "paths": {
+      "@ngx-grpc/common": [
+        "../../../dist/common"
+      ],
+    }
   },
   "include": [
     "../../common/src/public-api.ts",
-    // "../../core/src/public-api.ts",
+    "../../core/src/public-api.ts",
   ],
 }
