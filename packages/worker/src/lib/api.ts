@@ -1,4 +1,4 @@
-import { Error, Metadata, Status } from 'grpc-web';
+import { RpcError, Metadata, Status } from 'grpc-web';
 import { GrpcWorkerClientSettings } from './client-settings';
 
 /* eslint-disable  @typescript-eslint/no-namespace */
@@ -45,7 +45,7 @@ export namespace GrpcWorkerApi {
     type: GrpcWorkerMessageType.rpcResponse;
     responseType: GrpcWorkerMessageRPCResponseType;
     id: number;
-    error?: Error;
+    error?: RpcError;
     status?: Status;
     response?: S;
   }

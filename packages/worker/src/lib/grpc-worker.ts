@@ -1,5 +1,5 @@
 import { GrpcCallType, GrpcMessage } from '@ngx-grpc/common';
-import { Error, GrpcWebClientBase, MethodDescriptor, Status } from 'grpc-web';
+import { RpcError, GrpcWebClientBase, MethodDescriptor, Status } from 'grpc-web';
 import { GrpcWorkerApi } from './api';
 import { GrpcWorkerClientSettings } from './client-settings';
 import { GrpcWorkerServiceClientDef } from './service-client-def';
@@ -124,7 +124,7 @@ export class GrpcWorker {
     } else if (type === GrpcCallType.serverStream) {
       const stream = service.client.serverStreaming(url, request, metadata, descriptor);
 
-      stream.on('error', (error: Error) => {
+      stream.on('error', (error: RpcError) => {
         this.requestCancelHandlers.delete(message.id);
         respond({ responseType: GrpcWorkerApi.GrpcWorkerMessageRPCResponseType.error, error });
       });
