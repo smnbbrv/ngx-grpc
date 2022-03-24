@@ -64,9 +64,9 @@ Where:
 
 Also you can choose between alternative client implementations:
 
-- @ngx-grpc/grpc-web-client - based on [grpc-web](https://github.com/grpc/grpc-web)
-- @ngx-grpc/improbable-eng-grpc-web-client - alternative client implementation based on [@improbable-eng/grpc-web](https://github.com/improbable-eng/grpc-web)
-- @ngx-grpc/worker-client - similar to @ngx-grpc/grpc-web-client but running in worker
+- [@ngx-grpc/grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/grpc-web-client) - based on [grpc-web](https://github.com/grpc/grpc-web)
+- [@ngx-grpc/improbable-eng-grpc-web-client](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/improbable-eng-grpc-web-client) - alternative client implementation based on [@improbable-eng/grpc-web](https://github.com/improbable-eng/grpc-web)
+- [@ngx-grpc/worker-client](https://github.com/ngx-grpc/ngx-grpc/tree/master/packages/worker-client) - similar to @ngx-grpc/grpc-web-client but running in worker
 
 ## Generate the code
 
@@ -209,9 +209,9 @@ class MyService {
 
 The behaviour above is possible due to the `Observable`'s natural laziness and ability to be terminated.
 
-**The server streaming** so it has the same signature as **the unary requests**, just the returned `Observable` can emit more than one message and the connection is potentially infinite.
+**The server streaming** has the same signature as **the unary requests**, but the returned `Observable` can emit more than one message and the connection is kept open.
 
-**The client streaming** is differrent, because it accepts an `Observable` (and its derivatives, such as `Subject`, `BehaviourSubject`, etc.) of messages 
+**The client streaming** is differrent, because it accepts an `Observable` (and any of its derivatives, such as `Subject`, `BehaviourSubject`, etc.) of messages 
 
 
 ```ts
@@ -376,6 +376,8 @@ const ws = grpc.WebsocketTransport();
     ImprobableEngGrpcWebClientModule.forChild({
       settings: {
         host: 'http://localhost:8080',
+        // we might want to use different transports as recommended by improbable-eng team
+        // because websocket transport acts a bit differently and is intended for client streaming only
         transport: {
           unary: xhr,
           serverStream: xhr,
