@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.0...v3.0.1) (2022-03-24)
+
+
+### Bug Fixes
+
+* **grpc-handler:** typo in switch-case for `clientStream` ([7c0cd96](https://github.com/ngx-grpc/ngx-grpc/commit/7c0cd960f42bf7df629f1de30bc7f945fe52d753))
+
 # [3.0.0](https://github.com/ngx-grpc/ngx-grpc/compare/v2.4.1...v3.0.0) (2022-03-01)
 
 
