@@ -57,7 +57,7 @@ export class GrpcHandler {
         request.requestClass,
         request.responseClass,
       );
-      case GrpcCallType.clientStream: return request.client.bidiStream(
+      case GrpcCallType.bidiStream: return request.client.bidiStream(
         request.path,
         this.stream(request.requestData),
         request.requestMetadata,
