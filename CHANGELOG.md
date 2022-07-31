@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.1...v3.0.2) (2022-07-31)
+
+
+### Bug Fixes
+
+* **improbable-eng-grpc-web-client:** allow @improbable-eng/grpc-web versions greater than 0.13.0 ([26acec6](https://github.com/ngx-grpc/ngx-grpc/commit/26acec695a720f0886115c520a4678d7f824f703))
+
 ## [3.0.1](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.0...v3.0.1) (2022-03-24)
 
 
