@@ -57,6 +57,7 @@ export class Proto {
     const indexMessages = (path: string, submessages: ProtoMessage[]) => {
       submessages.forEach(message => {
         const fullname = path + '.' + message.name;
+        message.id = fullname.substring(1);
 
         this.messageIndex.set(fullname, {
           proto: this,
