@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.2...v3.0.3) (2022-09-02)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properly generate ID of nested messages ([d6ee435](https://github.com/ngx-grpc/ngx-grpc/commit/d6ee4358c47a50ca474d8b7e0539024dfa9ec656))
+
 ## [3.0.2](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.1...v3.0.2) (2022-07-31)
 
 
