@@ -13,6 +13,7 @@ export class ProtoMessage {
   oneofDeclList: ProtoOneof[];
   reservedRangeList: [];
   reservedNameList: [];
+  id: string;
   options: {
     messageSetWireFormat: boolean;
     noStandardDescriptorAccessor: boolean;
@@ -31,6 +32,7 @@ export class ProtoMessage {
     this.oneofDeclList = (value.oneofDeclList || []).map(d => new ProtoOneof(d));
     this.reservedRangeList = value.reservedRangeList;
     this.reservedNameList = value.reservedNameList;
+    this.id = value.id;
     this.options = value.options || {};
   }
 

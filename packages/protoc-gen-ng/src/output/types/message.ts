@@ -123,8 +123,7 @@ export class Message {
       ExternalDependencies.RecursivePartial,
     );
 
-    const messageId = (this.proto.pb_package ? this.proto.pb_package + '.' : '') + this.message.name;
-    let constructorComment = `Message implementation for ${messageId}`;
+    let constructorComment = `Message implementation for ${this.message.id}`;
     if (this.isWkt) {
       if (this.proto.pb_package === 'google.protobuf') {
         constructorComment = 'Well known type, more at https://developers.google.com/protocol-buffers/docs/reference/google.protobuf';
@@ -141,7 +140,7 @@ export class Message {
      */
     export class ${this.message.name} implements GrpcMessage {
 
-      static id = '${messageId}';
+      static id = '${this.message.id}';
 
       /**
        * Deserialize binary data to message
