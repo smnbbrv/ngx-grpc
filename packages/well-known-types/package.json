@@ -1,5 +1,7 @@
 {
   "name": "@ngx-grpc/well-known-types",
+  "author": "smnbbrv",
+  "license": "MIT",
   "peerDependencies": {
     "google-protobuf": "^3.10.0",
     "@ngx-grpc/common": ">=2.0.0"

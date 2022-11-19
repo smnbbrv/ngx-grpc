@@ -1,6 +1,8 @@
 {
   "name": "@ngx-grpc/improbable-eng-grpc-web-client",
   "version": "0.0.1",
+  "author": "smnbbrv",
+  "license": "MIT",
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",
     "@ngx-grpc/core": ">=0.2.0",

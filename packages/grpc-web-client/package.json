@@ -1,5 +1,7 @@
 {
   "name": "@ngx-grpc/grpc-web-client",
+  "author": "smnbbrv",
+  "license": "MIT",
   "peerDependencies": {
     "@ngx-grpc/common": ">=0.2.0",
     "@ngx-grpc/core": ">=0.2.0",
