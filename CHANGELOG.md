@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.3...v3.0.4) (2022-11-19)
+
+
+### Bug Fixes
+
+* add missing license information in package.json files ([53c5e5c](https://github.com/ngx-grpc/ngx-grpc/commit/53c5e5cbb489d869b621ff6abb22628063d580cc))
+
 ## [3.0.3](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.2...v3.0.3) (2022-09-02)
 
 
