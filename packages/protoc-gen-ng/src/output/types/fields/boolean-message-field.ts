@@ -2,29 +2,26 @@ import { Proto } from '../../../input/proto';
 import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality } from '../../../input/types';
-import { camelizeSafe } from '../../../utils';
-import { getDataType, isPacked } from '../../misc/helpers';
+import { isPacked } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
-import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
+import { AbstractMessageField } from './abstract-message-field';
 
-export class BooleanMessageField implements MessageField {
+export class BooleanMessageField extends AbstractMessageField {
 
-  private attributeName: string;
-  private dataType: string;
   private isArray: boolean;
   private isPacked: boolean;
 
   constructor(
-    private proto: Proto,
-    private message: ProtoMessage,
-    private messageField: ProtoMessageField,
-    private oneOf?: OneOf,
+    override proto: Proto,
+    override message: ProtoMessage,
+    override messageField: ProtoMessageField,
+    override oneOf?: OneOf,
   ) {
-    this.attributeName = camelizeSafe(this.messageField.name);
+    super(proto, message, messageField, oneOf);
+
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.isPacked = isPacked(this.proto, this.messageField);
-    this.dataType = getDataType(this.proto, this.messageField);
   }
 
   printDeserializeBinaryFromReader(printer: Printer) {
@@ -63,10 +60,6 @@ export class BooleanMessageField implements MessageField {
     }
   }
 
-  printPrivateAttribute(printer: Printer) {
-    printer.add(`private _${this.attributeName}?: ${this.dataType};`);
-  }
-
   printInitializer(printer: Printer) {
     if (this.isArray) {
       printer.add(`this.${this.attributeName} = (_value.${this.attributeName} || []).slice();`);
@@ -85,27 +78,12 @@ export class BooleanMessageField implements MessageField {
     }
   }
 
-  printGetter(printer: Printer) {
-    printer.add(`get ${this.attributeName}(): ${this.dataType} | undefined { return this._${this.attributeName} }`);
-  }
-
-  printSetter(printer: Printer) {
-    printer.add(`set ${this.attributeName}(value: ${this.dataType} | undefined) {
-      ${this.oneOf ? this.oneOf.createFieldSetterAddon(this.messageField) : ''}
-      this._${this.attributeName} = value;
-    }`);
-  }
-
   printToObjectMapping(printer: Printer) {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
     } else {
       printer.add(`${this.attributeName}: this.${this.attributeName},`);
     }
-  }
-
-  printAsObjectMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.dataType};`);
   }
 
   printToProtobufJSONMapping(printer: Printer) {
@@ -119,7 +97,7 @@ export class BooleanMessageField implements MessageField {
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.dataType}${this.messageField.proto3Optional ? ' | null' : ''};`);
+    printer.add(`${this.attributeName}: ${this.dataType}${this.messageField.proto3Optional ? ' | null' : ''};`);
   }
 
 }

@@ -2,31 +2,28 @@ import { Proto } from '../../../input/proto';
 import { ProtoMessage } from '../../../input/proto-message';
 import { ProtoMessageField } from '../../../input/proto-message-field';
 import { ProtoMessageFieldCardinality } from '../../../input/types';
-import { camelizeSafe } from '../../../utils';
 import { getDataType } from '../../misc/helpers';
 import { Printer } from '../../misc/printer';
-import { MessageField } from '../message-field';
 import { OneOf } from '../oneof';
+import { AbstractMessageField } from './abstract-message-field';
 
-export class MessageMessageField implements MessageField {
+export class MessageMessageField extends AbstractMessageField {
 
-  private attributeName: string;
-  private dataType: string;
   private asObjectDataType: string;
   private asJSONDataType: string;
   private messageClassName: string;
   private isArray: boolean;
 
   constructor(
-    private proto: Proto,
-    private message: ProtoMessage,
-    private messageField: ProtoMessageField,
-    private oneOf?: OneOf,
+    override proto: Proto,
+    override message: ProtoMessage,
+    override messageField: ProtoMessageField,
+    override oneOf?: OneOf,
   ) {
-    this.attributeName = camelizeSafe(this.messageField.name);
+    super(proto, message, messageField, oneOf);
+
     this.isArray = this.messageField.label === ProtoMessageFieldCardinality.repeated;
     this.messageClassName = this.proto.getRelativeTypeName(this.messageField.typeName);
-    this.dataType = getDataType(this.proto, this.messageField);
     this.asObjectDataType = getDataType(this.proto, this.messageField, { asObjectDataType: true });
     this.asJSONDataType = getDataType(this.proto, this.messageField, { asProtobufJSONDataType: true });
   }
@@ -60,10 +57,6 @@ export class MessageMessageField implements MessageField {
     }
   }
 
-  printPrivateAttribute(printer: Printer) {
-    printer.add(`private _${this.attributeName}?: ${this.dataType};`);
-  }
-
   printInitializer(printer: Printer) {
     if (this.isArray) {
       printer.add(`this.${this.attributeName} = (_value.${this.attributeName} || []).map(m => new ${this.messageClassName}(m));`);
@@ -82,17 +75,6 @@ export class MessageMessageField implements MessageField {
     }
   }
 
-  printGetter(printer: Printer) {
-    printer.add(`get ${this.attributeName}(): ${this.dataType} | undefined { return this._${this.attributeName} }`);
-  }
-
-  printSetter(printer: Printer) {
-    printer.add(`set ${this.attributeName}(value: ${this.dataType} | undefined) {
-      ${this.oneOf ? this.oneOf.createFieldSetterAddon(this.messageField) : ''}
-      this._${this.attributeName} = value;
-    }`);
-  }
-
   printToObjectMapping(printer: Printer) {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(m => m.toObject()),`);
@@ -102,7 +84,7 @@ export class MessageMessageField implements MessageField {
   }
 
   printAsObjectMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.asObjectDataType};`);
+    printer.add(`${this.attributeName}${this.postfixProp}: ${this.asObjectDataType};`);
   }
 
   printToProtobufJSONMapping(printer: Printer) {
@@ -114,7 +96,7 @@ export class MessageMessageField implements MessageField {
   }
 
   printAsJSONMapping(printer: Printer) {
-    printer.add(`${this.attributeName}?: ${this.asJSONDataType} | null;`);
+    printer.add(`${this.attributeName}: ${this.asJSONDataType} | null;`);
   }
 
 }
