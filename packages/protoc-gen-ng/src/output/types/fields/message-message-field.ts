@@ -57,6 +57,10 @@ export class MessageMessageField extends AbstractMessageField {
     }
   }
 
+  printPrivateAttribute(printer: Printer) {
+    printer.add(`private _${this.attributeName}?: ${this.dataType};`);
+  }
+
   printInitializer(printer: Printer) {
     if (this.isArray) {
       printer.add(`this.${this.attributeName} = (_value.${this.attributeName} || []).map(m => new ${this.messageClassName}(m));`);
@@ -75,6 +79,17 @@ export class MessageMessageField extends AbstractMessageField {
     }
   }
 
+  printGetter(printer: Printer) {
+    printer.add(`get ${this.attributeName}(): ${this.dataType} | undefined { return this._${this.attributeName} }`);
+  }
+
+  printSetter(printer: Printer) {
+    printer.add(`set ${this.attributeName}(value: ${this.dataType} | undefined) {
+      ${this.oneOf ? this.oneOf.createFieldSetterAddon(this.messageField) : ''}
+      this._${this.attributeName} = value;
+    }`);
+  }
+
   printToObjectMapping(printer: Printer) {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).map(m => m.toObject()),`);
@@ -84,7 +99,7 @@ export class MessageMessageField extends AbstractMessageField {
   }
 
   printAsObjectMapping(printer: Printer) {
-    printer.add(`${this.attributeName}${this.postfixProp}: ${this.asObjectDataType};`);
+    printer.add(`${this.attributeName}?: ${this.asObjectDataType};`);
   }
 
   printToProtobufJSONMapping(printer: Printer) {
