@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/ngx-grpc/ngx-grpc/compare/v3.1.0...v3.1.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* **well-known-types:** create non-optional versions of wkt ([154190e](https://github.com/ngx-grpc/ngx-grpc/commit/154190e09f1b1b2b0f23d8ba0f09a2fa6d8b6898))
+
 # [3.1.0](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.4...v3.1.0) (2022-11-28)
 
 
