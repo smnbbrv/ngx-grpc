@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -69,7 +70,7 @@ export class FieldMask implements GrpcMessage {
     }
   }
 
-  private _paths?: string[];
+  private _paths: string[];
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -80,10 +81,10 @@ export class FieldMask implements GrpcMessage {
     this.paths = (_value.paths || []).slice();
     FieldMask.refineValues(this);
   }
-  get paths(): string[] | undefined {
+  get paths(): string[] {
     return this._paths;
   }
-  set paths(value: string[] | undefined) {
+  set paths(value: string[]) {
     this._paths = value;
   }
 
@@ -130,7 +131,7 @@ export module FieldMask {
    * Standard JavaScript object representation for FieldMask
    */
   export interface AsObject {
-    paths?: string[];
+    paths: string[];
   }
 
   /**

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -75,7 +76,7 @@ export class SourceContext implements GrpcMessage {
     }
   }
 
-  private _fileName?: string;
+  private _fileName: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -86,10 +87,10 @@ export class SourceContext implements GrpcMessage {
     this.fileName = _value.fileName;
     SourceContext.refineValues(this);
   }
-  get fileName(): string | undefined {
+  get fileName(): string {
     return this._fileName;
   }
-  set fileName(value: string | undefined) {
+  set fileName(value: string) {
     this._fileName = value;
   }
 
@@ -138,13 +139,13 @@ export module SourceContext {
    * Standard JavaScript object representation for SourceContext
    */
   export interface AsObject {
-    fileName?: string;
+    fileName: string;
   }
 
   /**
    * Protobuf JSON representation for SourceContext
    */
   export interface AsProtobufJSON {
-    fileName?: string;
+    fileName: string;
   }
 }

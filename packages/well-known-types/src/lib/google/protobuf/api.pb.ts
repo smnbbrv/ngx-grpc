@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -149,13 +150,13 @@ export class Api implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
   private _methods?: Method[];
   private _options?: googleProtobuf002.Option[];
-  private _version?: string;
+  private _version: string;
   private _sourceContext?: googleProtobuf001.SourceContext;
   private _mixins?: Mixin[];
-  private _syntax?: googleProtobuf002.Syntax;
+  private _syntax: googleProtobuf002.Syntax;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -176,10 +177,10 @@ export class Api implements GrpcMessage {
     this.syntax = _value.syntax;
     Api.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
   get methods(): Method[] | undefined {
@@ -194,10 +195,10 @@ export class Api implements GrpcMessage {
   set options(value: googleProtobuf002.Option[] | undefined) {
     this._options = value;
   }
-  get version(): string | undefined {
+  get version(): string {
     return this._version;
   }
-  set version(value: string | undefined) {
+  set version(value: string) {
     this._version = value;
   }
   get sourceContext(): googleProtobuf001.SourceContext | undefined {
@@ -212,10 +213,10 @@ export class Api implements GrpcMessage {
   set mixins(value: Mixin[] | undefined) {
     this._mixins = value;
   }
-  get syntax(): googleProtobuf002.Syntax | undefined {
+  get syntax(): googleProtobuf002.Syntax {
     return this._syntax;
   }
-  set syntax(value: googleProtobuf002.Syntax | undefined) {
+  set syntax(value: googleProtobuf002.Syntax) {
     this._syntax = value;
   }
 
@@ -283,26 +284,26 @@ export module Api {
    * Standard JavaScript object representation for Api
    */
   export interface AsObject {
-    name?: string;
+    name: string;
     methods?: Method.AsObject[];
     options?: googleProtobuf002.Option.AsObject[];
-    version?: string;
+    version: string;
     sourceContext?: googleProtobuf001.SourceContext.AsObject;
     mixins?: Mixin.AsObject[];
-    syntax?: googleProtobuf002.Syntax;
+    syntax: googleProtobuf002.Syntax;
   }
 
   /**
    * Protobuf JSON representation for Api
    */
   export interface AsProtobufJSON {
-    name?: string;
-    methods?: Method.AsProtobufJSON[] | null;
-    options?: googleProtobuf002.Option.AsProtobufJSON[] | null;
-    version?: string;
-    sourceContext?: googleProtobuf001.SourceContext.AsProtobufJSON | null;
-    mixins?: Mixin.AsProtobufJSON[] | null;
-    syntax?: string;
+    name: string;
+    methods: Method.AsProtobufJSON[] | null;
+    options: googleProtobuf002.Option.AsProtobufJSON[] | null;
+    version: string;
+    sourceContext: googleProtobuf001.SourceContext.AsProtobufJSON | null;
+    mixins: Mixin.AsProtobufJSON[] | null;
+    syntax: string;
   }
 }
 
@@ -415,13 +416,13 @@ export class Method implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _requestTypeUrl?: string;
-  private _requestStreaming?: boolean;
-  private _responseTypeUrl?: string;
-  private _responseStreaming?: boolean;
+  private _name: string;
+  private _requestTypeUrl: string;
+  private _requestStreaming: boolean;
+  private _responseTypeUrl: string;
+  private _responseStreaming: boolean;
   private _options?: googleProtobuf002.Option[];
-  private _syntax?: googleProtobuf002.Syntax;
+  private _syntax: googleProtobuf002.Syntax;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -440,34 +441,34 @@ export class Method implements GrpcMessage {
     this.syntax = _value.syntax;
     Method.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get requestTypeUrl(): string | undefined {
+  get requestTypeUrl(): string {
     return this._requestTypeUrl;
   }
-  set requestTypeUrl(value: string | undefined) {
+  set requestTypeUrl(value: string) {
     this._requestTypeUrl = value;
   }
-  get requestStreaming(): boolean | undefined {
+  get requestStreaming(): boolean {
     return this._requestStreaming;
   }
-  set requestStreaming(value: boolean | undefined) {
+  set requestStreaming(value: boolean) {
     this._requestStreaming = value;
   }
-  get responseTypeUrl(): string | undefined {
+  get responseTypeUrl(): string {
     return this._responseTypeUrl;
   }
-  set responseTypeUrl(value: string | undefined) {
+  set responseTypeUrl(value: string) {
     this._responseTypeUrl = value;
   }
-  get responseStreaming(): boolean | undefined {
+  get responseStreaming(): boolean {
     return this._responseStreaming;
   }
-  set responseStreaming(value: boolean | undefined) {
+  set responseStreaming(value: boolean) {
     this._responseStreaming = value;
   }
   get options(): googleProtobuf002.Option[] | undefined {
@@ -476,10 +477,10 @@ export class Method implements GrpcMessage {
   set options(value: googleProtobuf002.Option[] | undefined) {
     this._options = value;
   }
-  get syntax(): googleProtobuf002.Syntax | undefined {
+  get syntax(): googleProtobuf002.Syntax {
     return this._syntax;
   }
-  set syntax(value: googleProtobuf002.Syntax | undefined) {
+  set syntax(value: googleProtobuf002.Syntax) {
     this._syntax = value;
   }
 
@@ -543,26 +544,26 @@ export module Method {
    * Standard JavaScript object representation for Method
    */
   export interface AsObject {
-    name?: string;
-    requestTypeUrl?: string;
-    requestStreaming?: boolean;
-    responseTypeUrl?: string;
-    responseStreaming?: boolean;
+    name: string;
+    requestTypeUrl: string;
+    requestStreaming: boolean;
+    responseTypeUrl: string;
+    responseStreaming: boolean;
     options?: googleProtobuf002.Option.AsObject[];
-    syntax?: googleProtobuf002.Syntax;
+    syntax: googleProtobuf002.Syntax;
   }
 
   /**
    * Protobuf JSON representation for Method
    */
   export interface AsProtobufJSON {
-    name?: string;
-    requestTypeUrl?: string;
-    requestStreaming?: boolean;
-    responseTypeUrl?: string;
-    responseStreaming?: boolean;
-    options?: googleProtobuf002.Option.AsProtobufJSON[] | null;
-    syntax?: string;
+    name: string;
+    requestTypeUrl: string;
+    requestStreaming: boolean;
+    responseTypeUrl: string;
+    responseStreaming: boolean;
+    options: googleProtobuf002.Option.AsProtobufJSON[] | null;
+    syntax: string;
   }
 }
 
@@ -629,8 +630,8 @@ export class Mixin implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _root?: string;
+  private _name: string;
+  private _root: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -642,16 +643,16 @@ export class Mixin implements GrpcMessage {
     this.root = _value.root;
     Mixin.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get root(): string | undefined {
+  get root(): string {
     return this._root;
   }
-  set root(value: string | undefined) {
+  set root(value: string) {
     this._root = value;
   }
 
@@ -702,15 +703,15 @@ export module Mixin {
    * Standard JavaScript object representation for Mixin
    */
   export interface AsObject {
-    name?: string;
-    root?: string;
+    name: string;
+    root: string;
   }
 
   /**
    * Protobuf JSON representation for Mixin
    */
   export interface AsProtobufJSON {
-    name?: string;
-    root?: string;
+    name: string;
+    root: string;
   }
 }

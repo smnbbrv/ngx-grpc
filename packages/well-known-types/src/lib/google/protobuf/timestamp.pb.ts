@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -92,8 +93,8 @@ export class Timestamp implements GrpcMessage {
     }
   }
 
-  private _seconds?: string;
-  private _nanos?: number;
+  private _seconds: string;
+  private _nanos: number;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -105,16 +106,16 @@ export class Timestamp implements GrpcMessage {
     this.nanos = _value.nanos;
     Timestamp.refineValues(this);
   }
-  get seconds(): string | undefined {
+  get seconds(): string {
     return this._seconds;
   }
-  set seconds(value: string | undefined) {
+  set seconds(value: string) {
     this._seconds = value;
   }
-  get nanos(): number | undefined {
+  get nanos(): number {
     return this._nanos;
   }
-  set nanos(value: number | undefined) {
+  set nanos(value: number) {
     this._nanos = value;
   }
 
@@ -181,8 +182,8 @@ export module Timestamp {
    * Standard JavaScript object representation for Timestamp
    */
   export interface AsObject {
-    seconds?: string;
-    nanos?: number;
+    seconds: string;
+    nanos: number;
   }
 
   /**

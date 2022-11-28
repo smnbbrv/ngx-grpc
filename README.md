@@ -258,6 +258,20 @@ To create a new message just pass its initial values to the constructor: `new Me
 - `toJSON()` - convenience method to be able to pass message to `JSON.stringify(msg)`
 - `toProtobufJSON()` - constructs a [protobuf-defined JSON](https://developers.google.com/protocol-buffers/docs/proto3#json). Accepts an optional `GrpcMessagePool` (see `google.protobuf.Any` section) which is required only if the message or some of its descendants embeds `google.protobuf.Any`
 
+#### Int64
+
+JavaScript does not support `int64`, out of the box, that's why all of its kinds are generated as string by default.
+
+You can however override this behavior by passing `JS_NUMBER` or `JS_STRING` option to the appropriate field. Example:
+
+```protobuf
+message Message { 
+  int64 bigInt = 1; [jstype = JS_NUMBER] 
+  uint64 bigUint = 2; [jstype = JS_NUMBER] 
+}
+```
+
+
 ### Well-known types
 
 The well-known types are served as a separate package. You can also configure generation of the well-known types together with your proto definitions (like older versions did).
@@ -459,7 +473,7 @@ That's it. All your requests are served by worker.
 
 ## Contributing
 
-- to run tests on Apple m1 chips use `npm ci --target_arch=x64 --no-optional` and `brew install protoc-gen-grpc-web`
+- to run tests on Apple m1 chips use `npm ci --no-optional` and `brew install protoc-gen-grpc-web`
 
 ## License
 

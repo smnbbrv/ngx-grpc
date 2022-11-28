@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -73,7 +74,7 @@ export class DoubleValue implements GrpcMessage {
     }
   }
 
-  private _value?: number;
+  private _value: number;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -84,10 +85,10 @@ export class DoubleValue implements GrpcMessage {
     this.value = _value.value;
     DoubleValue.refineValues(this);
   }
-  get value(): number | undefined {
+  get value(): number {
     return this._value;
   }
-  set value(value: number | undefined) {
+  set value(value: number) {
     this._value = value;
   }
 
@@ -134,7 +135,7 @@ export module DoubleValue {
    * Standard JavaScript object representation for DoubleValue
    */
   export interface AsObject {
-    value?: number;
+    value: number;
   }
 
   /**
@@ -202,7 +203,7 @@ export class FloatValue implements GrpcMessage {
     }
   }
 
-  private _value?: number;
+  private _value: number;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -213,10 +214,10 @@ export class FloatValue implements GrpcMessage {
     this.value = _value.value;
     FloatValue.refineValues(this);
   }
-  get value(): number | undefined {
+  get value(): number {
     return this._value;
   }
-  set value(value: number | undefined) {
+  set value(value: number) {
     this._value = value;
   }
 
@@ -263,7 +264,7 @@ export module FloatValue {
    * Standard JavaScript object representation for FloatValue
    */
   export interface AsObject {
-    value?: number;
+    value: number;
   }
 
   /**
@@ -331,7 +332,7 @@ export class Int64Value implements GrpcMessage {
     }
   }
 
-  private _value?: string;
+  private _value: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -342,10 +343,10 @@ export class Int64Value implements GrpcMessage {
     this.value = _value.value;
     Int64Value.refineValues(this);
   }
-  get value(): string | undefined {
+  get value(): string {
     return this._value;
   }
-  set value(value: string | undefined) {
+  set value(value: string) {
     this._value = value;
   }
 
@@ -392,7 +393,7 @@ export module Int64Value {
    * Standard JavaScript object representation for Int64Value
    */
   export interface AsObject {
-    value?: string;
+    value: string;
   }
 
   /**
@@ -463,7 +464,7 @@ export class UInt64Value implements GrpcMessage {
     }
   }
 
-  private _value?: string;
+  private _value: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -474,10 +475,10 @@ export class UInt64Value implements GrpcMessage {
     this.value = _value.value;
     UInt64Value.refineValues(this);
   }
-  get value(): string | undefined {
+  get value(): string {
     return this._value;
   }
-  set value(value: string | undefined) {
+  set value(value: string) {
     this._value = value;
   }
 
@@ -524,7 +525,7 @@ export module UInt64Value {
    * Standard JavaScript object representation for UInt64Value
    */
   export interface AsObject {
-    value?: string;
+    value: string;
   }
 
   /**
@@ -592,7 +593,7 @@ export class Int32Value implements GrpcMessage {
     }
   }
 
-  private _value?: number;
+  private _value: number;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -603,10 +604,10 @@ export class Int32Value implements GrpcMessage {
     this.value = _value.value;
     Int32Value.refineValues(this);
   }
-  get value(): number | undefined {
+  get value(): number {
     return this._value;
   }
-  set value(value: number | undefined) {
+  set value(value: number) {
     this._value = value;
   }
 
@@ -653,7 +654,7 @@ export module Int32Value {
    * Standard JavaScript object representation for Int32Value
    */
   export interface AsObject {
-    value?: number;
+    value: number;
   }
 
   /**
@@ -724,7 +725,7 @@ export class UInt32Value implements GrpcMessage {
     }
   }
 
-  private _value?: number;
+  private _value: number;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -735,10 +736,10 @@ export class UInt32Value implements GrpcMessage {
     this.value = _value.value;
     UInt32Value.refineValues(this);
   }
-  get value(): number | undefined {
+  get value(): number {
     return this._value;
   }
-  set value(value: number | undefined) {
+  set value(value: number) {
     this._value = value;
   }
 
@@ -785,7 +786,7 @@ export module UInt32Value {
    * Standard JavaScript object representation for UInt32Value
    */
   export interface AsObject {
-    value?: number;
+    value: number;
   }
 
   /**
@@ -853,7 +854,7 @@ export class BoolValue implements GrpcMessage {
     }
   }
 
-  private _value?: boolean;
+  private _value: boolean;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -864,10 +865,10 @@ export class BoolValue implements GrpcMessage {
     this.value = _value.value;
     BoolValue.refineValues(this);
   }
-  get value(): boolean | undefined {
+  get value(): boolean {
     return this._value;
   }
-  set value(value: boolean | undefined) {
+  set value(value: boolean) {
     this._value = value;
   }
 
@@ -914,7 +915,7 @@ export module BoolValue {
    * Standard JavaScript object representation for BoolValue
    */
   export interface AsObject {
-    value?: boolean;
+    value: boolean;
   }
 
   /**
@@ -985,7 +986,7 @@ export class StringValue implements GrpcMessage {
     }
   }
 
-  private _value?: string;
+  private _value: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -996,10 +997,10 @@ export class StringValue implements GrpcMessage {
     this.value = _value.value;
     StringValue.refineValues(this);
   }
-  get value(): string | undefined {
+  get value(): string {
     return this._value;
   }
-  set value(value: string | undefined) {
+  set value(value: string) {
     this._value = value;
   }
 
@@ -1046,7 +1047,7 @@ export module StringValue {
    * Standard JavaScript object representation for StringValue
    */
   export interface AsObject {
-    value?: string;
+    value: string;
   }
 
   /**
@@ -1114,7 +1115,7 @@ export class BytesValue implements GrpcMessage {
     }
   }
 
-  private _value?: Uint8Array;
+  private _value: Uint8Array;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -1125,10 +1126,10 @@ export class BytesValue implements GrpcMessage {
     this.value = _value.value;
     BytesValue.refineValues(this);
   }
-  get value(): Uint8Array | undefined {
+  get value(): Uint8Array {
     return this._value;
   }
-  set value(value: Uint8Array | undefined) {
+  set value(value: Uint8Array) {
     this._value = value;
   }
 
@@ -1175,7 +1176,7 @@ export module BytesValue {
    * Standard JavaScript object representation for BytesValue
    */
   export interface AsObject {
-    value?: Uint8Array;
+    value: Uint8Array;
   }
 
   /**

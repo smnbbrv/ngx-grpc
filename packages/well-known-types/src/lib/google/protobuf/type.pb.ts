@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -136,12 +137,12 @@ export class Type implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
   private _fields?: Field[];
-  private _oneofs?: string[];
+  private _oneofs: string[];
   private _options?: Option[];
   private _sourceContext?: googleProtobuf001.SourceContext;
-  private _syntax?: Syntax;
+  private _syntax: Syntax;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -159,10 +160,10 @@ export class Type implements GrpcMessage {
     this.syntax = _value.syntax;
     Type.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
   get fields(): Field[] | undefined {
@@ -171,10 +172,10 @@ export class Type implements GrpcMessage {
   set fields(value: Field[] | undefined) {
     this._fields = value;
   }
-  get oneofs(): string[] | undefined {
+  get oneofs(): string[] {
     return this._oneofs;
   }
-  set oneofs(value: string[] | undefined) {
+  set oneofs(value: string[]) {
     this._oneofs = value;
   }
   get options(): Option[] | undefined {
@@ -189,10 +190,10 @@ export class Type implements GrpcMessage {
   set sourceContext(value: googleProtobuf001.SourceContext | undefined) {
     this._sourceContext = value;
   }
-  get syntax(): Syntax | undefined {
+  get syntax(): Syntax {
     return this._syntax;
   }
-  set syntax(value: Syntax | undefined) {
+  set syntax(value: Syntax) {
     this._syntax = value;
   }
 
@@ -258,24 +259,24 @@ export module Type {
    * Standard JavaScript object representation for Type
    */
   export interface AsObject {
-    name?: string;
+    name: string;
     fields?: Field.AsObject[];
-    oneofs?: string[];
+    oneofs: string[];
     options?: Option.AsObject[];
     sourceContext?: googleProtobuf001.SourceContext.AsObject;
-    syntax?: Syntax;
+    syntax: Syntax;
   }
 
   /**
    * Protobuf JSON representation for Type
    */
   export interface AsProtobufJSON {
-    name?: string;
-    fields?: Field.AsProtobufJSON[] | null;
-    oneofs?: string[];
-    options?: Option.AsProtobufJSON[] | null;
-    sourceContext?: googleProtobuf001.SourceContext.AsProtobufJSON | null;
-    syntax?: string;
+    name: string;
+    fields: Field.AsProtobufJSON[] | null;
+    oneofs: string[];
+    options: Option.AsProtobufJSON[] | null;
+    sourceContext: googleProtobuf001.SourceContext.AsProtobufJSON | null;
+    syntax: string;
   }
 }
 
@@ -409,16 +410,16 @@ export class Field implements GrpcMessage {
     }
   }
 
-  private _kind?: Field.Kind;
-  private _cardinality?: Field.Cardinality;
-  private _number?: number;
-  private _name?: string;
-  private _typeUrl?: string;
-  private _oneofIndex?: number;
-  private _packed?: boolean;
+  private _kind: Field.Kind;
+  private _cardinality: Field.Cardinality;
+  private _number: number;
+  private _name: string;
+  private _typeUrl: string;
+  private _oneofIndex: number;
+  private _packed: boolean;
   private _options?: Option[];
-  private _jsonName?: string;
-  private _defaultValue?: string;
+  private _jsonName: string;
+  private _defaultValue: string;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -438,46 +439,46 @@ export class Field implements GrpcMessage {
     this.defaultValue = _value.defaultValue;
     Field.refineValues(this);
   }
-  get kind(): Field.Kind | undefined {
+  get kind(): Field.Kind {
     return this._kind;
   }
-  set kind(value: Field.Kind | undefined) {
+  set kind(value: Field.Kind) {
     this._kind = value;
   }
-  get cardinality(): Field.Cardinality | undefined {
+  get cardinality(): Field.Cardinality {
     return this._cardinality;
   }
-  set cardinality(value: Field.Cardinality | undefined) {
+  set cardinality(value: Field.Cardinality) {
     this._cardinality = value;
   }
-  get number(): number | undefined {
+  get number(): number {
     return this._number;
   }
-  set number(value: number | undefined) {
+  set number(value: number) {
     this._number = value;
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get typeUrl(): string | undefined {
+  get typeUrl(): string {
     return this._typeUrl;
   }
-  set typeUrl(value: string | undefined) {
+  set typeUrl(value: string) {
     this._typeUrl = value;
   }
-  get oneofIndex(): number | undefined {
+  get oneofIndex(): number {
     return this._oneofIndex;
   }
-  set oneofIndex(value: number | undefined) {
+  set oneofIndex(value: number) {
     this._oneofIndex = value;
   }
-  get packed(): boolean | undefined {
+  get packed(): boolean {
     return this._packed;
   }
-  set packed(value: boolean | undefined) {
+  set packed(value: boolean) {
     this._packed = value;
   }
   get options(): Option[] | undefined {
@@ -486,16 +487,16 @@ export class Field implements GrpcMessage {
   set options(value: Option[] | undefined) {
     this._options = value;
   }
-  get jsonName(): string | undefined {
+  get jsonName(): string {
     return this._jsonName;
   }
-  set jsonName(value: string | undefined) {
+  set jsonName(value: string) {
     this._jsonName = value;
   }
-  get defaultValue(): string | undefined {
+  get defaultValue(): string {
     return this._defaultValue;
   }
-  set defaultValue(value: string | undefined) {
+  set defaultValue(value: string) {
     this._defaultValue = value;
   }
 
@@ -569,32 +570,32 @@ export module Field {
    * Standard JavaScript object representation for Field
    */
   export interface AsObject {
-    kind?: Field.Kind;
-    cardinality?: Field.Cardinality;
-    number?: number;
-    name?: string;
-    typeUrl?: string;
-    oneofIndex?: number;
-    packed?: boolean;
+    kind: Field.Kind;
+    cardinality: Field.Cardinality;
+    number: number;
+    name: string;
+    typeUrl: string;
+    oneofIndex: number;
+    packed: boolean;
     options?: Option.AsObject[];
-    jsonName?: string;
-    defaultValue?: string;
+    jsonName: string;
+    defaultValue: string;
   }
 
   /**
    * Protobuf JSON representation for Field
    */
   export interface AsProtobufJSON {
-    kind?: string;
-    cardinality?: string;
-    number?: number;
-    name?: string;
-    typeUrl?: string;
-    oneofIndex?: number;
-    packed?: boolean;
-    options?: Option.AsProtobufJSON[] | null;
-    jsonName?: string;
-    defaultValue?: string;
+    kind: string;
+    cardinality: string;
+    number: number;
+    name: string;
+    typeUrl: string;
+    oneofIndex: number;
+    packed: boolean;
+    options: Option.AsProtobufJSON[] | null;
+    jsonName: string;
+    defaultValue: string;
   }
   export enum Kind {
     TYPE_UNKNOWN = 0,
@@ -739,11 +740,11 @@ export class Enum implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
   private _enumvalue?: EnumValue[];
   private _options?: Option[];
   private _sourceContext?: googleProtobuf001.SourceContext;
-  private _syntax?: Syntax;
+  private _syntax: Syntax;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -760,10 +761,10 @@ export class Enum implements GrpcMessage {
     this.syntax = _value.syntax;
     Enum.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
   get enumvalue(): EnumValue[] | undefined {
@@ -784,10 +785,10 @@ export class Enum implements GrpcMessage {
   set sourceContext(value: googleProtobuf001.SourceContext | undefined) {
     this._sourceContext = value;
   }
-  get syntax(): Syntax | undefined {
+  get syntax(): Syntax {
     return this._syntax;
   }
-  set syntax(value: Syntax | undefined) {
+  set syntax(value: Syntax) {
     this._syntax = value;
   }
 
@@ -851,22 +852,22 @@ export module Enum {
    * Standard JavaScript object representation for Enum
    */
   export interface AsObject {
-    name?: string;
+    name: string;
     enumvalue?: EnumValue.AsObject[];
     options?: Option.AsObject[];
     sourceContext?: googleProtobuf001.SourceContext.AsObject;
-    syntax?: Syntax;
+    syntax: Syntax;
   }
 
   /**
    * Protobuf JSON representation for Enum
    */
   export interface AsProtobufJSON {
-    name?: string;
-    enumvalue?: EnumValue.AsProtobufJSON[] | null;
-    options?: Option.AsProtobufJSON[] | null;
-    sourceContext?: googleProtobuf001.SourceContext.AsProtobufJSON | null;
-    syntax?: string;
+    name: string;
+    enumvalue: EnumValue.AsProtobufJSON[] | null;
+    options: Option.AsProtobufJSON[] | null;
+    sourceContext: googleProtobuf001.SourceContext.AsProtobufJSON | null;
+    syntax: string;
   }
 }
 
@@ -954,8 +955,8 @@ export class EnumValue implements GrpcMessage {
     }
   }
 
-  private _name?: string;
-  private _number?: number;
+  private _name: string;
+  private _number: number;
   private _options?: Option[];
 
   /**
@@ -969,16 +970,16 @@ export class EnumValue implements GrpcMessage {
     this.options = (_value.options || []).map((m) => new Option(m));
     EnumValue.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
-  get number(): number | undefined {
+  get number(): number {
     return this._number;
   }
-  set number(value: number | undefined) {
+  set number(value: number) {
     this._number = value;
   }
   get options(): Option[] | undefined {
@@ -1037,8 +1038,8 @@ export module EnumValue {
    * Standard JavaScript object representation for EnumValue
    */
   export interface AsObject {
-    name?: string;
-    number?: number;
+    name: string;
+    number: number;
     options?: Option.AsObject[];
   }
 
@@ -1046,9 +1047,9 @@ export module EnumValue {
    * Protobuf JSON representation for EnumValue
    */
   export interface AsProtobufJSON {
-    name?: string;
-    number?: number;
-    options?: Option.AsProtobufJSON[] | null;
+    name: string;
+    number: number;
+    options: Option.AsProtobufJSON[] | null;
   }
 }
 
@@ -1123,7 +1124,7 @@ export class Option implements GrpcMessage {
     }
   }
 
-  private _name?: string;
+  private _name: string;
   private _value?: googleProtobuf000.Any;
 
   /**
@@ -1138,10 +1139,10 @@ export class Option implements GrpcMessage {
       : undefined;
     Option.refineValues(this);
   }
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
-  set name(value: string | undefined) {
+  set name(value: string) {
     this._name = value;
   }
   get value(): googleProtobuf000.Any | undefined {
@@ -1198,7 +1199,7 @@ export module Option {
    * Standard JavaScript object representation for Option
    */
   export interface AsObject {
-    name?: string;
+    name: string;
     value?: googleProtobuf000.Any.AsObject;
   }
 
@@ -1206,7 +1207,7 @@ export module Option {
    * Protobuf JSON representation for Option
    */
   export interface AsProtobufJSON {
-    name?: string;
-    value?: googleProtobuf000.Any.AsProtobufJSON | null;
+    name: string;
+    value: googleProtobuf000.Any.AsProtobufJSON | null;
   }
 }

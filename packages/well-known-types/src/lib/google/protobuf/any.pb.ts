@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -88,8 +89,8 @@ export class Any implements GrpcMessage {
     }
   }
 
-  private _typeUrl?: string;
-  private _value?: Uint8Array;
+  private _typeUrl: string;
+  private _value: Uint8Array;
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -101,16 +102,16 @@ export class Any implements GrpcMessage {
     this.value = _value.value;
     Any.refineValues(this);
   }
-  get typeUrl(): string | undefined {
+  get typeUrl(): string {
     return this._typeUrl;
   }
-  set typeUrl(value: string | undefined) {
+  set typeUrl(value: string) {
     this._typeUrl = value;
   }
-  get value(): Uint8Array | undefined {
+  get value(): Uint8Array {
     return this._value;
   }
-  set value(value: Uint8Array | undefined) {
+  set value(value: Uint8Array) {
     this._value = value;
   }
 
@@ -253,8 +254,8 @@ export module Any {
    * Standard JavaScript object representation for Any
    */
   export interface AsObject {
-    typeUrl?: string;
-    value?: Uint8Array;
+    typeUrl: string;
+    value: Uint8Array;
   }
 
   /**

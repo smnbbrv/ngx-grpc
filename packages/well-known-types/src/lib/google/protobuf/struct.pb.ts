@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -86,7 +87,7 @@ export class Struct implements GrpcMessage {
     }
   }
 
-  private _fields?: { [prop: string]: Value };
+  private _fields: { [prop: string]: Value };
 
   /**
    * Message constructor. Initializes the properties and applies default Protobuf values if necessary
@@ -105,10 +106,10 @@ export class Struct implements GrpcMessage {
       : {}),
       Struct.refineValues(this);
   }
-  get fields(): { [prop: string]: Value } | undefined {
+  get fields(): { [prop: string]: Value } {
     return this._fields;
   }
-  set fields(value: { [prop: string]: Value } | undefined) {
+  set fields(value: { [prop: string]: Value }) {
     this._fields = value;
   }
 
@@ -171,7 +172,7 @@ export module Struct {
    * Standard JavaScript object representation for Struct
    */
   export interface AsObject {
-    fields?: { [prop: string]: Value };
+    fields: { [prop: string]: Value };
   }
 
   /**
@@ -180,10 +181,10 @@ export module Struct {
   export type AsProtobufJSON = { [prop: string]: Value.AsProtobufJSON };
 
   /**
-   * Message implementation for google.protobuf.FieldsEntry
+   * Well known type, more at https://developers.google.com/protocol-buffers/docs/reference/google.protobuf
    */
   export class FieldsEntry implements GrpcMessage {
-    static id = 'google.protobuf.FieldsEntry';
+    static id = 'google.protobuf.Struct.FieldsEntry';
 
     /**
      * Deserialize binary data to message
@@ -259,7 +260,7 @@ export module Struct {
       }
     }
 
-    private _key?: string;
+    private _key: string;
     private _value?: Value;
 
     /**
@@ -272,10 +273,10 @@ export module Struct {
       this.value = _value.value ? new Value(_value.value) : undefined;
       FieldsEntry.refineValues(this);
     }
-    get key(): string | undefined {
+    get key(): string {
       return this._key;
     }
-    set key(value: string | undefined) {
+    set key(value: string) {
       this._key = value;
     }
     get value(): Value | undefined {
@@ -332,7 +333,7 @@ export module Struct {
      * Standard JavaScript object representation for FieldsEntry
      */
     export interface AsObject {
-      key?: string;
+      key: string;
       value?: Value.AsObject;
     }
 
@@ -340,8 +341,8 @@ export module Struct {
      * Protobuf JSON representation for FieldsEntry
      */
     export interface AsProtobufJSON {
-      key?: string;
-      value?: Value.AsProtobufJSON | null;
+      key: string;
+      value: Value.AsProtobufJSON | null;
     }
   }
 }
@@ -446,10 +447,10 @@ export class Value implements GrpcMessage {
     }
   }
 
-  private _nullValue?: NullValue;
-  private _numberValue?: number;
-  private _stringValue?: string;
-  private _boolValue?: boolean;
+  private _nullValue: NullValue;
+  private _numberValue: number;
+  private _stringValue: string;
+  private _boolValue: boolean;
   private _structValue?: Struct;
   private _listValue?: ListValue;
 
@@ -473,10 +474,10 @@ export class Value implements GrpcMessage {
       : undefined;
     Value.refineValues(this);
   }
-  get nullValue(): NullValue | undefined {
+  get nullValue(): NullValue {
     return this._nullValue;
   }
-  set nullValue(value: NullValue | undefined) {
+  set nullValue(value: NullValue) {
     if (value !== undefined && value !== null) {
       this._numberValue =
         this._stringValue =
@@ -488,10 +489,10 @@ export class Value implements GrpcMessage {
     }
     this._nullValue = value;
   }
-  get numberValue(): number | undefined {
+  get numberValue(): number {
     return this._numberValue;
   }
-  set numberValue(value: number | undefined) {
+  set numberValue(value: number) {
     if (value !== undefined && value !== null) {
       this._nullValue =
         this._stringValue =
@@ -503,10 +504,10 @@ export class Value implements GrpcMessage {
     }
     this._numberValue = value;
   }
-  get stringValue(): string | undefined {
+  get stringValue(): string {
     return this._stringValue;
   }
-  set stringValue(value: string | undefined) {
+  set stringValue(value: string) {
     if (value !== undefined && value !== null) {
       this._nullValue =
         this._numberValue =
@@ -518,10 +519,10 @@ export class Value implements GrpcMessage {
     }
     this._stringValue = value;
   }
-  get boolValue(): boolean | undefined {
+  get boolValue(): boolean {
     return this._boolValue;
   }
-  set boolValue(value: boolean | undefined) {
+  set boolValue(value: boolean) {
     if (value !== undefined && value !== null) {
       this._nullValue =
         this._numberValue =
@@ -632,10 +633,10 @@ export module Value {
    * Standard JavaScript object representation for Value
    */
   export interface AsObject {
-    nullValue?: NullValue;
-    numberValue?: number;
-    stringValue?: string;
-    boolValue?: boolean;
+    nullValue: NullValue;
+    numberValue: number;
+    stringValue: string;
+    boolValue: boolean;
     structValue?: Struct.AsObject;
     listValue?: ListValue.AsObject;
   }
