@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.4...v3.1.0) (2022-11-28)
+
+
+### Bug Fixes
+
+* **protoc-gen-ng:** properties are always generated in optional interfaces ([53f0969](https://github.com/ngx-grpc/ngx-grpc/commit/53f0969a21523e8c27049b5e2f872b1c5ef6c1a5))
+
+
+### Features
+
+* **protoc-gen-ng:** returned some methods in MessageMessageField ([361fdba](https://github.com/ngx-grpc/ngx-grpc/commit/361fdbaa106018a33c295b1c242b9e000cd82029))
+
 ## [3.0.4](https://github.com/ngx-grpc/ngx-grpc/compare/v3.0.3...v3.0.4) (2022-11-19)
 
 
