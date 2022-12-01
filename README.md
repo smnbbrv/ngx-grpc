@@ -266,8 +266,8 @@ You can however override this behavior by passing `JS_NUMBER` or `JS_STRING` opt
 
 ```protobuf
 message Message { 
-  int64 bigInt = 1; [jstype = JS_NUMBER] 
-  uint64 bigUint = 2; [jstype = JS_NUMBER] 
+  int64 bigInt = 1 [jstype = JS_NUMBER];
+  uint64 bigUint = 2 [jstype = JS_NUMBER];
 }
 ```
 
