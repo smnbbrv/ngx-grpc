@@ -422,7 +422,7 @@ Then configure the web worker. First you need to adapt the code generation setti
 Now, generate the worker (angular cli), e.g. with the name `grpc`:
 
 ```sh
-ng g webWorker grpc
+ng g web-worker grpc
 ```
 
 or for Angular < 9
