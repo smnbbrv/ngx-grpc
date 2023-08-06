@@ -1,5 +1,6 @@
 {
   "private": true,
+  "author": "smnbbrv",
   "scripts": {
     "ng": "ng",
     "start": "run-s start:lib:protoc-gen-ng",
