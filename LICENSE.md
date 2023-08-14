@@ -2,7 +2,7 @@
 
 -----------
 
-Copyright (c) 2019-2022 Semen Bobrov (smnbbrv)
+Copyright (c) 2019-2023 Semen Bobrov (smnbbrv)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
