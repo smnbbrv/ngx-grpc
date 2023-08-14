@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/smnbbrv/ngx-grpc/compare/v3.1.1...v3.1.2) (2023-08-14)
+
+
+### Bug Fixes
+
+* update license year ([a6b34b0](https://github.com/smnbbrv/ngx-grpc/commit/a6b34b01d7a578f714b322173b5b0abbe7c8692a))
+
 ## [3.1.1](https://github.com/ngx-grpc/ngx-grpc/compare/v3.1.0...v3.1.1) (2022-11-28)
 
 
