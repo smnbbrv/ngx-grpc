@@ -3,6 +3,7 @@ export class Dependency {
   constructor(
     public from: string,
     public token: string,
+    public isType = false,
   ) { }
 
 }
@@ -16,16 +17,16 @@ const angularCore = {
 
 const ngxGrpcCommon = {
   GrpcCallType: new Dependency('@ngx-grpc/common', 'GrpcCallType'),
-  GrpcClient: new Dependency('@ngx-grpc/common', 'GrpcClient'),
-  GrpcClientFactory: new Dependency('@ngx-grpc/common', 'GrpcClientFactory'),
-  GrpcMessage: new Dependency('@ngx-grpc/common', 'GrpcMessage'),
+  GrpcClient: new Dependency('@ngx-grpc/common', 'GrpcClient', true),
+  GrpcClientFactory: new Dependency('@ngx-grpc/common', 'GrpcClientFactory', true),
+  GrpcMessage: new Dependency('@ngx-grpc/common', 'GrpcMessage', true),
   GrpcMetadata: new Dependency('@ngx-grpc/common', 'GrpcMetadata'),
-  RecursivePartial: new Dependency('@ngx-grpc/common', 'RecursivePartial'),
-  GrpcEvent: new Dependency('@ngx-grpc/common', 'GrpcEvent'),
+  RecursivePartial: new Dependency('@ngx-grpc/common', 'RecursivePartial', true),
+  GrpcEvent: new Dependency('@ngx-grpc/common', 'GrpcEvent', true),
   uint8ArrayToBase64: new Dependency('@ngx-grpc/common', 'uint8ArrayToBase64'),
   GrpcMessagePool: new Dependency('@ngx-grpc/common', 'GrpcMessagePool'),
   GrpcMessageClass: new Dependency('@ngx-grpc/common', 'GrpcMessageClass'),
-  ToProtobufJSONOptions: new Dependency('@ngx-grpc/common', 'ToProtobufJSONOptions'),
+  ToProtobufJSONOptions: new Dependency('@ngx-grpc/common', 'ToProtobufJSONOptions', true),
 };
 
 const ngxGrpcCore = {
