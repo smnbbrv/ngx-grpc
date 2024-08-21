@@ -1,5 +1,5 @@
 import * as prettier from 'prettier';
-import { Dependency } from './interfaces';
+import { Dependency, DependencyToken } from './interfaces';
 
 export class Printer {
 
@@ -41,7 +41,7 @@ export class Printer {
   }
 
   private createDependenciesCode() {
-    const deps = new Map<string, string[]>();
+    const deps = new Map<string, DependencyToken[]>();
 
     Array.from(this.dependencies).forEach(dep => {
       let group = deps.get(dep.from);
@@ -50,15 +50,15 @@ export class Printer {
         deps.set(dep.from, group = []);
       }
 
-      group.push(dep.token);
+      group.push({ token: dep.token, isType: dep.isType ?? false });
     });
 
     let code = '';
 
     Array.from(deps.keys()).sort().forEach(from => {
-      const tokens = deps.get(from) as string[];
+      const tokens = deps.get(from) as DependencyToken[];
 
-      code += `import { ${tokens.sort().join(', ')} } from '${from}';\n`;
+      code += `import { ${tokens.sort().map(x => `${x.isType ? 'type ' : ''}${x.token}`).join(', ')} } from '${from}';\n`;
     });
 
     return code;
