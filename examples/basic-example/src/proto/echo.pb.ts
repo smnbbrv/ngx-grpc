@@ -1,5 +1,6 @@
+/* tslint:disable */
 /* eslint-disable */
-/* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -94,8 +95,8 @@ export class EchoRequest implements GrpcMessage {
     }
   }
 
-  private _message?: string;
-  private _shouldThrow?: boolean;
+  private _message: string;
+  private _shouldThrow: boolean;
   private _timestamp?: googleProtobuf000.Timestamp;
 
   /**
@@ -111,16 +112,16 @@ export class EchoRequest implements GrpcMessage {
       : undefined;
     EchoRequest.refineValues(this);
   }
-  get message(): string | undefined {
+  get message(): string {
     return this._message;
   }
-  set message(value: string | undefined) {
+  set message(value: string) {
     this._message = value;
   }
-  get shouldThrow(): boolean | undefined {
+  get shouldThrow(): boolean {
     return this._shouldThrow;
   }
-  set shouldThrow(value: boolean | undefined) {
+  set shouldThrow(value: boolean) {
     this._shouldThrow = value;
   }
   get timestamp(): googleProtobuf000.Timestamp | undefined {
@@ -179,8 +180,8 @@ export module EchoRequest {
    * Standard JavaScript object representation for EchoRequest
    */
   export interface AsObject {
-    message?: string;
-    shouldThrow?: boolean;
+    message: string;
+    shouldThrow: boolean;
     timestamp?: googleProtobuf000.Timestamp.AsObject;
   }
 
@@ -188,9 +189,9 @@ export module EchoRequest {
    * Protobuf JSON representation for EchoRequest
    */
   export interface AsProtobufJSON {
-    message?: string;
-    shouldThrow?: boolean;
-    timestamp?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    message: string;
+    shouldThrow: boolean;
+    timestamp: googleProtobuf000.Timestamp.AsProtobufJSON | null;
   }
 }
 
@@ -271,7 +272,7 @@ export class EchoResponse implements GrpcMessage {
     }
   }
 
-  private _message?: string;
+  private _message: string;
   private _timestamp?: googleProtobuf000.Timestamp;
 
   /**
@@ -286,10 +287,10 @@ export class EchoResponse implements GrpcMessage {
       : undefined;
     EchoResponse.refineValues(this);
   }
-  get message(): string | undefined {
+  get message(): string {
     return this._message;
   }
-  set message(value: string | undefined) {
+  set message(value: string) {
     this._message = value;
   }
   get timestamp(): googleProtobuf000.Timestamp | undefined {
@@ -346,7 +347,7 @@ export module EchoResponse {
    * Standard JavaScript object representation for EchoResponse
    */
   export interface AsObject {
-    message?: string;
+    message: string;
     timestamp?: googleProtobuf000.Timestamp.AsObject;
   }
 
@@ -354,7 +355,7 @@ export module EchoResponse {
    * Protobuf JSON representation for EchoResponse
    */
   export interface AsProtobufJSON {
-    message?: string;
-    timestamp?: googleProtobuf000.Timestamp.AsProtobufJSON | null;
+    message: string;
+    timestamp: googleProtobuf000.Timestamp.AsProtobufJSON | null;
   }
 }

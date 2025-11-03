@@ -31,7 +31,7 @@ export class EnumMessageField extends AbstractMessageField {
 
   printDeserializeBinaryFromReader(printer: Printer) {
     if (this.isPacked) {
-      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(...(_reader.readPackedEnum() || []));`);
+      printer.add(`case ${this.messageField.number}: _reader.readPackableEnumInto(_instance.${this.attributeName} = _instance.${this.attributeName} || []);`);
     } else if (this.isArray) {
       printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(_reader.readEnum());`);
     } else {
