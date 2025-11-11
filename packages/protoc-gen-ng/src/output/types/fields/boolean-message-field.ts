@@ -26,7 +26,7 @@ export class BooleanMessageField extends AbstractMessageField {
 
   printDeserializeBinaryFromReader(printer: Printer) {
     if (this.isPacked) {
-      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(...(_reader.readPackedBool() || []));`);
+      printer.add(`case ${this.messageField.number}: _reader.readPackableBoolInto(_instance.${this.attributeName} = _instance.${this.attributeName} || []);`);
     } else if (this.isArray) {
       printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(_reader.readBool());`);
     } else {

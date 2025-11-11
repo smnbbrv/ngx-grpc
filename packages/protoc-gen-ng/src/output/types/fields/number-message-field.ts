@@ -45,7 +45,7 @@ export class NumberMessageField extends AbstractMessageField {
 
   printDeserializeBinaryFromReader(printer: Printer) {
     if (this.isPacked) {
-      printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(...(_reader.readPacked${this.protoDataType}() || []));`);
+      printer.add(`case ${this.messageField.number}: _reader.readPackable${this.protoDataType}Into(_instance.${this.attributeName} = _instance.${this.attributeName} || []);`);
     } else if (this.isArray) {
       printer.add(`case ${this.messageField.number}: (_instance.${this.attributeName} = _instance.${this.attributeName} || []).push(_reader.read${this.protoDataType}());`);
     } else {
@@ -109,7 +109,7 @@ export class NumberMessageField extends AbstractMessageField {
     if (this.isArray) {
       printer.add(`${this.attributeName}: (this.${this.attributeName} || []).slice(),`);
     } else {
-      if (this.oneOf || this.messageField.proto3Optional){
+      if (this.oneOf || this.messageField.proto3Optional) {
         printer.add(`${this.attributeName}: this.${this.attributeName} === null || this.${this.attributeName} === undefined ? null : this.${this.attributeName},`);
       } else {
         printer.add(`${this.attributeName}: this.${this.attributeName},`);

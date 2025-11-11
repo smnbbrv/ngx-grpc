@@ -1,5 +1,6 @@
+/* tslint:disable */
 /* eslint-disable */
-/* eslint-disable */
+// @ts-nocheck
 //
 // THIS IS A GENERATED FILE
 // DO NOT MODIFY IT! YOUR CHANGES WILL BE LOST
@@ -35,7 +36,7 @@ export class EchoServiceClient {
    */
   $raw = {
     /**
-     * Unary RPC for /echo.EchoService/EchoOnce
+     * Unary call: /echo.EchoService/EchoOnce
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -56,7 +57,7 @@ export class EchoServiceClient {
       });
     },
     /**
-     * Server streaming RPC for /echo.EchoService/EchoStream
+     * Server streaming: /echo.EchoService/EchoStream
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
@@ -87,7 +88,7 @@ export class EchoServiceClient {
   }
 
   /**
-   * Unary RPC for /echo.EchoService/EchoOnce
+   * Unary call @/echo.EchoService/EchoOnce
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
@@ -103,7 +104,7 @@ export class EchoServiceClient {
   }
 
   /**
-   * Server streaming RPC for /echo.EchoService/EchoStream
+   * Server streaming @/echo.EchoService/EchoStream
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata

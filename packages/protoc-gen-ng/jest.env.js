@@ -1,6 +1,6 @@
 // credits to https://stackoverflow.com/a/57713960/1990451
 
-const Environment = require('jest-environment-jsdom');
+const { default: Environment } = require('jest-environment-jsdom');
 
 /**
  * A custom environment to set the TextEncoder that is required by TensorFlow.js.
