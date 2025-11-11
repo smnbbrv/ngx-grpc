@@ -29,7 +29,7 @@
     "test:lib:protoc-gen-ng:generate-grpc-web": "cd packages/protoc-gen-ng && mkdir -p ./test/out-grpc-web && rimraf ./test/out-grpc-web/* && $(pwd)/../../node_modules/.bin/grpc_tools_node_protoc --plugin=protoc-gen-grpc=$(pwd)/../..node_modules/.bin/protoc_gen_grpc_web -I=test/proto --js_out=import_style=commonjs:test/out-grpc-web --grpc-web_out=import_style=commonjs+dts,mode=grpcweb:test/out-grpc-web $(find test/proto -iname \"*.proto\")",
     "lint": "run-s lint:ng lint:lib:protoc-gen-ng",
     "lint:ng": "ng lint",
-    "lint:lib:protoc-gen-ng": "eslint -c packages/protoc-gen-ng/.eslintrc.json 'packages/protoc-gen-ng/src/**/*.ts' 'packages/protoc-gen-ng/test/spec/**/*.ts'",
+    "lint:lib:protoc-gen-ng": "cd packages/protoc-gen-ng && eslint",
     "release": "semantic-release",
     "examples": "run-p examples:basic examples:backend",
     "examples:basic": "ng serve basic-example --port 4200",

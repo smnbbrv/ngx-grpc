@@ -16,13 +16,17 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-namespace": "off",
+        "@angular-eslint/prefer-inject": "off",
         "@typescript-eslint/explicit-member-accessibility": [
           "off",
           {
@@ -61,8 +65,6 @@
           }
         ],
         "no-empty-function": "off",
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": "error",
         "no-unused-expressions": "error",
         "no-use-before-define": "off",
         "quotes": [

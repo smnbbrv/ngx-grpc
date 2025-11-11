@@ -14,7 +14,7 @@ export interface MessageIndexMeta {
 export class Proto {
 
   name: string;
-  pb_package: string; // eslint-disable-line
+  pb_package: string;
   dependencyList: string[];
   publicDependencyList: number[];
   weakDependencyList: number[];
@@ -34,7 +34,7 @@ export class Proto {
 
   constructor(value: FileDescriptorProto.AsObject) {
     this.name = value.name ?? '';
-    this.pb_package = value.pb_package ?? ''; // eslint-disable-line
+    this.pb_package = value.pb_package ?? '';
     this.dependencyList = value.dependencyList || [];
     this.publicDependencyList = value.publicDependencyList;
     this.weakDependencyList = value.weakDependencyList;
