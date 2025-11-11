@@ -1,3 +1,13 @@
+# [4.0.0](https://github.com/smnbbrv/ngx-grpc/compare/v3.1.2...v4.0.0) (2025-11-11)
+
+
+* feat!: update to google-protobuf 4.0 and upgrade all dependencies to latest ([70f3885](https://github.com/smnbbrv/ngx-grpc/commit/70f38854975e8e1e07991bad7b8bda90e8255043))
+
+
+### BREAKING CHANGES
+
+* Requires Angular 20+, TypeScript 5.x, and RxJS 7+. All major dependencies updated to latest versions which may introduce breaking changes in consuming applications.
+
 ## [3.1.2](https://github.com/smnbbrv/ngx-grpc/compare/v3.1.1...v3.1.2) (2023-08-14)
 
 
