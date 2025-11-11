@@ -26,8 +26,8 @@ export class Printer {
     this.code += '\n';
   }
 
-  finalize() {
-    return this.prettify(this.createLeadingComment() + this.createDependenciesCode() + this.code);
+  async finalize() {
+    return await this.prettify(this.createLeadingComment() + this.createDependenciesCode() + this.code);
   }
 
   private createLeadingComment() {
@@ -64,8 +64,8 @@ export class Printer {
     return code;
   }
 
-  private prettify(code: string) {
-    return prettier.format(code, { parser: 'typescript', singleQuote: true });
+  private async prettify(code: string) {
+    return await prettier.format(code, { parser: 'typescript', singleQuote: true });
   }
 
 }

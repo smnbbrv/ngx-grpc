@@ -51,56 +51,60 @@ async function main() {
 
     const genwkt = Services.Config.embedWellKnownTypes;
 
-    protos
+    const filteredProtos = protos
       .filter(p => genwkt || !genwkt && (p.pb_package !== 'google.protobuf' &&
-        (!Services.Config.customWellKnownTypes || !Services.Config.customWellKnownTypes[p.pb_package])))
-      .forEach(proto => {
-        Services.Logger.debug(`Start processing proto ${proto.name}`);
+        (!Services.Config.customWellKnownTypes || !Services.Config.customWellKnownTypes[p.pb_package])));
 
-        const basename = proto.getGeneratedFileBaseName();
-        const files: any[] = [];
+    for (const proto of filteredProtos) {
+      Services.Logger.debug(`Start processing proto ${proto.name}`);
 
-        if (proto.serviceList.length) {
-          if (Services.Config.files.pbconf.generate) {
-            const configPrinter = new Printer();
-            const configFile = new PbConfFile(proto);
+      const basename = proto.getGeneratedFileBaseName();
+      const files: Array<{ name: string; printer: Printer }> = [];
 
-            configFile.print(configPrinter);
+      if (proto.serviceList.length) {
+        if (Services.Config.files.pbconf.generate) {
+          const configPrinter = new Printer();
+          const configFile = new PbConfFile(proto);
 
-            files.push({ name: basename + 'conf.ts', content: configPrinter.finalize() });
-          }
+          configFile.print(configPrinter);
 
-          if (Services.Config.files.pbsc.generate) {
-            const pbscPrinter = new Printer();
-            const pbscFile = new PbscFile(proto);
-
-            pbscFile.print(pbscPrinter);
-
-            files.push({ name: basename + 'sc.ts', content: pbscPrinter.finalize() });
-          }
-
-          if (Services.Config.files.pbwsc.generate) {
-            const pbwscPrinter = new Printer();
-            const pbwscFile = new PbwscFile(proto);
-
-            pbwscFile.print(pbwscPrinter);
-
-            files.push({ name: basename + 'wsc.ts', content: pbwscPrinter.finalize() });
-          }
+          files.push({ name: basename + 'conf.ts', printer: configPrinter });
         }
 
-        if (Services.Config.files.pb.generate) {
-          const pbPrinter = new Printer();
-          const pbFile = new PbFile(proto);
+        if (Services.Config.files.pbsc.generate) {
+          const pbscPrinter = new Printer();
+          const pbscFile = new PbscFile(proto);
 
-          pbFile.print(pbPrinter);
+          pbscFile.print(pbscPrinter);
 
-          files.push({ name: basename + '.ts', content: pbPrinter.finalize() });
+          files.push({ name: basename + 'sc.ts', printer: pbscPrinter });
         }
-        Services.Logger.debug(`End processing proto ${proto.name}`);
 
-        files.forEach(f => response.addFile(new CodeGeneratorResponse.File().setName(f.name).setContent(f.content)));
-      });
+        if (Services.Config.files.pbwsc.generate) {
+          const pbwscPrinter = new Printer();
+          const pbwscFile = new PbwscFile(proto);
+
+          pbwscFile.print(pbwscPrinter);
+
+          files.push({ name: basename + 'wsc.ts', printer: pbwscPrinter });
+        }
+      }
+
+      if (Services.Config.files.pb.generate) {
+        const pbPrinter = new Printer();
+        const pbFile = new PbFile(proto);
+
+        pbFile.print(pbPrinter);
+
+        files.push({ name: basename + '.ts', printer: pbPrinter });
+      }
+      Services.Logger.debug(`End processing proto ${proto.name}`);
+
+      for (const file of files) {
+        const content = await file.printer.finalize();
+        response.addFile(new CodeGeneratorResponse.File().setName(file.name).setContent(content));
+      }
+    }
 
     process.stdout.write(Buffer.from(response.serializeBinary().buffer));
   } catch (err) {
