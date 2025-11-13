@@ -10,6 +10,7 @@ All default values look like
 module.exports = {
   debug: false,
   embedWellKnownTypes: false,
+  stripEnumPrefixes: false,
   files: {
     pb: {
       generate: true,
@@ -135,6 +136,11 @@ export class Config {
    * Per-generated-file-type config
    */
   public files: ConfigFiles;
+  /**
+   * This strips enum prefixes (the enum type name + '_') from enum values.
+   * By default false
+   */
+  public stripEnumPrefixes: boolean;
 
   static fromParameter(parameter: string) {
     const params = (parameter || '').split(',').map(p => p.split('=')).reduce((r, p) => ({ ...r, [p[0]]: p[1] }), {}) as {
@@ -153,6 +159,7 @@ export class Config {
     this.embedWellKnownTypes = config.embedWellKnownTypes ?? false;
     this.customWellKnownTypes = config.customWellKnownTypes ?? {};
     this.files = new ConfigFiles(config.files ?? {});
+    this.stripEnumPrefixes = config.stripEnumPrefixes ?? false;
   }
 
 }

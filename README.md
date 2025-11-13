@@ -326,6 +326,41 @@ This will change all import statements that reference a message of the package `
 
 If the `embedWellKnownTypes` configuration is enabled, the `customWellKnownTypes` configuration will be ignored and the messages will be generated as usual.
 
+### Stripping Enum prefixes
+
+```js
+module.exports = {
+  stripEnumPrefixes: true
+}
+```
+
+This will strip the type name from the generated enum values.
+
+```proto
+enum SomeEnum {
+	SOME_ENUM_UNSPECIFIED = 0;
+	SOME_ENUM_VALUE1 =1;
+	SOME_ENUM_VALUE2 = 2;
+}
+```
+When `stripEnumPrefixes` is `false` this wil result in.
+```ts
+export enum SomeEnum {
+	SOME_ENUM_UNSPECIFIED = 0,
+	SOME_ENUM_VALUE1 =1,
+	SOME_ENUM_VALUE2 = 2,
+}
+```
+with the feature turned on the result will be the following:
+
+```ts
+export enum SomeEnum {
+	UNSPECIFIED = 0,
+	VALUE1 =1,
+	VALUE2 = 2,
+}
+```
+
 ### Interceptors
 
 You can add global interceptors to all gRPC calls like Angular's built-in `HttpClient` interceptors.
