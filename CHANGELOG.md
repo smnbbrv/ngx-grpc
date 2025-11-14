@@ -1,3 +1,18 @@
+# [5.0.0](https://github.com/smnbbrv/ngx-grpc/compare/v4.0.0...v5.0.0) (2025-11-14)
+
+
+* feat!: generated enum preifixes are stripped off ([1d8acb9](https://github.com/smnbbrv/ngx-grpc/commit/1d8acb9427125c0fcfbdab51a3f8d2d5ac4f0f93))
+
+
+### Features
+
+* **protoc-gen-ng:** Support stripping enum prefixes using stripEnumPrefixes option ([98ed7ab](https://github.com/smnbbrv/ngx-grpc/commit/98ed7ab1f97255aa2202a1563154343a78ad1133))
+
+
+### BREAKING CHANGES
+
+* re-generated enum prefixes will be stripped. Please update your enum usages
+
 # [4.0.0](https://github.com/smnbbrv/ngx-grpc/compare/v3.1.2...v4.0.0) (2025-11-11)
 
 
