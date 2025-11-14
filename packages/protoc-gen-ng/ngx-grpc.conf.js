@@ -1,6 +1,7 @@
 module.exports = {
   debug: true,
   embedWellKnownTypes: true,
+  stripEnumPrefixes: false,
   files: {
     pb: {
       generate: true,
